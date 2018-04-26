@@ -12,6 +12,7 @@ public partial class NewLead : System.Web.UI.Page
     DataSet dataset = new DataSet();
     LeadBL leadBL = new LeadBL();
     LeadEntity leadEntity = new LeadEntity();
+    CommanClass _objComman = new CommanClass();
     int j = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -19,14 +20,36 @@ public partial class NewLead : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
+                _objComman.getRecordsPerPage(DropPage);
                 GetProducts();
                 GetSourceData();
                 others.Visible = false;
+                GetLeadsList();
+                newlead.Visible = false;
             }
         }
         catch { }
     }
-   
+    protected void DropPage_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        GetLeadsList();
+    }
+    protected void GetLeadsList()
+    {
+        try
+        {
+            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            dataset = leadBL.GetLeadsList(0);
+            gvLeadList.DataSource = dataset;
+            gvLeadList.DataBind();
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
     protected void GetSourceData()
     {
         try
@@ -63,6 +86,105 @@ public partial class NewLead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
+
+    protected void gvLeadList_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName != "Page")
+            {
+                GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
+                int RowIndex = row.RowIndex;
+                ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
+                if (e.CommandName == "EditLead")
+                {
+                    GetProducts();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openEditModal();", true);
+                    ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
+                    if (ddlSource.SelectedValue == "10")
+                    {
+                        others.Visible = true;
+                    }
+                    txtOthers.Text = ((Label)row.FindControl("lbllsOthersInfo")).Text.ToString();
+                    txtFirstName.Text = ((Label)row.FindControl("lblFirstName")).Text.ToString();
+                    txtLastName.Text = ((Label)row.FindControl("lblLastName")).Text.ToString();
+                    txtMobile.Text = ((Label)row.FindControl("lblMobile")).Text.ToString();
+                    txtEmail.Text = ((Label)row.FindControl("lblEmailID")).Text.ToString();
+                    txtSource.Text = ((Label)row.FindControl("lblOrigin")).Text.ToString();
+                    txtDestination.Text = ((Label)row.FindControl("lblDestination")).Text.ToString();
+                    ddlPackage.SelectedValue = ((Label)row.FindControl("lblProdID")).Text.ToString();
+                    ddlAdults.SelectedValue = ((Label)row.FindControl("lblAdult")).Text.ToString();
+                    ddlChild.SelectedValue = ((Label)row.FindControl("lblChildren")).Text.ToString();
+                    ddlInfant.SelectedValue = ((Label)row.FindControl("lblInfants")).Text.ToString();
+                    txtDepart.Text = ((Label)row.FindControl("lblDepartDate")).Text.ToString();
+                    txtReturnDate.Text = ((Label)row.FindControl("lblReturnDate")).Text.ToString();
+                    txtBudget.Text = ((Label)row.FindControl("lblBudget")).Text.ToString();
+                    txtNotes.Text = ((Label)row.FindControl("lblNotes")).Text.ToString();
+                }
+                else if (e.CommandName == "DeleteLead")
+                {
+                    lbldeletemessage.Text = "Are you sure, you want to delete Consultant Details?";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
+                }
+            }
+        }
+        catch
+        {
+            message.ForeColor = System.Drawing.Color.Red;
+            message.Text = "Something went wrong, please contact administrator";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+    protected void btnSure_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+            leadEntity.SourceID = 0;
+            leadEntity.SourceRef = "";
+            leadEntity.Others = txtOthers.Text;
+            leadEntity.FirstName = txtFirstName.Text;
+            leadEntity.LastName = txtLastName.Text;
+            leadEntity.Mobile = txtMobile.Text;
+            leadEntity.Email = txtEmail.Text;
+            leadEntity.OriginName = txtSource.Text;
+            leadEntity.DestinationName = txtDestination.Text;
+            leadEntity.DepartureDate = txtDepart.Text;
+            leadEntity.ReturnDate = txtReturnDate.Text;
+            leadEntity.Adult = 0;
+            leadEntity.Child = 0;
+            leadEntity.Infant = 0;
+            leadEntity.ProductType = 0;
+            leadEntity.Budget = 0;
+            leadEntity.Notes = txtNotes.Text;
+            leadEntity.QuotedPrice = 0;
+            leadEntity.FinalPrice = 0;
+
+            int result = leadBL.CUDLead(leadEntity, 'D');
+            if (result == 1)
+            {
+                message.Text = "Lead Details deleted Successfully!";
+                message.ForeColor = System.Drawing.Color.Green;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                GetLeadsList();
+                Clear();
+
+            }
+            else
+            {
+                message.Text = "Please try again!";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+        }
+        catch (Exception ex)
+        {
+            message.ForeColor = System.Drawing.Color.Red;
+            message.Text = "Something went wrong, please contact administrator";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         try
