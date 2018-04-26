@@ -1,0 +1,9 @@
+E:\LeadManagementSystem\BusinessEntities\bin\Debug\BusinessEntities.dll
+E:\LeadManagementSystem\BusinessEntities\bin\Debug\BusinessEntities.pdb
+E:\LeadManagementSystem\BusinessEntities\obj\Debug\BusinessEntities.dll
+E:\LeadManagementSystem\BusinessEntities\obj\Debug\BusinessEntities.pdb
+E:\LMS\BusinessEntities\bin\Debug\BusinessEntities.dll
+E:\LMS\BusinessEntities\bin\Debug\BusinessEntities.pdb
+E:\LMS\BusinessEntities\obj\Debug\BusinessEntities.csprojResolveAssemblyReference.cache
+E:\LMS\BusinessEntities\obj\Debug\BusinessEntities.dll
+E:\LMS\BusinessEntities\obj\Debug\BusinessEntities.pdb
