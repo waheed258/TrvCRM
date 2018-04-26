@@ -6,7 +6,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 */
 html, body{
 	font-family: 'Roboto', sans-serif;
-    font-size: 100%;
+    /*font-size: 100%;*/
   	overflow-x: hidden;
 	background:#FFFFFF;
 }
@@ -2519,7 +2519,7 @@ ul.nav.tabs li {
 }
 /*--forms--*/
 .graph-form{
-    padding:2em 2em;
+    padding:1em 2em;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
     -o-box-shadow: 0 1px 1px rgba(0,0,0,.05);
