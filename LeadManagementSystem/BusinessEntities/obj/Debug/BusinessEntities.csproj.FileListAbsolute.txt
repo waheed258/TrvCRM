@@ -1,0 +1,4 @@
+E:\LeadManagementSystem\BusinessEntities\bin\Debug\BusinessEntities.dll
+E:\LeadManagementSystem\BusinessEntities\bin\Debug\BusinessEntities.pdb
+E:\LeadManagementSystem\BusinessEntities\obj\Debug\BusinessEntities.dll
+E:\LeadManagementSystem\BusinessEntities\obj\Debug\BusinessEntities.pdb

@@ -1,0 +1,7 @@
+E:\LeadManagementSystem\DataLogic\bin\Debug\DataLogic.dll
+E:\LeadManagementSystem\DataLogic\bin\Debug\DataLogic.pdb
+E:\LeadManagementSystem\DataLogic\obj\Debug\DataLogic.csprojResolveAssemblyReference.cache
+E:\LeadManagementSystem\DataLogic\obj\Debug\DataLogic.dll
+E:\LeadManagementSystem\DataLogic\obj\Debug\DataLogic.pdb
+E:\LeadManagementSystem\DataLogic\bin\Debug\BusinessEntities.dll
+E:\LeadManagementSystem\DataLogic\bin\Debug\BusinessEntities.pdb
