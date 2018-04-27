@@ -87,6 +87,12 @@ namespace BusinessLogic
             return ds;
         }
 
+        public DataSet GetMailInfo()
+        {
+            DataSet ds = dataUtilities.ExecuteDataSet("GetConfig");
+            return ds;
+        }
+
         public DataSet GetSourceData()
         {
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetSourceType");
