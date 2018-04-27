@@ -191,7 +191,7 @@ a:hover { transition: all 200ms ease-in-out; }
     white-space: nowrap;
     z-index: 2;
     background-color: #021F4E;
-    font-size:0.9em;
+    font-size:1em;
     font-family: 'Roboto', sans-serif;
 	border:none;
 	    border-left: 4px solid #021F4E;
@@ -516,7 +516,7 @@ ul.dropdown-menu.two {
        padding: 0;
     min-width: 234px;
     top: 99%;
-        left: -147px;
+        left: -58px;
 }
 ul.dropdown-menu.two li a .badge {
     background: #ff5454;
@@ -1990,7 +1990,7 @@ ol.breadcrumb.m-b-0 li a:hover {
 	    color: #052963;
 }
 .breadcrumb>.active {
-    color: #777;
+    color: black;
 }
 /*--//graph--*/	
 /*--/charts--*/
@@ -2559,7 +2559,7 @@ label {
     margin-bottom: 5px;
     font-weight: 400;
     font-size: 1em;
-    color: #777;
+    color: black;
 }
 button.btn.btn-default {
     background: #00C6D7;
@@ -2680,7 +2680,7 @@ div#home {
 .table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     padding: 15px !important;
     font-size: 0.85em;
-    color: #999;
+    color: black;
     border-top: none !important;
 }
 button.close.second {

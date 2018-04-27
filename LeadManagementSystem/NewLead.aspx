@@ -28,18 +28,67 @@
                 dateFormat: 'dd-mm-yy',
                 autoclose: true
             });
+            $("#target").keyup(function () {
+                if ($("[id *=target]").val() != "") {
+                    $("[id *=ContentPlaceHolder1_gvLeadList]").children
+                    ('tbody').children('tr').each(function () {
+                        $(this).show();
+                    });
+                    $("[id *=ContentPlaceHolder1_gvLeadList]").children
+                    ('tbody').children('tr').each(function () {
+                        var match = false;
+                        $(this).children('td').each(function () {
+                            if ($(this).text().toUpperCase().indexOf($("[id *=target]").val().toUpperCase()) > -1) {
+                                match = true;
+                                return false;
+                            }
+                        });
+                        if (match) {
+                            $(this).show();
+                            $(this).children('th').show();
+                        }
+                        else {
+                            $(this).hide();
+                            $(this).children('th').show();
+                        }
+                    });
+
+
+                    $("[id *=ContentPlaceHolder1_gvLeadList]").children('tbody').
+                            children('tr').each(function (index) {
+                                if (index == 0)
+                                    $(this).show();
+                            });
+                }
+                else {
+                    $("[id *=ContentPlaceHolder1_gvLeadList]").children('tbody').
+                            children('tr').each(function () {
+                                $(this).show();
+                            });
+                }
+            });
         });
     </script>
+   
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="outter-wp">
         <!--/sub-heard-part-->
-        <div class="sub-heard-part">
-            <ol class="breadcrumb m-b-0">
-                <li><a>Consultant</a></li>
-                <li class="active">New Consultant</li>
-            </ol>
+        <div class="row">
+            <div class="col-lg-8">
+               <%-- <div class="sub-heard-part">
+                    <ol class="breadcrumb m-b-0">
+                        <li><a>Consultant</a></li>
+                        <li class="active">New Consultant</li>
+                    </ol>
+                </div>--%>
+                <asp:ImageButton ID="imgbtnAddLead" ImageUrl="~/images/add-lead.png" runat="server" OnClick="imgbtnAddLead_Click" />
+            </div>
+            <div class="col-lg-4 text-right">
+                
+            </div>
         </div>
+
         <!--/sub-heard-part-->
         <!--/forms-->
         <div class="forms-main" id="newlead" runat="server">
@@ -97,13 +146,13 @@
                     </div>
                     <div class="vali-form">
                         <div class="col-md-3">
-                            <label class="control-label">From</label>
+                            <label class="control-label">From City</label>
                             <asp:TextBox ID="txtSource" class="form-control" runat="server" placeholder="Source"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvSource" runat="server" ControlToValidate="txtSource" ForeColor="#d0582e"
                                 ErrorMessage="Please Enter Source" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-3">
-                            <label class="control-label">To</label>
+                            <label class="control-label">To City</label>
                             <asp:TextBox ID="txtDestination" class="form-control" runat="server" placeholder="Destination"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvDestination" runat="server" ControlToValidate="txtDestination" ForeColor="#d0582e"
                                 ErrorMessage="Please Enter Destination" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -167,7 +216,7 @@
                                 ErrorMessage="Please Select Product" ValidationGroup="Consultant" InitialValue="-1" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-3">
-                            <label class="control-label">Budget</label>
+                            <label class="control-label">Estimated Budget</label>
                             <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvBudget" runat="server" ControlToValidate="txtBudget" ForeColor="#d0582e"
                                 ErrorMessage="Please Enter Budget" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -178,9 +227,9 @@
                         </div>
                     </div>
                     <div class="col-md-12 form-group button-2">
-
-                        <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-primary" ValidationGroup="Consultant" Style="padding: 0.8em 1em;" OnClick="btnSubmit_Click" />
-                        <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="btn btn-primary" Style="padding: 0.8em 1em;" />
+                        <asp:ImageButton ID="ImageButton1" runat="server" OnClick="ImageButton1_Click" ImageUrl="~/images/Save.png" ValidationGroup="Consultant" Height="35px" />
+                        <asp:ImageButton ID="btnUpdate" runat="server" ImageUrl="~/images/Update.png" OnClick="btnUpdate_Click" ValidationGroup="Consultant" Height="35px" />
+                        <asp:ImageButton ID="btnReset" runat="server" OnClick="btnReset_Click" ImageUrl="~/images/Back.png" Height="35px" />
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -200,7 +249,8 @@
                         <label class="control-label">
                             Records per page</label>
                     </div>
-                    <div class="col-lg-6 form-group"></div>
+                    <div class="col-lg-6 form-group">
+                    </div>
                     <div class="col-lg-3 form-group">
                         <input id="target" type="text" class="form-control" placeholder="Text To Search" />
                     </div>
@@ -210,9 +260,9 @@
             <div class="tables">
                 <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
                     EmptyDataText="There are no data records to display." AllowPaging="true"
-                    PageSize="100" OnRowCommand="gvLeadList_RowCommand"
-                    Style="font-size: 100%;" ForeColor="Black">
-                   <%-- <PagerSettings Visible="false" />--%>
+                    PageSize="100" OnRowCommand="gvLeadList_RowCommand" OnPageIndexChanging="gvLeadList_PageIndexChanging"
+                    Style="font-size: 110%;" ForeColor="Black">
+                    <PagerStyle CssClass="pagination_grid" />
                     <Columns>
                         <asp:TemplateField HeaderText="ID" Visible="false">
                             <ItemTemplate>
@@ -234,7 +284,7 @@
                                 <asp:Label runat="server" ID="lbllsOthersInfo" Text='<%#Eval("lsOthersInfo") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                         <asp:TemplateField HeaderText="Name">
+                        <asp:TemplateField HeaderText="Client Name">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblName" Text='<%#Eval("lsFirstName") + " " +Eval("lsLastName") %>'></asp:Label>
                             </ItemTemplate>
@@ -368,9 +418,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-md-12 form-group user-form-group">
-                        <asp:Label ID="lbldeletemessage" runat="server" class="control-label" Style="color: green" />
+                        <asp:Label ID="lbldeletemessage" runat="server" class="control-label" />
                         <div class="pull-right">
-                            <asp:Button ID="btnSure" runat="server" Text="YES" CssClass="btn btn-add btn-sm" OnClick="btnSure_Click"></asp:Button>
+                            <asp:Button ID="btnSure" runat="server" Text="YES" CssClass="btn btn-add btn-sm btn-primary" OnClick="btnSure_Click"  style="margin-top:0em;"></asp:Button>
                         </div>
                     </div>
                 </div>
@@ -409,6 +459,11 @@
     <script type="text/javascript">
         function openModal() {
             $('#myModal').modal('show');
+        }
+    </script>
+    <script type="text/javascript">
+        function openDeleteModal() {
+            $('#delete').modal('show');
         }
     </script>
 </asp:Content>

@@ -26,6 +26,7 @@ public partial class NewLead : System.Web.UI.Page
                 others.Visible = false;
                 GetLeadsList();
                 newlead.Visible = false;
+                btnUpdate.Visible = false;
             }
         }
         catch { }
@@ -98,6 +99,11 @@ public partial class NewLead : System.Web.UI.Page
                 ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
                 if (e.CommandName == "EditLead")
                 {
+                    newlead.Visible = true;
+                    LeadList.Visible = false;
+                    imgbtnAddLead.Visible = false;
+                    btnUpdate.Visible = true;
+                    ImageButton1.Visible = false;
                     GetProducts();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openEditModal();", true);
                     ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
@@ -185,7 +191,139 @@ public partial class NewLead : System.Web.UI.Page
         }
     }
 
-    protected void btnSubmit_Click(object sender, EventArgs e)
+
+    protected void ddlSource_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        if (ddlSource.SelectedValue == "10")
+        {
+            txtOthers.Text = "";
+            others.Visible = true;
+        }
+        else
+        {
+            txtOthers.Text = "";
+            others.Visible = false;
+        }
+    }
+    private void Clear()
+    {
+        txtFirstName.Text = "";
+        txtLastName.Text = "";
+        txtEmail.Text = "";
+        txtMobile.Text = "";
+        txtSource.Text = "";
+        txtDestination.Text = "";
+        txtDepart.Text = "";
+        txtReturnDate.Text = "";
+        ddlAdults.SelectedValue = "1";
+        ddlChild.SelectedValue = "0";
+        ddlInfant.SelectedValue = "0";
+        ddlPackage.SelectedValue = "-1";
+        txtBudget.Text = "";
+        txtNotes.Text = "";
+    }
+    protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvLeadList.PageIndex = e.NewPageIndex;
+        GetLeadsList();
+    }
+    protected void imgbtnAddLead_Click(object sender, ImageClickEventArgs e)
+    {
+        newlead.Visible = true;
+        LeadList.Visible = false;
+        imgbtnAddLead.Visible = false;
+        btnUpdate.Visible = false;
+        ImageButton1.Visible = true;
+    }
+    protected void btnReset_Click(object sender, EventArgs e)
+    {
+        newlead.Visible = false;
+        LeadList.Visible = true;
+        imgbtnAddLead.Visible = true;
+    }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int a = Convert.ToInt32(ddlAdults.SelectedValue);
+            int c = Convert.ToInt32(ddlChild.SelectedValue);
+            int i = Convert.ToInt32(ddlInfant.SelectedValue);
+            j = a + c + i;
+            if (i <= a)
+            {
+                if (a == 9)
+                {
+                    if (ddlChild.SelectedIndex != 0 || ddlInfant.SelectedIndex != 0)
+                        message.ForeColor = System.Drawing.Color.Red;
+                    message.Text = "No of Pax should not exceed 9";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                }
+                else
+                {
+                    if (j > 9)
+                    {
+                        message.Text = "No of Pax should not exceed 9";
+                        message.ForeColor = System.Drawing.Color.Red;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                    }
+                    else
+                    {
+                        leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+                        leadEntity.SourceID = Convert.ToInt32(ddlSource.SelectedValue);
+                        leadEntity.SourceRef = ddlSource.SelectedItem.Text;
+                        leadEntity.Others = txtOthers.Text;
+                        leadEntity.FirstName = txtFirstName.Text;
+                        leadEntity.LastName = txtLastName.Text;
+                        leadEntity.Mobile = txtMobile.Text;
+                        leadEntity.Email = txtEmail.Text;
+                        leadEntity.OriginName = txtSource.Text;
+                        leadEntity.DestinationName = txtDestination.Text;
+                        leadEntity.DepartureDate = txtDepart.Text;
+                        leadEntity.ReturnDate = txtReturnDate.Text;
+                        leadEntity.Adult = a;
+                        leadEntity.Child = c;
+                        leadEntity.Infant = i;
+                        leadEntity.ProductType = Convert.ToInt32(ddlPackage.SelectedValue);
+                        leadEntity.Budget = Convert.ToDecimal(txtBudget.Text);
+                        leadEntity.Notes = txtNotes.Text;
+                        leadEntity.QuotedPrice = 0;
+                        leadEntity.FinalPrice = 0;
+                        int result = leadBL.CUDLead(leadEntity, 'U');
+                        if (result == 1)
+                        {
+                            message.Text = "Lead Details updated Successfully!";
+                            message.ForeColor = System.Drawing.Color.Green;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                            LeadList.Visible = true;
+                            newlead.Visible = false;
+                            GetLeadsList();
+                            Clear();
+
+                        }
+                        else
+                        {
+                            message.Text = "Please try again!";
+                            message.ForeColor = System.Drawing.Color.Red;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                message.Text = "No of infants should not exceed adults";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
     {
         try
         {
@@ -238,6 +376,9 @@ public partial class NewLead : System.Web.UI.Page
                             message.ForeColor = System.Drawing.Color.Green;
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                             Clear();
+                            LeadList.Visible = true;
+                            newlead.Visible = false;
+                            imgbtnAddLead.Visible = true;
 
                         }
                         else
@@ -262,35 +403,5 @@ public partial class NewLead : System.Web.UI.Page
             message.ForeColor = System.Drawing.Color.Red;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
-    }
-    protected void ddlSource_SelectedIndexChanged1(object sender, EventArgs e)
-    {
-        if (ddlSource.SelectedValue == "10")
-        {
-            txtOthers.Text = "";
-            others.Visible = true;
-        }
-        else
-        {
-            txtOthers.Text = "";
-            others.Visible = false;
-        }
-    }
-    private void Clear()
-    {
-        txtFirstName.Text = "";
-        txtLastName.Text = "";
-        txtEmail.Text = "";
-        txtMobile.Text = "";
-        txtSource.Text = "";
-        txtDestination.Text = "";
-        txtDepart.Text = "";
-        txtReturnDate.Text = "";
-        ddlAdults.SelectedValue = "1";
-        ddlChild.SelectedValue = "0";
-        ddlInfant.SelectedValue = "0";
-        ddlPackage.SelectedValue = "-1";
-        txtBudget.Text = "";
-        txtNotes.Text = "";
     }
 }

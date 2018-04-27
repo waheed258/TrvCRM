@@ -4,7 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <!--custom-widgets-->
-    <div class="custom-widgets">
+    <div class="custom-widgets" style="margin-top: 25px;">
         <div class="row-one">
             <div class="col-md-3 widget">
                 <div class="stats-left ">
