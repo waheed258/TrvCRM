@@ -41,6 +41,14 @@ public partial class NewLead : System.Web.UI.Page
         {
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = leadBL.GetLeadsList(0);
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                search.Visible = true;
+            }
+            else
+            {
+                search.Visible = false;
+            }
             gvLeadList.DataSource = dataset;
             gvLeadList.DataBind();
         }
@@ -62,7 +70,7 @@ public partial class NewLead : System.Web.UI.Page
             ddlSource.DataBind();
             ddlSource.Items.Insert(0, new ListItem("--Select Source --", "-1"));
         }
-        catch (Exception ex)
+        catch
         {
             message.Text = "Something went wrong. Please contact administrator!";
             message.ForeColor = System.Drawing.Color.Red;
@@ -221,6 +229,7 @@ public partial class NewLead : System.Web.UI.Page
         ddlPackage.SelectedValue = "-1";
         txtBudget.Text = "";
         txtNotes.Text = "";
+        ddlSource.SelectedValue = "-1";
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -272,6 +281,8 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.SourceID = Convert.ToInt32(ddlSource.SelectedValue);
                         leadEntity.SourceRef = ddlSource.SelectedItem.Text;
                         leadEntity.Others = txtOthers.Text;
+                        leadEntity.AssignedTo = 0;
+                        leadEntity.AssignedBy = 0;
                         leadEntity.FirstName = txtFirstName.Text;
                         leadEntity.LastName = txtLastName.Text;
                         leadEntity.Mobile = txtMobile.Text;
@@ -288,6 +299,9 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.Notes = txtNotes.Text;
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
+                        leadEntity.UpdatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
+                        leadEntity.LeadStatus = 6;
+                        leadEntity.CreatedBy = 0;
                         int result = leadBL.CUDLead(leadEntity, 'U');
                         if (result == 1)
                         {
@@ -298,6 +312,7 @@ public partial class NewLead : System.Web.UI.Page
                             newlead.Visible = false;
                             GetLeadsList();
                             Clear();
+                            imgbtnAddLead.Visible = true;
 
                         }
                         else
@@ -353,6 +368,8 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.SourceID = Convert.ToInt32(ddlSource.SelectedValue);
                         leadEntity.SourceRef = ddlSource.SelectedItem.Text;
                         leadEntity.Others = txtOthers.Text;
+                        leadEntity.AssignedTo = 0;
+                        leadEntity.AssignedBy = 0;
                         leadEntity.FirstName = txtFirstName.Text;
                         leadEntity.LastName = txtLastName.Text;
                         leadEntity.Mobile = txtMobile.Text;
@@ -369,6 +386,9 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.Notes = txtNotes.Text;
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
+                        leadEntity.UpdatedBy = 0;
+                        leadEntity.LeadStatus = 6;
+                        leadEntity.CreatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
                         {
@@ -379,6 +399,7 @@ public partial class NewLead : System.Web.UI.Page
                             LeadList.Visible = true;
                             newlead.Visible = false;
                             imgbtnAddLead.Visible = true;
+                            GetLeadsList();
 
                         }
                         else

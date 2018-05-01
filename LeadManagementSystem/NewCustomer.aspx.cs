@@ -33,6 +33,14 @@ public partial class NewCustomer : System.Web.UI.Page
         {
             gvCustomerList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = cusomerBL.GetCustomerList(0);
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                search.Visible = true;
+            }
+            else
+            {
+                search.Visible = false;
+            }
             gvCustomerList.DataSource = dataset;
             gvCustomerList.DataBind();
 

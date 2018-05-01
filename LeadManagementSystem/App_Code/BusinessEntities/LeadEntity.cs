@@ -18,6 +18,8 @@ namespace BusinessEntities
         public int LeadID { get; set; }
         public int SourceID { get; set; }
         public string SourceRef { get; set; }
+        public int? AssignedTo { get; set; }
+        public int? AssignedBy { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Mobile { get; set; }
@@ -35,7 +37,9 @@ namespace BusinessEntities
         public decimal QuotedPrice { get; set; }
         public decimal FinalPrice { get; set; }
         public int? CreatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
         public int Status { get; set; }
         public string Others { get; set; }
+        public int LeadStatus { get; set; }
     }
 }

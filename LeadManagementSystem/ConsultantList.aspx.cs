@@ -42,6 +42,14 @@ public partial class ConsultantList : System.Web.UI.Page
         try
         {
             dataset = consultantBL.GetConsultants(0);
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                search.Visible = true;
+            }
+            else
+            {
+                search.Visible = false;
+            }
             GridView1.DataSource = dataset;
             GridView1.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             GridView1.DataBind();
@@ -124,7 +132,7 @@ public partial class ConsultantList : System.Web.UI.Page
                 ViewState["ConsultantID"] = ((Label)row.FindControl("lblConsultantID")).Text.ToString();
                 if (e.CommandName == "EditConsultant")
                 {
-                   
+
 
                     imgAdd.Visible = false;
                     search.Visible = false;
@@ -133,7 +141,7 @@ public partial class ConsultantList : System.Web.UI.Page
                     btnUpdate.Visible = true;
                     btnSave.Visible = false;
                     dvRPwd.Visible = false;
-                    txtPassword.Attributes.Add("onfocus", "this.type='text';");                 
+                    txtPassword.Attributes.Add("onfocus", "this.type='text';");
 
                     GetStatus();
                     GetDesignation();
@@ -202,8 +210,8 @@ public partial class ConsultantList : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-   
-   
+
+
     protected void imgAdd_Click(object sender, ImageClickEventArgs e)
     {
         Clear();
@@ -213,7 +221,7 @@ public partial class ConsultantList : System.Web.UI.Page
         dvEdit.Visible = true;
         btnUpdate.Visible = false;
         dvRPwd.Visible = true;
-        txtPassword.Attributes.Add("onfocus", "this.type='password';");     
+        txtPassword.Attributes.Add("onfocus", "this.type='password';");
     }
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {

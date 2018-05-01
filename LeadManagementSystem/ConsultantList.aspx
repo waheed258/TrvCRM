@@ -93,23 +93,12 @@
                             OnRowCommand="GridView1_RowCommand"
                             Style="font-size: 110%;" ForeColor="Black">
                             <PagerStyle CssClass="pagination_grid" />
-                            <%--<PagerSettings Visible="false" />--%>
                             <Columns>
                                 <asp:TemplateField HeaderText="Advisor ID" Visible="false">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="lblConsultantID" Text='<%#Eval("ConsultantID") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <%-- <asp:TemplateField HeaderText="First Name" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblFirstName" Text='<%#Eval("FirstName") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Last Name" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("LastName") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>--%>
                                 <asp:TemplateField HeaderText="Name">
                                     <ItemTemplate>
                                         <asp:Label runat="server" ID="lblName" Text='<%#Eval("FirstName") + " " + Eval("LastName") %>'></asp:Label>

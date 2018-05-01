@@ -259,7 +259,7 @@
             </div>
             <div class="tables">
                 <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                    EmptyDataText="There are no data records to display." AllowPaging="true"
+                    EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
                     PageSize="100" OnRowCommand="gvLeadList_RowCommand" OnPageIndexChanging="gvLeadList_PageIndexChanging"
                     Style="font-size: 110%;" ForeColor="Black">
                     <PagerStyle CssClass="pagination_grid" />
@@ -272,6 +272,11 @@
                         <asp:TemplateField HeaderText="Source">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lbllsSourceRef" Text='<%#Eval("lsSourceRef") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Lead Created By">
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lbllsConsultantName" Text='<%#Eval("ConsultantName") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="SourceID" Visible="false">
@@ -384,7 +389,9 @@
                                 <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
                                     CommandName="EditLead" ToolTip="Edit" />
                                 <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
-                                    CommandName="DeleteLead" ToolTip="Delete" />
+                                    CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
+                                 <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
+                                    CommandName="Action" ToolTip="Actions" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

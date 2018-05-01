@@ -35,14 +35,18 @@ namespace BusinessLogic
             {
                 hashtable.Add("@lsId", 0);
                 //need to change updated by after session createds
-                hashtable.Add("@lsCreatedBy", 0);
+                hashtable.Add("@lsCreatedBy",leadEntity.CreatedBy);
+                hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
 
             }
             else
             {
                 hashtable.Add("@lsId", leadEntity.LeadID);
                 hashtable.Add("@lsCreatedBy", 0);
+                hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
             }
+            hashtable.Add("@lsAssignedTo", leadEntity.AssignedTo);
+            hashtable.Add("@lsAssignedBy", leadEntity.AssignedBy);
             hashtable.Add("@lsOthersInfo", leadEntity.Others);
             hashtable.Add("@lsSource", leadEntity.SourceID);
             hashtable.Add("@lsSourceRef", leadEntity.SourceRef);
@@ -69,6 +73,7 @@ namespace BusinessLogic
             {
                 hashtable.Add("@lsReturnDate", DBNull.Value);
             }
+            hashtable.Add("@lsLeadStatus", leadEntity.LeadStatus);
             hashtable.Add("@lsAdults", leadEntity.Adult);
             hashtable.Add("@lsChildren", leadEntity.Child);
             hashtable.Add("@lsInfants", leadEntity.Infant);

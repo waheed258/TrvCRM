@@ -20,9 +20,8 @@ public partial class EnquiryForm : System.Web.UI.Page
         try
         {
             if (!IsPostBack)
-            {               
+            {
                 GetProducts();
-                //Clear();               
             }
         }
         catch { }
@@ -39,7 +38,7 @@ public partial class EnquiryForm : System.Web.UI.Page
             ddlPackage.DataBind();
             ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
         }
-        catch (Exception ex)
+        catch
         {
             message.Text = "Something went wrong. Please contact administrator!";
             message.ForeColor = System.Drawing.Color.Red;
@@ -62,17 +61,32 @@ public partial class EnquiryForm : System.Web.UI.Page
         ddlInfant.SelectedValue = "";
         ddlPackage.SelectedValue = "-1";
         txtBudget.Text = "";
-        txtNotes.Text = "";        
+        txtNotes.Text = "";
     }
 
-  
+
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         try
         {
+            int c, i;
             int a = Convert.ToInt32(ddlAdults.SelectedValue);
-            int c = Convert.ToInt32(ddlChild.SelectedValue);
-            int i = Convert.ToInt32(ddlInfant.SelectedValue);
+            if (ddlChild.SelectedValue == "-1")
+            {
+                c = 0;
+            }
+            else
+            {
+                 c = Convert.ToInt32(ddlChild.SelectedValue);
+            }
+            if (ddlInfant.SelectedValue == "-1")
+            {
+               i = 0;
+            }
+            else
+            {
+                 i = Convert.ToInt32(ddlInfant.SelectedValue);
+            }
             j = a + c + i;
             if (i <= a)
             {
@@ -96,6 +110,8 @@ public partial class EnquiryForm : System.Web.UI.Page
                         leadEntity.SourceID = 1;
                         leadEntity.SourceRef = "Website";
                         leadEntity.Others = "";
+                        leadEntity.AssignedTo = 0;
+                        leadEntity.AssignedBy = 0;
                         leadEntity.FirstName = txtFirstName.Text;
                         leadEntity.LastName = txtLastName.Text;
                         leadEntity.Mobile = txtMobile.Text;
@@ -112,6 +128,9 @@ public partial class EnquiryForm : System.Web.UI.Page
                         leadEntity.Notes = txtNotes.Text;
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
+                        leadEntity.UpdatedBy = 0;
+                        leadEntity.LeadStatus = 6;
+                        leadEntity.CreatedBy = 2;
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
                         {
@@ -119,14 +138,14 @@ public partial class EnquiryForm : System.Web.UI.Page
                             message.ForeColor = System.Drawing.Color.Orange;
                             string clName = txtFirstName.Text + " " + txtLastName.Text;
 
-                            SendMail(clName, txtEmail.Text, txtMobile.Text);
+                            SendMail(clName, txtEmail.Text, txtMobile.Text, ddlPackage.SelectedItem.Text);
 
-                            Clear();    
+                            Clear();
                         }
                         else
                         {
                             message.Text = "Please try again!";
-                            message.ForeColor = System.Drawing.Color.Red;                            
+                            message.ForeColor = System.Drawing.Color.Red;
                         }
                     }
                 }
@@ -134,13 +153,13 @@ public partial class EnquiryForm : System.Web.UI.Page
             else
             {
                 message.Text = "No of infants should not exceed adults";
-                message.ForeColor = System.Drawing.Color.Red;               
+                message.ForeColor = System.Drawing.Color.Red;
             }
         }
         catch
         {
             message.Text = "Something went wrong. Please try again!";
-            message.ForeColor = System.Drawing.Color.Red;           
+            message.ForeColor = System.Drawing.Color.Red;
         }
     }
     protected void btnClear_Click(object sender, EventArgs e)
@@ -148,45 +167,79 @@ public partial class EnquiryForm : System.Web.UI.Page
         Clear();
     }
 
-    public void SendMail(string clName,string clEmail,string clPhone)
+    public void SendMail(string clName, string clEmail, string clPhone, string clPackageName) 
     {
-        DataSet ds = leadBL.GetMailInfo();
-        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+        try
         {
-            string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-            int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-            //string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
-            string MailFrom = "active8crm.sa@gmail.com";
-            string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
-            //string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
-            string FromPassword = "Active@321#";
-            string MailTo = "ramesh.palaparti@dinoosys.com";
-            string DisplayNameTo = "";
-            string MailCc = "";
-            string DisplayNameCc = "";
-            string MailBcc = "";
-            string Subject = "New website enquiry submitted";
-            string MailText;
-            string Attachment = "";
+             DataSet ds = leadBL.GetMailInfo();
+             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+             {
+                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                 int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                 //string MailFrom = "active8crm.sa@gmail.com";
+                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                // string FromPassword = "Active@321#";
+                 string MailTo = "ramesh.palaparti@dinoosys.com";
+                 string DisplayNameTo = string.Empty;
+                 string MailCc = string.Empty;
+                 string DisplayNameCc = string.Empty;
+                 string MailBcc = string.Empty;
+                 string Subject = string.Empty;
+                 string MailText = string.Empty;
+                 string Attachment = string.Empty;
 
-            MailCc = "";
+                 try
+                 {
+                     Subject = "New website enquiry submitted";
+                     MailCc = "";
 
-            MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";
-            MailText += "<table border='1'><tbody>";
-            MailText += "<tr><td>Name</td><td>" + clName + "</td></tr>";
-            MailText += "<tr><td>Email</td><td>" + clEmail + "</td></tr>";
-            MailText += "<tr><td>Phone</td><td>" + clPhone + "</td></tr>";
-            MailText += "<tr><td>Enquiry URL</td><td>URL</td></tr>";
-            MailText += "<tr><td>View Lead</td><td>URL</td></tr>";
-            MailText += "";
-            MailText += "</tbody></table>";
+                     MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";
+                     MailText += "<table border='1'><tbody>";
+                     MailText += "<tr><td>Name</td><td>" + clName + "</td></tr>";
+                     MailText += "<tr><td>Email</td><td>" + clEmail + "</td></tr>";
+                     MailText += "<tr><td>Phone</td><td>" + clPhone + "</td></tr>";
+                     MailText += "<tr><td>Enquiry URL</td><td>URL</td></tr>";
+                     MailText += "<tr><td>View Lead</td><td>URL</td></tr>";
+                     MailText += "";
+                     MailText += "</tbody></table>";
 
-                
-                
-                //<br/><br/> Thank you, <br/><br/> Activ8 System Admin.<br/>";
+                     CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
-            CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                 }
+                 catch
+                 { }
+
+                 try
+                 {
+                     Subject = "Thank You for Inquiring with Serendipity Tours !!";
+                     MailTo = clEmail;
+                     MailCc = "";
+
+                     MailText = "<b> Dear " + clName + ", </b><br/><br/>";
+
+                     MailText += "Trust you are well. <br/>";
+                     MailText += "Thank you for your query. <br/><br/>";
+
+                     MailText += "Query / Package :" + clPackageName + "<br/><br/>";
+                     MailText += "We will get back to you at the earliest. <br/><br/>";
+
+                     MailText += "Have Serendipitous Day! <br/><br/><br/>";
+
+                     MailText += "Kind Regards <br/><br/>";
+                     MailText += "Serendipity Team";
+
+                     CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+
+
+                 }
+                 catch
+                 { }
+             }
         }
+        catch 
+        {  }
     }
 
 }

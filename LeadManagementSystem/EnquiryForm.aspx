@@ -127,17 +127,19 @@
                 <div class="field-agileinfo-spc form-w3-agile-text11">
 
                     <asp:DropDownList ID="ddlAdults" class="form-control" runat="server">
-                        <asp:ListItem Value="">Adult(12+ Yrs)</asp:ListItem>
+                        <asp:ListItem Value="-1">Adult(12+ Yrs)</asp:ListItem>
                         <asp:ListItem Value="1">1</asp:ListItem>
                         <asp:ListItem Value="2">2</asp:ListItem>
                         <asp:ListItem Value="3">3</asp:ListItem>
                         <asp:ListItem Value="4">4</asp:ListItem>
                         <asp:ListItem Value="5">5</asp:ListItem>
                     </asp:DropDownList>
+                     <asp:RequiredFieldValidator ID="rfvAdults" runat="server" ControlToValidate="ddlAdults" ForeColor="#d0582e"
+                        ErrorMessage="Please select No.Of Adults" ValidationGroup="Consultant" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
                 </div>
                 <div class="field-agileinfo-spc form-w3-agile-text22">
                     <asp:DropDownList ID="ddlChild" class="form-control" runat="server">
-                        <asp:ListItem Value="">Children(2-11 Yrs)</asp:ListItem>
+                        <asp:ListItem Value="-1">Children(2-11 Yrs)</asp:ListItem>
                         <asp:ListItem Value="0">0</asp:ListItem>
                         <asp:ListItem Value="1">1</asp:ListItem>
                         <asp:ListItem Value="2">2</asp:ListItem>
@@ -150,7 +152,7 @@
                 </div>
                 <div class="field-agileinfo-spc form-w3-agile-text33">
                     <asp:DropDownList ID="ddlInfant" class="form-control" runat="server">
-                        <asp:ListItem Value="">Infant(under 2Yrs)</asp:ListItem>
+                        <asp:ListItem Value="-1">Infant(under 2Yrs)</asp:ListItem>
                         <asp:ListItem Value="0">0</asp:ListItem>
                         <asp:ListItem Value="1">1</asp:ListItem>
                         <asp:ListItem Value="2">2</asp:ListItem>
