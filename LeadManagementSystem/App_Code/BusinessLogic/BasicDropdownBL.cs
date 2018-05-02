@@ -38,5 +38,10 @@ namespace BusinessLogic
             ds = dataUtilities.ExecuteDataSet("GetAccountType");
             return ds;
         }
+        public DataSet GetAssigLeadOptions()
+        {
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAssigLeadOptions");
+            return ds;
+        }
     }
 }

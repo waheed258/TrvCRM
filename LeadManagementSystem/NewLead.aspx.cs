@@ -13,6 +13,7 @@ public partial class NewLead : System.Web.UI.Page
     LeadBL leadBL = new LeadBL();
     LeadEntity leadEntity = new LeadEntity();
     CommanClass _objComman = new CommanClass();
+    ConsultantBL consultantBL = new ConsultantBL();
     int j = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -27,6 +28,9 @@ public partial class NewLead : System.Web.UI.Page
                 GetLeadsList();
                 newlead.Visible = false;
                 btnUpdate.Visible = false;
+                _objComman.GetAssigLeadOptions(ddlAssignLead);
+                consultant.Visible = false;
+                actions.Visible = false;
             }
         }
         catch { }
@@ -77,6 +81,26 @@ public partial class NewLead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
+
+    protected void GetConsultants()
+    {
+        try
+        {
+            dataset = consultantBL.GetConsultants(0);
+            ddlConsultants.DataSource = dataset;
+            ddlConsultants.DataTextField = "Name";
+            ddlConsultants.DataValueField = "ConsultantID";
+            ddlConsultants.DataBind();
+            ddlConsultants.Items.Insert(0, new ListItem("--Select Consultant --", "-1"));
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
     protected void GetProducts()
     {
         try
@@ -139,6 +163,13 @@ public partial class NewLead : System.Web.UI.Page
                 {
                     lbldeletemessage.Text = "Are you sure, you want to delete Consultant Details?";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
+                }
+                else if (e.CommandName == "Action")
+                {
+                    actions.Visible = true;
+                    LeadList.Visible = false;
+                    newlead.Visible = false;
+                    imgbtnAddLead.Visible = false;
                 }
             }
         }
@@ -230,6 +261,8 @@ public partial class NewLead : System.Web.UI.Page
         txtBudget.Text = "";
         txtNotes.Text = "";
         ddlSource.SelectedValue = "-1";
+        ddlAssignLead.SelectedValue = "-1";
+        ddlConsultants.SelectedValue = "-1";
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -424,5 +457,61 @@ public partial class NewLead : System.Web.UI.Page
             message.ForeColor = System.Drawing.Color.Red;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
+    }
+    protected void ddlAssignLead_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlAssignLead.SelectedValue == "1")
+        {
+            consultant.Visible = true;
+            GetConsultants();
+        }
+        else
+        {
+            consultant.Visible = false;
+        }
+    }
+    protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
+    {
+        leadEntity.AssignedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
+        if (ddlAssignLead.SelectedValue == "1")
+        {
+            leadEntity.AssignedTo = Convert.ToInt32(ddlConsultants.SelectedValue);
+        }
+        else if (ddlAssignLead.SelectedValue == "2")
+        {
+            leadEntity.AssignedTo = Convert.ToInt32(Session["ConsultantID"].ToString());
+        }
+        else {
+            leadEntity.AssignedTo = 0;
+        }
+        leadEntity.LeadStatus = Convert.ToInt32(ddlAssignLead.SelectedValue);
+        leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+        int result = leadBL.LeadAction(leadEntity);
+        if (result == 1)
+        {
+            message.Text = "Lead status changed Successfully!";
+            message.ForeColor = System.Drawing.Color.Green;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            Clear();
+            LeadList.Visible = true;
+            newlead.Visible = false;
+            actions.Visible = false;
+            imgbtnAddLead.Visible = true;
+            GetLeadsList();
+
+        }
+        else
+        {
+            message.Text = "Please try again!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+    protected void imgbtnBackAssign_Click(object sender, ImageClickEventArgs e)
+    {
+        newlead.Visible = false;
+        LeadList.Visible = true;
+        imgbtnAddLead.Visible = true;
+        actions.Visible = false;
     }
 }

@@ -51,6 +51,23 @@ namespace BusinessLogic
 
             }
         }
+
+        public void GetAssigLeadOptions(DropDownList ddlAssignLeadOptions)
+        {
+            try
+            {
+                ds = _objBasicDropdownBL.GetAssigLeadOptions();
+                ddlAssignLeadOptions.DataSource = ds;
+                ddlAssignLeadOptions.DataTextField = "LeadStatus";
+                ddlAssignLeadOptions.DataValueField = "LeadStatusID";
+                ddlAssignLeadOptions.DataBind();
+                ddlAssignLeadOptions.Items.Insert(0, new ListItem("--Select Option--", "-1"));
+            }
+            catch
+            {
+
+            }
+        }
         public void GetCity(DropDownList ddlCity)
         {
             try

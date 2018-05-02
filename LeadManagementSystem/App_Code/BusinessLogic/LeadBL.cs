@@ -86,6 +86,20 @@ namespace BusinessLogic
             int result = dataUtilities.ExecuteNonQuery("usp_CUDLead", hashtable);
             return result;
         }
+
+
+        public int LeadAction(LeadEntity leadEntity)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@AssignedTo", leadEntity.AssignedTo);
+            hashtable.Add("@AssignedBy", leadEntity.AssignedBy);
+            hashtable.Add("@LeadStatus", leadEntity.LeadStatus);
+            hashtable.Add("@lsId", leadEntity.LeadID);
+
+            int result = dataUtilities.ExecuteNonQuery("usp_LeadActions", hashtable);
+            return result;
+        }
+
         public DataSet GetProduct()
         {
             DataSet ds = dataUtilities.ExecuteDataSet("GetProduct");
@@ -103,5 +117,6 @@ namespace BusinessLogic
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetSourceType");
             return ds;
         }
+       
     }
 }

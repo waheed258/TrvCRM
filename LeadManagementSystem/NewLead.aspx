@@ -69,14 +69,14 @@
             });
         });
     </script>
-   
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="outter-wp">
         <!--/sub-heard-part-->
         <div class="row">
             <div class="col-lg-8">
-               <%-- <div class="sub-heard-part">
+                <%-- <div class="sub-heard-part">
                     <ol class="breadcrumb m-b-0">
                         <li><a>Consultant</a></li>
                         <li class="active">New Consultant</li>
@@ -85,7 +85,6 @@
                 <asp:ImageButton ID="imgbtnAddLead" ImageUrl="~/images/add-lead.png" runat="server" OnClick="imgbtnAddLead_Click" />
             </div>
             <div class="col-lg-4 text-right">
-                
             </div>
         </div>
 
@@ -110,8 +109,6 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-
-
                     <div class="vali-form">
                         <div class="col-md-3">
                             <label class="control-label">First Name</label>
@@ -237,6 +234,38 @@
         </div>
 
 
+        <div class="forms-main" id="actions" runat="server">
+            <div class="graph-form">
+                <div class="validation-form">
+                    <div class="vali-form">
+                        <div class="col-md-3">
+                            <label class="control-label">Assign Lead</label>
+                            <asp:DropDownList ID="ddlAssignLead" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlAssignLead_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="rfvAssignLead" runat="server" ControlToValidate="ddlAssignLead" ForeColor="#d0582e"
+                                ErrorMessage="Please select one Assign Option" ValidationGroup="Assign" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-3" id="consultant" runat="server">
+                            <label class="control-label">Consultant</label>
+                            <asp:DropDownList ID="ddlConsultants" runat="server" Style="padding: 0px" CssClass="form-control">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="rfvddlConsultants" runat="server" ControlToValidate="ddlConsultants" ForeColor="#d0582e"
+                                ErrorMessage="Please select Consultant" ValidationGroup="Assign" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="vali-form" style="margin-top:20px;">
+                        <div class="col-md-3">
+                            <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" OnClick="imgbtnSubmitAssign_Click" ImageUrl="~/images/Save.png" ValidationGroup="Assign" Height="35px" />
+                            <asp:ImageButton ID="imgbtnBackAssign" runat="server" OnClick="imgbtnBackAssign_Click" ImageUrl="~/images/Back.png" Height="35px" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="graph" id="LeadList" runat="server">
             <div class="row" id="search" runat="server">
                 <div class="col-lg-12">
@@ -274,7 +303,7 @@
                                 <asp:Label runat="server" ID="lbllsSourceRef" Text='<%#Eval("lsSourceRef") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Lead Created By">
+                        <asp:TemplateField HeaderText="Created By">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lbllsConsultantName" Text='<%#Eval("ConsultantName") %>'></asp:Label>
                             </ItemTemplate>
@@ -304,16 +333,19 @@
                                 <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("lsLastName") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Mobile">
+                        <asp:TemplateField HeaderText="Mobile" Visible="false">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblMobile" Text='<%#Eval("lsPhone") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Email ID">
+                        <asp:TemplateField HeaderText="Email ID" Visible="false">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblEmailID" Text='<%#Eval("lsEmailId") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
+
+                        
+
                         <asp:TemplateField HeaderText="Product">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblProdType" Text='<%#Eval("ProductType") %>'></asp:Label>
@@ -324,12 +356,12 @@
                                 <asp:Label runat="server" ID="lblProdID" Text='<%#Eval("lsProdType") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="From">
+                        <asp:TemplateField HeaderText="Source">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblOrigin" Text='<%#Eval("lsOriginName") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="To">
+                        <asp:TemplateField HeaderText="Destination">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="lblDestination" Text='<%#Eval("lsDestinationName") %>'></asp:Label>
                             </ItemTemplate>
@@ -384,13 +416,30 @@
                                 <asp:Label runat="server" ID="lblCreatedBy" Text='<%#Eval("lsCreatedBy") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Assigned To">
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblAssignedto" Text='<%#Eval("AssignedTo").ToString() == "" ? "Not assigned to anyone" : Eval("AssignedTo") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Assigned By">
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblAssignedby" Text='<%#Eval("AssignedBy").ToString() == "" ? "Not assigned by anyone" : Eval("AssignedBy") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Status">
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Action">
                             <ItemTemplate>
                                 <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
                                     CommandName="EditLead" ToolTip="Edit" />
                                 <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
                                     CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
-                                 <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
+                                <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
                                     CommandName="Action" ToolTip="Actions" />
                             </ItemTemplate>
                         </asp:TemplateField>
@@ -427,7 +476,7 @@
                     <div class="col-md-12 form-group user-form-group">
                         <asp:Label ID="lbldeletemessage" runat="server" class="control-label" />
                         <div class="pull-right">
-                            <asp:Button ID="btnSure" runat="server" Text="YES" CssClass="btn btn-add btn-sm btn-primary" OnClick="btnSure_Click"  style="margin-top:0em;"></asp:Button>
+                            <asp:Button ID="btnSure" runat="server" Text="YES" CssClass="btn btn-add btn-sm btn-primary" OnClick="btnSure_Click" Style="margin-top: 0em;"></asp:Button>
                         </div>
                     </div>
                 </div>

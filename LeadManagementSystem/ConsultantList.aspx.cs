@@ -257,6 +257,7 @@ public partial class ConsultantList : System.Web.UI.Page
                 btnUpdate.Visible = false;
                 btnSave.Visible = true;
                 dvRPwd.Visible = true;
+                GetConsultants();
 
             }
             else
