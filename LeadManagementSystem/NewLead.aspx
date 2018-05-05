@@ -485,7 +485,9 @@
                                     <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
                                         CommandName="Action" ToolTip="Actions" />
                                     <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
-                                        CommandName="Quote" ToolTip="Create Quote" />
+                                        CommandName="Quote" ToolTip="Generate Quote" />
+                                     <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
+                                        CommandName="PDF" ToolTip="Download Quote" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

@@ -225,6 +225,12 @@ public partial class NewLead : System.Web.UI.Page
                     string s = "window.open('" + url + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
+                else if (e.CommandName == "PDF") {
+                    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
+                    string url = "QuotePDF.aspx?id=" + Server.UrlEncode(encryptedparamleadid);
+                    string s = "window.open('" + url + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                }
             }
         }
         catch
@@ -492,6 +498,9 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.FinalPrice = 0;
                         leadEntity.UpdatedBy = 0;
                         leadEntity.LeadStatus = 6;
+                        leadEntity.FollowupDate = txtFollowUp.Text;
+                        leadEntity.FollowupDesc = txtDescription.Text;
+                        leadEntity.LeadDescription = txtDescription.Text;
                         leadEntity.CreatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
