@@ -218,14 +218,15 @@ public partial class NewLead : System.Web.UI.Page
                 {
                     string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
                     string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
-                    string source = encryptdecrypt.Encrypt(( ((Label)row.FindControl("lblOrigin")).Text.ToString()));
+                    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
                     string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
                     string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
                     string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product);
                     string s = "window.open('" + url + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
-                else if (e.CommandName == "PDF") {
+                else if (e.CommandName == "PDF")
+                {
                     string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
                     string url = "QuotePDF.aspx?id=" + Server.UrlEncode(encryptedparamleadid);
                     string s = "window.open('" + url + "', '_blank');";
@@ -628,6 +629,18 @@ public partial class NewLead : System.Web.UI.Page
         {
             txtDescription.Text = "";
             desc.Visible = true;
+        }
+    }
+    protected void gvLeadList_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            string quote = ((Label)e.Row.FindControl("lblQuote")).Text.ToString();
+            if (quote != "0")
+            {
+                ImageButton controlButton = e.Row.FindControl("imgbtnPDF") as ImageButton;
+                controlButton.Visible = true;
+            }
         }
     }
 }

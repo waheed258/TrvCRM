@@ -322,10 +322,15 @@
                 <div class="table table-responsive">
                     <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
                         EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
-                        PageSize="100" OnRowCommand="gvLeadList_RowCommand" OnPageIndexChanging="gvLeadList_PageIndexChanging"
+                        PageSize="100" OnRowCommand="gvLeadList_RowCommand" OnPageIndexChanging="gvLeadList_PageIndexChanging" OnRowDataBound="gvLeadList_RowDataBound"
                         Style="font-size: 110%;" ForeColor="Black">
                         <PagerStyle CssClass="pagination_grid" />
                         <Columns>
+                             <asp:TemplateField HeaderText="Quote" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblQuote" Text='<%#Eval("Quote") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="ID" Visible="false">
                                 <ItemTemplate>
                                     <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>
@@ -487,7 +492,7 @@
                                     <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                         CommandName="Quote" ToolTip="Generate Quote" />
                                      <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
-                                        CommandName="PDF" ToolTip="Download Quote" />
+                                        CommandName="PDF" ToolTip="Download Quote" Visible="false" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
