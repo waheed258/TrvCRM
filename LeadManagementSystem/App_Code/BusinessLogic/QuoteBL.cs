@@ -21,6 +21,14 @@ public class QuoteBL
         return ds;
     }
 
+    public DataSet GetQuotePDFData(int leadID)
+    {
+        Hashtable hashtable = new Hashtable();
+        hashtable.Add("@leadID", leadID);
+        DataSet ds = dataUtilities.ExecuteDataSet("usp_GenerateQuotePDF", hashtable);
+        return ds;
+    }
+
     public DataSet GetIncudeExcludes()
     {
         DataSet ds = dataUtilities.ExecuteDataSet("usp_GetIncules_Excludes");
@@ -46,6 +54,8 @@ public class QuoteBL
         hashtable.Add("@NoOfChildren", quoteEntity.NoOfChildren);
         hashtable.Add("@TravelInsurance", quoteEntity.TravelInsurance);
         hashtable.Add("@ConsultantName", quoteEntity.ConsultantName);
+        hashtable.Add("@AdultTotal", quoteEntity.AdultTotal);
+        hashtable.Add("@ChildTotal", quoteEntity.ChildTotal);
         hashtable.Add("@LeadID", quoteEntity.LeadID);
         if (quoteEntity.QuoteDate != "")
         {

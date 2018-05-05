@@ -24,6 +24,9 @@ public class QuoteEntity
     public int NoOfChildren { get; set; }
     public string TravelInsurance { get; set; }
     public string ConsultantName { get; set; }
+    public string AdultTotal { get; set; }
+    public string ChildTotal { get; set; }
+
     public int LeadID { get; set; }
 
 }
