@@ -41,5 +41,10 @@ namespace BusinessEntities
         public int Status { get; set; }
         public string Others { get; set; }
         public int LeadStatus { get; set; }
+        public string LeadDescription { get; set; }
+
+        public int FollowupID { get; set; }       
+        public string FollowupDate { get; set; }
+        public string FollowupDesc { get; set; }    
     }
 }

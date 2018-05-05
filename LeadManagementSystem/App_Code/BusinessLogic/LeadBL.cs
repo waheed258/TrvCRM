@@ -34,7 +34,6 @@ namespace BusinessLogic
             if (Operation == 'I')
             {
                 hashtable.Add("@lsId", 0);
-                //need to change updated by after session createds
                 hashtable.Add("@lsCreatedBy",leadEntity.CreatedBy);
                 hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
 
@@ -44,7 +43,16 @@ namespace BusinessLogic
                 hashtable.Add("@lsId", leadEntity.LeadID);
                 hashtable.Add("@lsCreatedBy", 0);
                 hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
+                
             }
+            if (leadEntity.FollowupDate != "")
+            {
+                hashtable.Add("@FollowupDate", DateTime.ParseExact(leadEntity.FollowupDate, "dd-MM-yyyy", null));
+            }
+            else {
+                hashtable.Add("@FollowupDate", DBNull.Value);
+            }
+            hashtable.Add("@FollowupDesc", leadEntity.FollowupDesc);
             hashtable.Add("@lsAssignedTo", leadEntity.AssignedTo);
             hashtable.Add("@lsAssignedBy", leadEntity.AssignedBy);
             hashtable.Add("@lsOthersInfo", leadEntity.Others);
@@ -57,6 +65,7 @@ namespace BusinessLogic
             hashtable.Add("@lsProdType", leadEntity.ProductType);
             hashtable.Add("@lsOriginName", leadEntity.OriginName);
             hashtable.Add("@lsDestinationName", leadEntity.DestinationName);
+            hashtable.Add("@lsLeadDesc", leadEntity.LeadDescription);
             if (leadEntity.DepartureDate != "")
             {
                 hashtable.Add("@lsDepartureDate", DateTime.ParseExact(leadEntity.DepartureDate, "dd-MM-yyyy", null));
@@ -112,9 +121,19 @@ namespace BusinessLogic
             return ds;
         }
 
-        public DataSet GetSourceData()
+        public DataSet GetSourceData(string Operation)
         {
-            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetSourceType");
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@Operation", Operation);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetSourceType", hashtable);
+            return ds;
+        }
+
+        public DataSet GetFollowupCount(int LeadID)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@LeadID", LeadID);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetFollowupCount", hashtable);
             return ds;
         }
        

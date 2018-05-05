@@ -86,6 +86,27 @@
             <div class="graph-form">
                 <div class="validation-form">
                     <div class="vali-form">
+                        <h5>Lead Details</h5>
+                        <div class="graph-form">                            
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="control-label">Client Name</label>
+                                    <asp:Label ID="lblClientName" class="form-control" runat="server"></asp:Label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label">Product</label>
+                                    <asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label">Source</label>
+                                    <asp:Label ID="lblSource" class="form-control" runat="server"></asp:Label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label">Destination</label>
+                                    <asp:Label ID="lblDestination" class="form-control" runat="server"></asp:Label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <label class="control-label">Date</label>
@@ -167,7 +188,7 @@
                                     <asp:ListItem Value="10">10</asp:ListItem>
                                 </asp:DropDownList>
                                 <%--<asp:TextBox ID="txtChildQty" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>--%>
-                                  <asp:RequiredFieldValidator ID="rfvChildPersons" runat="server" ControlToValidate="ddlChildPersons" ForeColor="#d0582e"
+                                <asp:RequiredFieldValidator ID="rfvChildPersons" runat="server" ControlToValidate="ddlChildPersons" ForeColor="#d0582e"
                                     ErrorMessage="Please Select No Of Childrens" ValidationGroup="Quote" Display="Dynamic" InitialValue="0"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-md-3" id="dvChildTotalPrice" runat="server" visible="false">
@@ -181,45 +202,45 @@
                         <label class="control-label">Flight Details</label>
                         <%--<CKEditor:CKEditorControl ID="txtFlightDetails" BasePath="/ckeditor/" runat="server"></CKEditor:CKEditorControl>--%>
                         <asp:TextBox ID="txtFlightDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
-                         <asp:RequiredFieldValidator ID="rvfFlight" runat="server" ControlToValidate="txtFlightDetails" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Flight Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rvfFlight" runat="server" ControlToValidate="txtFlightDetails" ForeColor="#d0582e"
+                            ErrorMessage="Please Enter Flight Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="vali-form">
                         <label class="control-label">Car Hire</label>
                         <asp:TextBox ID="txtCarHireDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rvfCarHire" runat="server" ControlToValidate="txtCarHireDetails" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Car Hire Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                            ErrorMessage="Please Enter Car Hire Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="vali-form">
                         <label class="control-label">Hotel Info</label>
                         <asp:TextBox ID="txtHotelInfo" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rvfHotelInfo" runat="server" ControlToValidate="txtHotelInfo" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Hotel Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                            ErrorMessage="Please Enter Hotel Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="vali-form">
                         <label class="control-label">Itinerary</label>
                         <asp:TextBox ID="txtItinerary" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfvItenerary" runat="server" ControlToValidate="txtItinerary" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Itenerary Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                            ErrorMessage="Please Enter Itenerary Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
-                     <div class="vali-form">
+                    <div class="vali-form">
                         <label class="control-label">Includes</label>
                         <asp:TextBox ID="txtIncludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
-                          <asp:RequiredFieldValidator ID="rfvIncludes" runat="server" ControlToValidate="txtIncludes" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Includes" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvIncludes" runat="server" ControlToValidate="txtIncludes" ForeColor="#d0582e"
+                            ErrorMessage="Please Enter Includes" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
-                     <div class="vali-form">
+                    <div class="vali-form">
                         <label class="control-label">Excludes</label>
                         <asp:TextBox ID="txtExcludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
-                         <asp:RequiredFieldValidator ID="rfvExcludes" runat="server" ControlToValidate="txtExcludes" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Excludes" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvExcludes" runat="server" ControlToValidate="txtExcludes" ForeColor="#d0582e"
+                            ErrorMessage="Please Enter Excludes" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
 
-                     <div class="vali-form">
+                    <div class="vali-form">
                         <label class="control-label">Travel Insurance</label>
                         <asp:TextBox ID="txtTravelInsur" TextMode="MultiLine" runat="server" class="form-control" placeholder="Travel Insurance Details" MaxLength="500"></asp:TextBox>
-                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTravelInsur" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Travel Insurance Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTravelInsur" ForeColor="#d0582e"
+                            ErrorMessage="Please Enter Travel Insurance Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
 
                     </div>
                     <div class="clearfix"></div>

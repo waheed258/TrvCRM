@@ -68,6 +68,23 @@ namespace BusinessLogic
 
             }
         }
+
+
+        public void GetStatus(DropDownList ddlStatus)
+        {
+            try
+            {
+                ds = _objBasicDropdownBL.GetStatus();
+                ddlStatus.DataSource = ds;
+                ddlStatus.DataTextField = "LeadAction";
+                ddlStatus.DataValueField = "LeadActionsID";
+                ddlStatus.DataBind();                
+            }
+            catch
+            {
+
+            }
+        }
         public void GetCity(DropDownList ddlCity)
         {
             try

@@ -45,7 +45,7 @@
             });
         });
     </script>
-   
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="outter-wp">
@@ -88,84 +88,86 @@
                         </div>
                     </div>
                     <div class="row" id="dvGrid" runat="server">
-                        <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                            EmptyDataText="There are no data records to display." PageSize="2" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"
-                            OnRowCommand="GridView1_RowCommand"
-                            Style="font-size: 110%;" ForeColor="Black">
-                            <PagerStyle CssClass="pagination_grid" />
-                            <Columns>
-                                <asp:TemplateField HeaderText="Advisor ID" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblConsultantID" Text='<%#Eval("ConsultantID") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Name">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblName" Text='<%#Eval("FirstName") + " " + Eval("LastName") %>'></asp:Label>
-                                        <asp:Label runat="server" ID="lblFirstName" Text='<%#Eval("FirstName") %>' Visible="false"></asp:Label>
-                                        <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("LastName") %>' Visible="false"></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Mobile">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblMobile" Text='<%#Eval("Mobile") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Email ID">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblEmailID" Text='<%#Eval("Email") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Designation" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblDesignation" Text='<%#Eval("Designation") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Designation">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblDesignationName" Text='<%#Eval("DesignationName") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="LoginID" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblLoginID" Text='<%#Eval("LoginID") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Password" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblPwd" Text='<%#Eval("Password") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Branch" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblBranch" Text='<%#Eval("Branch") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="BranchName" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblBranchName" Text='<%#Eval("BranchName") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Status" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblAStatus" Text='<%#Eval("Status") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Status">
-                                    <ItemTemplate>
-                                        <asp:Label runat="server" ID="lblAStatusName" Text='<%#Eval("StatusName") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Action">
-                                    <ItemTemplate>
-                                        <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
-                                            CommandName="EditConsultant" ToolTip="Edit" />
-                                        <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
-                                            CommandName="DeleteConsultant" ToolTip="Delete" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                        </asp:GridView>
+                        <div class="table table-responsive">
+                            <asp:GridView ID="GridView1" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
+                                EmptyDataText="There are no data records to display." PageSize="2" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                OnRowCommand="GridView1_RowCommand"
+                                Style="font-size: 110%;" ForeColor="Black">
+                                <PagerStyle CssClass="pagination_grid" />
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Advisor ID" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblConsultantID" Text='<%#Eval("ConsultantID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Name">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblName" Text='<%#Eval("FirstName") + " " + Eval("LastName") %>'></asp:Label>
+                                            <asp:Label runat="server" ID="lblFirstName" Text='<%#Eval("FirstName") %>' Visible="false"></asp:Label>
+                                            <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("LastName") %>' Visible="false"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Mobile">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblMobile" Text='<%#Eval("Mobile") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Email ID">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblEmailID" Text='<%#Eval("Email") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Designation" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblDesignation" Text='<%#Eval("Designation") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Designation">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblDesignationName" Text='<%#Eval("DesignationName") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="LoginID" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblLoginID" Text='<%#Eval("LoginID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Password" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblPwd" Text='<%#Eval("Password") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Branch" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblBranch" Text='<%#Eval("Branch") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="BranchName" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblBranchName" Text='<%#Eval("BranchName") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Status" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblAStatus" Text='<%#Eval("Status") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Status">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lblAStatusName" Text='<%#Eval("StatusName") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Action">
+                                        <ItemTemplate>
+                                            <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
+                                                CommandName="EditConsultant" ToolTip="Edit" />
+                                            <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
+                                                CommandName="DeleteConsultant" ToolTip="Delete" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                        </div>
                     </div>
 
                     <div id="dvEdit" runat="server" visible="false">

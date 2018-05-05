@@ -290,7 +290,7 @@ public partial class ConsultantList : System.Web.UI.Page
         {
             consultant.ConsultantID = Convert.ToInt32(ViewState["ConsultantID"].ToString());
             //need to change updated by after session created
-            consultant.UpdatedBy = 0;
+            consultant.UpdatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
             consultant.FirstName = txtFirstName.Text;
             consultant.LastName = txtLastName.Text;
             consultant.Mobile = txtMobile.Text;

@@ -60,7 +60,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" style="color: #021f4e;font-weight:bold;" data-toggle="dropdown" id="profile" runat="server" aria-expanded="false"><i class="arrow down"></i></a>
                                         <ul class="dropdown-menu two" style="font-size: 12px;">
-                                            <li><a class="tooltips" href="#"><i class="lnr lnr-user"></i>Profile</a></li>
+                                            <li><a class="tooltips" href="ProfilePage.aspx"><i class="lnr lnr-user"></i>Profile</a></li>
                                             <li><a class="tooltips" href="Login.aspx"><i class="lnr lnr-power-switch"></i>Logout</a></li>
 
                                         </ul>

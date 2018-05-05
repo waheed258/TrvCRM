@@ -129,7 +129,7 @@ public partial class EnquiryForm : System.Web.UI.Page
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
                         leadEntity.UpdatedBy = 0;
-                        leadEntity.LeadStatus = 6;
+                        leadEntity.LeadStatus = 2;
                         leadEntity.CreatedBy = 2;
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)

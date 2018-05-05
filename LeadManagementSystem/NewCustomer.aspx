@@ -4,13 +4,13 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <script src="js/jquery-2.1.4.min.js"></script>
     <script>
-        $(document).ready(function () {            
+        $(document).ready(function () {
             $('#ContentPlaceHolder1_txtIssueDate').datepicker({
                 autoclose: true,
                 dateFormat: 'dd-mm-yy',
                 changeYear: true,
                 yearRange: "1930:2050",
-                onSelect: function (selected) {                    
+                onSelect: function (selected) {
                     $("#ContentPlaceHolder1_txtExpiry").val('');
                     var date = $(this).datepicker('getDate');
                     if (date) {
@@ -204,97 +204,99 @@
                 </div>
             </div>
             <div class="tables">
-                <asp:GridView ID="gvCustomerList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                    EmptyDataText="There are no data records to display."
-                    AllowPaging="true" PageSize="5" OnRowCommand="gvCustomerList_RowCommand" OnPageIndexChanging="gvCustomerList_PageIndexChanging"
-                    Style="font-size: 110%;" ForeColor="Black">
-                    <PagerStyle CssClass="pagination_grid" />
-                    <Columns>
-                        <asp:TemplateField HeaderText="ID" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerId" Text='<%#Eval("TravellerId") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Title">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerTitel" Text='<%#Eval("TravellerTitel") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="First Name" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerFirstName" Text='<%#Eval("TravellerFirstName") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Last Name" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerLastName" Text='<%#Eval("TravellerLastName") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Name">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerName" Text='<%#Eval("TravellerFirstName")+ " " + Eval("TravellerLastName") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Email ID">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerMailId" Text='<%#Eval("TravellerMailId") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="TravellerPhone" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerPhone" Text='<%#Eval("TravellerPhone") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Mobile">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerMobile" Text='<%#Eval("TravellerMobile") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="TravellerAddress" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerAddress" Text='<%#Eval("TravellerAddress") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Passport No">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblTravellerPassPortNo" Text='<%#Eval("TravellerPassPortNo") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Passport Issue Date">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblPassportIssueDate" Text='<%#Eval("PassportIssueDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Passport Expiry Date">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblPassportExpiryDate" Text='<%#Eval("PassportExpiryDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="CreatedBy" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblCreatedBy" Text='<%#Eval("CreatedBy") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="UpdatedBy" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblUpdatedBy" Text='<%#Eval("UpdatedBy") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="CompanyId" Visible="false">
-                            <ItemTemplate>
-                                <asp:Label runat="server" ID="lblCompanyId" Text='<%#Eval("CompanyId") %>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Action">
-                            <ItemTemplate>
-                                <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
-                                    CommandName="EditCustomer" ToolTip="Edit" />
-                                <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
-                                    CommandName="DeleteCustomer" ToolTip="Delete" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
+                <div class="table table-responsive">
+                    <asp:GridView ID="gvCustomerList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
+                        EmptyDataText="There are no data records to display."
+                        AllowPaging="true" PageSize="5" OnRowCommand="gvCustomerList_RowCommand" OnPageIndexChanging="gvCustomerList_PageIndexChanging"
+                        Style="font-size: 110%;" ForeColor="Black">
+                        <PagerStyle CssClass="pagination_grid" />
+                        <Columns>
+                            <asp:TemplateField HeaderText="ID" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerId" Text='<%#Eval("TravellerId") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Title">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerTitel" Text='<%#Eval("TravellerTitel") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="First Name" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerFirstName" Text='<%#Eval("TravellerFirstName") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Last Name" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerLastName" Text='<%#Eval("TravellerLastName") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Name">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerName" Text='<%#Eval("TravellerFirstName")+ " " + Eval("TravellerLastName") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Email ID">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerMailId" Text='<%#Eval("TravellerMailId") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="TravellerPhone" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerPhone" Text='<%#Eval("TravellerPhone") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Mobile">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerMobile" Text='<%#Eval("TravellerMobile") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="TravellerAddress" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerAddress" Text='<%#Eval("TravellerAddress") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Passport No">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblTravellerPassPortNo" Text='<%#Eval("TravellerPassPortNo") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Passport Issue Date">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblPassportIssueDate" Text='<%#Eval("PassportIssueDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Passport Expiry Date">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblPassportExpiryDate" Text='<%#Eval("PassportExpiryDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="CreatedBy" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblCreatedBy" Text='<%#Eval("CreatedBy") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="UpdatedBy" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblUpdatedBy" Text='<%#Eval("UpdatedBy") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="CompanyId" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblCompanyId" Text='<%#Eval("CompanyId") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Action">
+                                <ItemTemplate>
+                                    <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
+                                        CommandName="EditCustomer" ToolTip="Edit" />
+                                    <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
+                                        CommandName="DeleteCustomer" ToolTip="Delete" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </div>
             </div>
         </div>
 

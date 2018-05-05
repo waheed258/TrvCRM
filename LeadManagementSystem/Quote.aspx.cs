@@ -5,17 +5,29 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using BusinessEntities;
+using BusinessLogic;
+using System.Data;
 
 public partial class Quote : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
-    QuoteBL qtBL = new QuoteBL();   
+    QuoteBL qtBL = new QuoteBL();
+    EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
+    int LeadID = 0;
+    string city = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {
+        {            
             if (!IsPostBack)
             {
+                city =encryptdecrypt.Decrypt(Request.QueryString["city"]);
+                LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
+                lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
+                lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
+                lblSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
+                lblDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
                 GetIncludeExcludeData();
@@ -47,7 +59,7 @@ public partial class Quote : System.Web.UI.Page
     protected void GetCostTypeDataAdult()
     {
         try
-        {
+        {            
             dataset = qtBL.GetTypeData("A");
             ddlAdultType.DataSource = dataset;
             ddlAdultType.DataTextField = "CostTypeDescription";
@@ -154,7 +166,7 @@ public partial class Quote : System.Web.UI.Page
         QuoteEntity qtEntity = new QuoteEntity();
 
         qtEntity.CarHireDetails = txtHotelInfo.Text;
-        qtEntity.ConsultantName = "";
+        qtEntity.ConsultantName = Session["Name"].ToString();
         qtEntity.CostForAdult = txtAdultPrice.Text;
         qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
         qtEntity.CostForChild = txtChildPrice.Text;
@@ -164,11 +176,11 @@ public partial class Quote : System.Web.UI.Page
         qtEntity.HotelInfo = txtHotelInfo.Text;
         qtEntity.Includes = txtIncludes.Text;
         qtEntity.ItineraryDetails = txtItinerary.Text;
-        qtEntity.LeadID = 0;
+        qtEntity.LeadID = LeadID;
         qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
         qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
         qtEntity.QuoteDate = txtDate.Text;
-        qtEntity.ToCity = "";
+        qtEntity.ToCity = city;
         qtEntity.TravelInsurance = txtTravelInsur.Text;
 
         int result = qtBL.CUDQuote(qtEntity);

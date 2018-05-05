@@ -43,5 +43,10 @@ namespace BusinessLogic
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAssigLeadOptions");
             return ds;
         }
+        public DataSet GetStatus()
+        {
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetStatus");
+            return ds;
+        }
     }
 }

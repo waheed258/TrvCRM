@@ -14,6 +14,8 @@ public partial class NewLead : System.Web.UI.Page
     LeadEntity leadEntity = new LeadEntity();
     CommanClass _objComman = new CommanClass();
     ConsultantBL consultantBL = new ConsultantBL();
+    FollowupEntity followupEntity = new FollowupEntity();
+    EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
     int j = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -23,7 +25,7 @@ public partial class NewLead : System.Web.UI.Page
             {
                 _objComman.getRecordsPerPage(DropPage);
                 GetProducts();
-                GetSourceData();
+                GetSourceData("I");
                 others.Visible = false;
                 GetLeadsList();
                 newlead.Visible = false;
@@ -31,6 +33,9 @@ public partial class NewLead : System.Web.UI.Page
                 _objComman.GetAssigLeadOptions(ddlAssignLead);
                 consultant.Visible = false;
                 actions.Visible = false;
+                status.Visible = false;
+                followupdate.Visible = false;
+                desc.Visible = false;
             }
         }
         catch { }
@@ -63,11 +68,11 @@ public partial class NewLead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-    protected void GetSourceData()
+    protected void GetSourceData(string Opeartion)
     {
         try
         {
-            dataset = leadBL.GetSourceData();
+            dataset = leadBL.GetSourceData(Opeartion);
             ddlSource.DataSource = dataset;
             ddlSource.DataTextField = "SourceType";
             ddlSource.DataValueField = "SourceTypeID";
@@ -129,15 +134,20 @@ public partial class NewLead : System.Web.UI.Page
                 GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
                 int RowIndex = row.RowIndex;
                 ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
+                GetSourceData("U");
                 if (e.CommandName == "EditLead")
                 {
+
+                    _objComman.GetStatus(ddlStatus);
+                    status.Visible = true;
                     newlead.Visible = true;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
                     btnUpdate.Visible = true;
                     ImageButton1.Visible = false;
                     GetProducts();
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openEditModal();", true);
+                    DataSet ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
+
                     ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
                     if (ddlSource.SelectedValue == "10")
                     {
@@ -158,6 +168,39 @@ public partial class NewLead : System.Web.UI.Page
                     txtReturnDate.Text = ((Label)row.FindControl("lblReturnDate")).Text.ToString();
                     txtBudget.Text = ((Label)row.FindControl("lblBudget")).Text.ToString();
                     txtNotes.Text = ((Label)row.FindControl("lblNotes")).Text.ToString();
+                    ddlStatus.SelectedValue = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
+                    txtDescription.Text = ((Label)row.FindControl("lblDescription")).Text.ToString();
+                    if (ddlStatus.SelectedValue == "4")
+                    {
+                        if (ds.Tables[0].Rows.Count == 3)
+                        {
+                            message.Text = "Maximum follow ups reached!";
+                            message.ForeColor = System.Drawing.Color.Red;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                        }
+                        else
+                        {
+                            lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
+                            followupdate.Visible = true;
+                        }
+
+                        followupdate.Visible = true;
+                        lblFollowup.ForeColor = System.Drawing.Color.Red;
+                        lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(ds.Tables[0].Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
+                    }
+                    else
+                    {
+                        lblFollowup.Text = "";
+                        followupdate.Visible = false;
+                    }
+                    if (ddlStatus.SelectedValue == "2")
+                    {
+                        desc.Visible = false;
+                    }
+                    else
+                    {
+                        desc.Visible = true;
+                    }
                 }
                 else if (e.CommandName == "DeleteLead")
                 {
@@ -170,6 +213,17 @@ public partial class NewLead : System.Web.UI.Page
                     LeadList.Visible = false;
                     newlead.Visible = false;
                     imgbtnAddLead.Visible = false;
+                }
+                else if (e.CommandName == "Quote")
+                {
+                    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
+                    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
+                    string source = encryptdecrypt.Encrypt(( ((Label)row.FindControl("lblOrigin")).Text.ToString()));
+                    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
+                    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
+                    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product);
+                    string s = "window.open('" + url + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
             }
         }
@@ -263,6 +317,8 @@ public partial class NewLead : System.Web.UI.Page
         ddlSource.SelectedValue = "-1";
         ddlAssignLead.SelectedValue = "-1";
         ddlConsultants.SelectedValue = "-1";
+        txtDescription.Text = "";
+        txtFollowUp.Text = "";
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -282,6 +338,7 @@ public partial class NewLead : System.Web.UI.Page
         newlead.Visible = false;
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
+        status.Visible = false;
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
@@ -333,10 +390,23 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
                         leadEntity.UpdatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
-                        leadEntity.LeadStatus = 6;
+                        leadEntity.LeadStatus = Convert.ToInt32(ddlStatus.SelectedValue);
                         leadEntity.CreatedBy = 0;
+                        leadEntity.LeadDescription = txtDescription.Text;
+
+                        if (ddlStatus.SelectedValue == "4")
+                        {
+                            leadEntity.FollowupDate = txtFollowUp.Text;
+                            leadEntity.FollowupDesc = txtDescription.Text;
+                        }
+                        else
+                        {
+                            leadEntity.FollowupDate = "";
+                            leadEntity.FollowupDesc = "";
+                        }
+
                         int result = leadBL.CUDLead(leadEntity, 'U');
-                        if (result == 1)
+                        if (result == 2)
                         {
                             message.Text = "Lead Details updated Successfully!";
                             message.ForeColor = System.Drawing.Color.Green;
@@ -375,6 +445,7 @@ public partial class NewLead : System.Web.UI.Page
     {
         try
         {
+            status.Visible = false;
             int a = Convert.ToInt32(ddlAdults.SelectedValue);
             int c = Convert.ToInt32(ddlChild.SelectedValue);
             int i = Convert.ToInt32(ddlInfant.SelectedValue);
@@ -481,7 +552,8 @@ public partial class NewLead : System.Web.UI.Page
         {
             leadEntity.AssignedTo = Convert.ToInt32(Session["ConsultantID"].ToString());
         }
-        else {
+        else
+        {
             leadEntity.AssignedTo = 0;
         }
         leadEntity.LeadStatus = Convert.ToInt32(ddlAssignLead.SelectedValue);
@@ -513,5 +585,40 @@ public partial class NewLead : System.Web.UI.Page
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
         actions.Visible = false;
+    }
+    protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        lblFollowup.Text = "";
+        if (ddlStatus.SelectedValue == "4")
+        {
+            DataSet ds = new DataSet();
+            ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
+            if (ds.Tables[0].Rows.Count == 3)
+            {
+                message.Text = "Maximum follow ups reached for this lead!";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+            else
+            {
+                lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
+                followupdate.Visible = true;
+            }
+        }
+        else
+        {
+            txtDescription.Text = "";
+            followupdate.Visible = false;
+        }
+        if (ddlStatus.SelectedValue == "2")
+        {
+            txtDescription.Text = "";
+            desc.Visible = false;
+        }
+        else
+        {
+            txtDescription.Text = "";
+            desc.Visible = true;
+        }
     }
 }
