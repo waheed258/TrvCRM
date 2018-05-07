@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Quote Details</title>
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <link rel="stylesheet" type="text/css" href="http://finlite.dinoosys.in/HtmlTemps/bootstrap.min.css" />
+    <!--<style>
+        ul {
+            list-style-type: none;
+        }
+    </style>-->
+</head>
+<body>
+    <div class="container">
+
+        <div class="page-header">
+            <div class="row">               
+                <div class="col-md-6">
+                    <!--<img src="images/logo.jpg" />-->
+                    <!--<img src="https://www.svsvisaservices.in/images/svs-logo.png" />-->
+                    <img src="https://pbs.twimg.com/profile_images/2869444447/9820ddc59f115dcaf1fe67b05cbb0876_400x400.png" width="150" />
+                </div>
+                <div class="col-md-6" style="margin-top:30px;">
+                    <div class="col-md-6">
+                        <label>Quote Number:</label>
+                    </div>
+                    <div class="col-md-6">{QuoteNumber}</div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-6">
+                        <label>Date:</label>
+                    </div>
+                    <div class="col-md-6">{QuoteDate}</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="page-container">
+            <div class="container">
+
+                <div class="col-md-12">
+                    <h5> Please find quotation below for travel to <b>{DestinationCity}</b> in <b>{TravelMonth}</b>.</h5>
+
+                    <h4>Flight Details:</h4>
+                    {FlightDetails}
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Hotel Details:</h4>
+                    {HotelDetails}
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Car Hire:</h4>
+                    {CarHireDetails}
+                </div>
+                <div class="col-md-12">
+                    <h4>Itinerary:</h4>
+                    {Itinerary}
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Includes:</h4>
+                    {Includes}
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Excluded:</h4>
+                    {Excludes}
+                </div>
+
+                <div class="col-md-12">
+                    <h4>{AdultPrice}</h4>
+                    <h4>{ChildPrice}</h4>
+                </div>
+
+                <div class="col-md-12">
+                    <table border="1" width="100%">
+                        <tr>
+                            <th>Travel Insurance (highly recommended)</th>
+                            <th>Visas</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {TravelInsurance}
+                            </td>
+                            <td>
+                                <p>Kindly check all visa requirements</p>
+                                <p><a href="https://www.svsvisaservices.co.za/" target="_blank">https://www.svsvisaservices.co.za/</a></p>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    <p><b>TO BOOK:</b>Please send through names and surnames, as per passports in order to secure seats. Passports must be valid for min 6 months after return date to South Africa, with min. 4 blank pages.</p>
+
+                    <p><b>Important update:</b> Children 18 years and under travelling with families, or unaccompanied, must travel with an <b><u>unabridged birth certificate</u></b> and a valid passport, when travelling in or out of South Africa.</p>
+
+                    <p style="color:red">Due to the current volatility of the Rand (ZAR), please call us prior to making full payment on any bookings.</p>
+
+                </div>
+
+                <div class="col-md-12">
+                    <p>Kind Regards</p>
+                    ({ConsultantName})
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    <p>We will endeavour to match or beat any written quotes. The above quote is subject to availability at the time of the booking and is subject to the terms and conditions of Serendipity Tours. Airline bookings must be ticketed immediately, once booked. Quotes are valid for today only. Prices are correct at time of quotation and subject to change without prior notice.No bookings have been made. In case of any change in the date of travel,  rerouting or change in hotels/room types, will effect costs. </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <style>
+        body {
+            /*font-size:16px;*/
+        }
+
+        table tr th {
+            padding: 8px 15px;
+        }
+
+        table tr td {
+            padding: 15px;
+        }
+    </style>
+
+</body>
+</html>

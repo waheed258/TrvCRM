@@ -23,12 +23,17 @@
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtItinerary');
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtIncludes');
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtExcludes');
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtTravelInsur', { height: '100px' });
 
-            //var adultprice = $('#ContentPlaceHolder1_txtChildPrice').val();
-            //if (adultprice != '') { $('#ContentPlaceHolder1_ddlAdultPersons').removeAttr("disabled"); }
-
-            //var childprice = $('#ContentPlaceHolder1_txtChildPrice').val();
-            //if (varchildprice != '') { $('#ContentPlaceHolder1_ddlChildPersons').removeAttr("disabled"); }
+            CKEDITOR.on('instanceReady', function () {
+                $.each(CKEDITOR.instances, function (instance) {
+                    CKEDITOR.instances[instance].on("change",
+                        function (e) {
+                            for (instance in CKEDITOR.instances)
+                                CKEDITOR.instances[instance].updateElement();
+                     });
+                });
+            });           
 
             $("#ContentPlaceHolder1_txtAdultPrice").blur(function () {
                 var value = $(this).val();
@@ -87,7 +92,7 @@
                 <div class="validation-form">
                     <div class="vali-form">
                         <h5>Lead Details</h5>
-                        <div class="graph-form">                            
+                        <div class="graph-form">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label class="control-label">Client Name</label>
@@ -238,7 +243,7 @@
 
                     <div class="vali-form">
                         <label class="control-label">Travel Insurance</label>
-                        <asp:TextBox ID="txtTravelInsur" TextMode="MultiLine" runat="server" class="form-control" placeholder="Travel Insurance Details" MaxLength="500"></asp:TextBox>
+                        <asp:TextBox ID="txtTravelInsur" TextMode="MultiLine" runat="server" class="form-control" placeholder="Travel Insurance Details" MaxLength="500" Columns="30"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTravelInsur" ForeColor="#d0582e"
                             ErrorMessage="Please Enter Travel Insurance Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
 

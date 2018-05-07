@@ -19,19 +19,28 @@ public partial class Quote : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {            
+        {
+            city = encryptdecrypt.Decrypt(Request.QueryString["city"]);
+            LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
+
             if (!IsPostBack)
-            {
-                city =encryptdecrypt.Decrypt(Request.QueryString["city"]);
-                LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
+            {               
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
                 lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
                 lblSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
                 lblDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
-                GetIncludeExcludeData();
-            }
+                
+                string result = GetQuoteData();
+
+                if (result == "0")
+                {
+                    Clear();
+                    GetIncludeExcludeData();
+                }
+
+            }            
 
             if (txtAdultPrice.Text != "")
             {
@@ -92,6 +101,69 @@ public partial class Quote : System.Web.UI.Page
             message.ForeColor = System.Drawing.Color.Red;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
+    }
+
+    protected string GetQuoteData()
+    {
+        string strResult = string.Empty;
+        try
+        {
+            dataset = qtBL.GetQuotePDFData(LeadID);
+
+            if (dataset.Tables.Count > 0)
+            {
+               
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    strResult = "1";
+                    txtDate.Text = dataset.Tables[0].Rows[0]["QuoteDate"].ToString();
+                    ddlAdultType.SelectedValue = dataset.Tables[0].Rows[0]["CostForAdultType"].ToString();
+
+                    txtAdultPrice.Text = dataset.Tables[0].Rows[0]["CostForAdult"].ToString();
+                    ddlAdultPersons.SelectedValue = dataset.Tables[0].Rows[0]["NoOfAdults"].ToString();
+                    lblAdultTotPrice.Text = dataset.Tables[0].Rows[0]["AdultTotal"].ToString();
+
+                    ddlChildType.SelectedValue = dataset.Tables[0].Rows[0]["CostForChildType"].ToString();
+                    txtChildPrice.Text = dataset.Tables[0].Rows[0]["CostForChild"].ToString();
+                    ddlChildPersons.SelectedValue = dataset.Tables[0].Rows[0]["NoOfChildren"].ToString();
+                    lblChildTotPrice.Text = dataset.Tables[0].Rows[0]["ChildTotal"].ToString();
+
+                    txtFlightDetails.Text = dataset.Tables[0].Rows[0]["FlightDetails"].ToString();
+                    txtCarHireDetails.Text = dataset.Tables[0].Rows[0]["CarHireDetails"].ToString();
+                    txtHotelInfo.Text = dataset.Tables[0].Rows[0]["HotelInfo"].ToString();
+                    txtItinerary.Text = dataset.Tables[0].Rows[0]["ItineraryDetails"].ToString();
+                    txtIncludes.Text = dataset.Tables[0].Rows[0]["Includes"].ToString();
+                    txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
+                    txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
+
+
+                    if (ddlAdultType.SelectedValue == "1")
+                    {
+                        dvAdultPersons.Visible = true;
+                        dvAdultTot.Visible = true;
+                        ddlAdultPersons.Enabled = true;
+                    }
+
+                    if (ddlChildType.SelectedValue == "3")
+                    {
+                        dvChildPersons.Visible = true;
+                        ddlChildPersons.Enabled = true;
+                        dvChildTotalPrice.Visible = true;
+                    }
+
+                }
+                else
+                {
+                    strResult = "0";
+                }
+            }
+            
+
+        }
+        catch
+        { strResult = "0"; }
+
+        return strResult;
     }
 
     protected void GetIncludeExcludeData()
@@ -182,6 +254,9 @@ public partial class Quote : System.Web.UI.Page
         qtEntity.QuoteDate = txtDate.Text;
         qtEntity.ToCity = city;
         qtEntity.TravelInsurance = txtTravelInsur.Text;
+        qtEntity.AdultTotal = lblAdultTotPrice.Text;
+        qtEntity.ChildTotal = lblChildTotPrice.Text;
+
 
         int result = qtBL.CUDQuote(qtEntity);
 
@@ -221,8 +296,8 @@ public partial class Quote : System.Web.UI.Page
         txtCarHireDetails.Text = "";
         txtHotelInfo.Text = "";
         txtItinerary.Text = "";
-        txtIncludes.Text = "";
-        txtExcludes.Text = "";
+        //txtIncludes.Text = "";
+        //txtExcludes.Text = "";
         txtTravelInsur.Text = "";
 
         dvAdultPersons.Visible = false;
