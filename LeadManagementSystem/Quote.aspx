@@ -253,7 +253,7 @@
                     <div class="vali-form">
                         <div class="col-md-3" style="margin-bottom: 20px; margin-top: 10px;">
                             <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click" ValidationGroup="Quote" Height="35px" />
-                            <asp:ImageButton ID="imgbtnBackAssign" runat="server" ImageUrl="~/images/clear.png" OnClick="imgbtnBackAssign_Click" Height="35px" />
+                            <asp:ImageButton ID="imgbtnClear" runat="server" ImageUrl="~/images/clear.png" OnClick="imgbtnClear_Click" Height="35px" />
                         </div>
                         <div class="clearfix"></div>
                     </div>

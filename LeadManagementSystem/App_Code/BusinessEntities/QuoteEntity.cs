@@ -28,5 +28,8 @@ public class QuoteEntity
     public string ChildTotal { get; set; }
 
     public int LeadID { get; set; }
+    public string IsMailSent { get; set; }
+    public string QuoteNumber { get; set; }
+    public string Operation { get; set; }
 
 }

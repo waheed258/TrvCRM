@@ -331,6 +331,11 @@
                                     <asp:Label runat="server" ID="lblQuote" Text='<%#Eval("Quote") %>'></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
+                             <asp:TemplateField HeaderText="QuoteNumber" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label runat="server" ID="lblQuoteNumber" Text='<%#Eval("QuoteNumber") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="ID" Visible="false">
                                 <ItemTemplate>
                                     <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>

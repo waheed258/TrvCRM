@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using BusinessEntities;
 using BusinessLogic;
 using System.Data;
+using System.Diagnostics;
 public partial class NewLead : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -227,11 +228,13 @@ public partial class NewLead : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
                 else if (e.CommandName == "PDF")
-                {
-                    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
-                    string url = "QuotePDF.aspx?id=" + Server.UrlEncode(encryptedparamleadid);
-                    string s = "window.open('" + url + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                {   
+                    string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
+                    string path = Server.MapPath("~/QuotePDF");
+                    string fileName = path + "\\" + quoteNumber + ".pdf";
+                    //string s = "window.open('" + fileName + "', '_blank');";
+                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    Process.Start(fileName);
                 }
             }
         }
