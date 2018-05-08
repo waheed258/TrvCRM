@@ -344,18 +344,45 @@ public partial class Quote : System.Web.UI.Page
                 {
                     foreach (DataRow dtlRow in ds.Tables[0].Rows)
                     {
+                        if (!string.IsNullOrEmpty(dtlRow["FlightDetails"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + dtlRow["FlightDetails"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["HotelInfo"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + dtlRow["HotelInfo"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["CarHireDetails"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + dtlRow["CarHireDetails"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + dtlRow["ItineraryDetails"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + dtlRow["Includes"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + dtlRow["Excludes"].ToString() + "</div>");
+                        }
+
+                        readFile = readFile.Replace("{Details}", sbMainrow.ToString());
+
                         readFile = readFile.Replace("{QuoteNumber}", dtlRow["QuoteNumber"].ToString());
                         readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
                         readFile = readFile.Replace("{DestinationCity}", dtlRow["DestinationCity"].ToString());
-                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
-                        readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
-                        readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
-                        readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
+                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());                       
                         readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
                         readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
-                        readFile = readFile.Replace("{HotelDetails}", dtlRow["HotelInfo"].ToString());
-                        readFile = readFile.Replace("{CarHireDetails}", dtlRow["CarHireDetails"].ToString());
-                        readFile = readFile.Replace("{Itinerary}", dtlRow["ItineraryDetails"].ToString());
+                       
 
                         if (dtlRow["CostForAdultType"].ToString() == "1")
                         {
@@ -436,6 +463,13 @@ public partial class Quote : System.Web.UI.Page
             if (!Directory.Exists(Path))
             {
                 Directory.CreateDirectory(Path);
+            }
+            else
+            {
+                if (File.Exists(FileName))
+                {
+                    File.Delete(FileName);
+                }
             }
 
             doc.Save(FileName);

@@ -1,22 +1,15 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Quote Details</title>
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
-    <link rel="stylesheet" type="text/css" href="http://finlite.dinoosys.in/HtmlTemps/bootstrap.min.css" />
-    <!--<style>
-        ul {
-            list-style-type: none;
-        }
-    </style>-->
+    <title>Quote Details</title>   
+    <link rel="stylesheet" type="text/css" href="http://tcrm.askswg.co.za/css/bootstrap.min.css" />   
 </head>
 <body>
     <div class="container">
 
         <div class="page-header">
-            <div class="row">               
-                <div class="col-md-6">
-                    <!--<img src="images/logo.jpg" />-->
+            <div class="row">
+                <div class="col-md-6">                   
                     <!--<img src="https://www.svsvisaservices.in/images/svs-logo.png" />-->
                     <img src="https://pbs.twimg.com/profile_images/2869444447/9820ddc59f115dcaf1fe67b05cbb0876_400x400.png" width="150" />
                 </div>
@@ -38,35 +31,10 @@
             <div class="container">
 
                 <div class="col-md-12">
-                    <h5> Please find quotation below for travel to <b>{DestinationCity}</b> in <b>{TravelMonth}</b>.</h5>
-
-                    <h4>Flight Details:</h4>
-                    {FlightDetails}
+                    <h5> Please find quotation below for travel to <b>{DestinationCity}</b> on <b>{TravelMonth}</b>.</h5>
                 </div>
 
-                <div class="col-md-12">
-                    <h4>Hotel Details:</h4>
-                    {HotelDetails}
-                </div>
-
-                <div class="col-md-12">
-                    <h4>Car Hire:</h4>
-                    {CarHireDetails}
-                </div>
-                <div class="col-md-12">
-                    <h4>Itinerary:</h4>
-                    {Itinerary}
-                </div>
-
-                <div class="col-md-12">
-                    <h4>Includes:</h4>
-                    {Includes}
-                </div>
-
-                <div class="col-md-12">
-                    <h4>Excluded:</h4>
-                    {Excludes}
-                </div>
+                {Details}               
 
                 <div class="col-md-12">
                     <h4>{AdultPrice}</h4>
@@ -114,23 +82,16 @@
 
         </div>
 
-        <div class="footer" style="background-color: #07253f;">
-            <!--<div class="col-md-4"><p>Serendipity Tours cc T/A Serendipity Travel</p></div>
-            <div class="col-md-2"><p>Rge No 1996/63691/23</p></div>
-            <div class="col-md-2"><p>VAT No 4430166746</p></div>
-            <div class="col-md-4"><p>Members C. Du Preez, D. Naidoo, L.J. Jayamaha</p></div>-->
-           <p>Serendipity Tours cc T/A Serendipity Travel</p>
-           <p>Rge No 1996/63691/23</p>
-           <p>VAT No 4430166746</p>
-           <p>Members C. Du Preez, D. Naidoo, L.J. Jayamaha</p>
+        <div class="footer" style="background-color: #07253f;">           
+            <p>Serendipity Tours cc T/A Serendipity Travel</p>
+            <p>Rge No 1996/63691/23</p>
+            <p>VAT No 4430166746</p>
+            <p>Members C. Du Preez, D. Naidoo, L.J. Jayamaha</p>
         </div>
     </div>
 
     <style>
-        body {
-            /*font-size:16px;*/
-        }
-
+        
         table tr th {
             padding: 8px 15px;
         }
@@ -141,7 +102,7 @@
 
         .footer {
             overflow: hidden;
-            color:#ffffff;
+            color: #ffffff;           
         }
 
             .footer p {
@@ -152,7 +113,6 @@
                 padding: 0.4em;
                 float: left;
             }
-
     </style>
 
 </body>
