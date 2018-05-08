@@ -8,9 +8,11 @@ using BusinessEntities;
 using BusinessLogic;
 using System.Data;
 using System.IO;
+using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
+
 
 public partial class Reports : System.Web.UI.Page
 {
@@ -75,23 +77,7 @@ public partial class Reports : System.Web.UI.Page
     {
         try
         {
-            Response.Clear();
-            Response.Buffer = true;
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Response.Charset = "";
-            string datetime = DateTime.Now.ToString();
-            string FileName = "LeadReport" + datetime + ".xls";
-            StringWriter strwritter = new StringWriter();
-            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
-            gvLeadList.GridLines = GridLines.Both;
-            gvLeadList.HeaderStyle.Font.Bold = true;
-            gvLeadList.RenderControl(htmltextwrtter);
-            Response.Write(strwritter.ToString());
-            Response.End();
+            ExportGridToExcel();
         }
         catch { }
     }
@@ -134,4 +120,33 @@ public partial class Reports : System.Web.UI.Page
         }
         catch { }
     }
+
+    public override void VerifyRenderingInServerForm(Control control)
+    {
+        //required to avoid the runtime error "  
+        //Control 'GridView1' of type 'GridView' must be placed inside a form tag with runat=server."  
+    }  
+
+
+    private void ExportGridToExcel()
+    {
+        Response.Clear();
+        Response.Buffer = true;
+        Response.ClearContent();
+        Response.ClearHeaders();
+        Response.Charset = "";
+        string FileName = "LeadReport" + DateTime.Now + ".xls";
+        StringWriter strwritter = new StringWriter();
+        HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.ContentType = "application/vnd.ms-excel";
+        Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
+        gvLeadList.GridLines = GridLines.Both;
+        gvLeadList.HeaderStyle.Font.Bold = true;
+        gvLeadList.RenderControl(htmltextwrtter);
+        Response.Write(strwritter.ToString());
+        Response.End();
+
+    }
+
 }

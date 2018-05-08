@@ -362,7 +362,7 @@ namespace DataLogic
             int nRetVal = 0;
             SqlTransaction objSqlTransaction = null;
             SqlConnection objMySqlConn = GetSqlConnection();
-            if (objMySqlConn == null)
+            if (objMySqlConn == null) 
             {
                 //LogError(this, null, "Unable to create SqlConnection object ! ");
                 return nRetVal;
@@ -411,7 +411,7 @@ namespace DataLogic
         /// <param name="retunParameter"></param>
         /// <returns>Returns Integer</returns>
         public int ExecuteNonQuery(string commandText, Hashtable htParameters, string retunParameter)
-        {
+        { 
             int nRetVal = 0;
             //SqlTransaction objSqlTransaction = null;
             SqlConnection objMySqlConn = GetSqlConnection();
@@ -448,6 +448,7 @@ namespace DataLogic
             return nRetVal;
         }
 
+      
         public Hashtable GetParameters(string strStoreProcedure, string strDBName, string strFields)
         {
             Hashtable htParams = new Hashtable();
