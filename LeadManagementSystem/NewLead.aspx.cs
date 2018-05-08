@@ -231,11 +231,12 @@ public partial class NewLead : System.Web.UI.Page
                 {   
                     string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
                     //string path = Server.MapPath("~/QuotePDF");
-                    string path = "http://tcrm.askswg.co.za/QuotePDF";
+                    string path = "http://tcrm.askswg.co.za/QuotePDF/";
                     string fileName = path + "\\" + quoteNumber + ".pdf";
-                    //string s = "window.open('" + fileName + "', '_blank');";
-                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                    Process.Start(fileName);
+                    string s = "window.open('" + fileName + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    //Process.Start(fileName);
+                    //Response.Redirect(fileName);
                 }
             }
         }
