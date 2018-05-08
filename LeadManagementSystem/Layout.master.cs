@@ -13,6 +13,14 @@ public partial class Layout : System.Web.UI.MasterPage
         if (Session["Name"] != null)
         {
             profile.InnerHtml = Session["Name"].ToString();
+            if (Session["ConsultantID"].ToString() == "1")
+            {
+                profileli.Visible = false;
+            }
+            else
+            {
+                profileli.Visible = true;
+            }
         }
         else
         {
