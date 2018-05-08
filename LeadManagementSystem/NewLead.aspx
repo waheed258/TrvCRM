@@ -222,9 +222,9 @@
                         </div>
                         <div class="col-md-3">
                             <label class="control-label">Estimated Budget</label>
-                            <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvBudget" runat="server" ControlToValidate="txtBudget" ForeColor="#d0582e"
-                                ErrorMessage="Please Enter Budget" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price" Text="0"></asp:TextBox>
+                          <%--  <asp:RequiredFieldValidator ID="rfvBudget" runat="server" ControlToValidate="txtBudget" ForeColor="#d0582e"
+                                ErrorMessage="Please Enter Budget" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>--%>
                         </div>
                         <div class="col-md-3">
                             <label class="control-label">Notes</label>
@@ -567,7 +567,10 @@
             }
         });
         $('#ContentPlaceHolder1_txtBudget').on('change', function () {
-            this.value = parseFloat(this.value).toFixed(2);
+            if (this.value == "")
+                this.value = 0;
+            else
+                this.value = parseFloat(this.value).toFixed(2);
         });
     </script>
     <script type="text/javascript">

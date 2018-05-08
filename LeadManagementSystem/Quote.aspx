@@ -9,12 +9,14 @@
     <script>
         $(document).ready(function () {
             $('#ContentPlaceHolder1_txtDate').datepicker({
-                startDate: 'today',
+                startDate: 'today',                
                 minDate: 0,
                 numberOfMonths: 1,
                 autoclose: true,
                 dateFormat: 'dd-mm-yy'
             });
+
+            $("#ContentPlaceHolder1_txtDate").datepicker("setDate", new Date());
 
             CKEDITOR.disableAutoInline = true;
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtFlightDetails');

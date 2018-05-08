@@ -231,12 +231,12 @@ public partial class NewLead : System.Web.UI.Page
                 {   
                     string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
                     //string path = Server.MapPath("~/QuotePDF");
+                    //Process.Start(fileName);
                     string path = "http://tcrm.askswg.co.za/QuotePDF/";
                     string fileName = path + "\\" + quoteNumber + ".pdf";
                     string s = "window.open('" + fileName + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                    //Process.Start(fileName);
-                    //Response.Redirect(fileName);
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                   
+                   
                 }
             }
         }
@@ -325,7 +325,7 @@ public partial class NewLead : System.Web.UI.Page
         ddlChild.SelectedValue = "0";
         ddlInfant.SelectedValue = "0";
         ddlPackage.SelectedValue = "-1";
-        txtBudget.Text = "";
+        txtBudget.Text = "0";
         txtNotes.Text = "";
         ddlSource.SelectedValue = "-1";
         ddlAssignLead.SelectedValue = "-1";
@@ -345,6 +345,7 @@ public partial class NewLead : System.Web.UI.Page
         imgbtnAddLead.Visible = false;
         btnUpdate.Visible = false;
         ImageButton1.Visible = true;
+        Clear();
     }
     protected void btnReset_Click(object sender, EventArgs e)
     {
