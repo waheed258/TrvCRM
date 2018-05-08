@@ -7,6 +7,11 @@ using System.Web.UI.WebControls;
 using BusinessEntities;
 using BusinessLogic;
 using System.Data;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
+
 public partial class Reports : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -16,15 +21,15 @@ public partial class Reports : System.Web.UI.Page
     ConsultantBL consultantBL = new ConsultantBL();
     FollowupEntity followupEntity = new FollowupEntity();
     EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
-    
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             if (!IsPostBack)
             {
-                _objComman.getRecordsPerPage(DropPage);              
-                GetLeadsList();    
+                _objComman.getRecordsPerPage(DropPage);
+                GetLeadsList();
             }
         }
         catch { }
@@ -65,5 +70,68 @@ public partial class Reports : System.Web.UI.Page
     protected void gvLeadList_RowCommand(object sender, GridViewCommandEventArgs e)
     {
 
+    }
+    protected void imgbtnExcel_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            Response.Clear();
+            Response.Buffer = true;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.Charset = "";
+            string datetime = DateTime.Now.ToString();
+            string FileName = "LeadReport" + datetime + ".xls";
+            StringWriter strwritter = new StringWriter();
+            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
+            gvLeadList.GridLines = GridLines.Both;
+            gvLeadList.HeaderStyle.Font.Bold = true;
+            gvLeadList.RenderControl(htmltextwrtter);
+            Response.Write(strwritter.ToString());
+            Response.End();
+        }
+        catch { }
+    }
+    protected void imgpdf_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            PdfPTable pdfptable = new PdfPTable(gvLeadList.HeaderRow.Cells.Count);
+            foreach (TableCell headerCell in gvLeadList.HeaderRow.Cells)
+            {
+
+                Font font = new Font();
+                font.Color = GrayColor.BLUE;
+                PdfPCell pdfCell = new PdfPCell(new Phrase(headerCell.Text, font));
+                pdfptable.AddCell(pdfCell);
+
+            }
+            foreach (GridViewRow gridviewrow in gvLeadList.Rows)
+            {
+                foreach (TableCell tableCell in gridviewrow.Cells)
+                {
+
+                    tableCell.BackColor = gvLeadList.HeaderStyle.BackColor;
+                    PdfPCell pdfCell = new PdfPCell(new Phrase(tableCell.Text.Trim()));
+                    pdfptable.AddCell(pdfCell);
+
+                }
+
+            }
+            Document pdfDocument = new Document(PageSize.A4, 10f, 10f, 10f, 10f);
+            PdfWriter.GetInstance(pdfDocument, Response.OutputStream);
+            pdfDocument.Open();
+            pdfDocument.Add(pdfptable);
+            pdfDocument.Close();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("content-disposition", "attachment;filename=ServiceWiseReport.pdf");
+            Response.Write(pdfDocument);
+            Response.Flush();
+            Response.End();
+        }
+        catch { }
     }
 }

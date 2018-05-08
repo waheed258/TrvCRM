@@ -16,7 +16,11 @@
                         <label class="control-label">
                             Records per page</label>
                     </div>
-                    <div class="col-lg-6 form-group">
+                    <div class="col-lg-6 form-group text-right">
+                        <asp:ImageButton ID="imgbtnExcel" ImageUrl="images/icon-excel.png" runat="server" Height="35px"
+                            ToolTip="Export To Excel" OnClick="imgbtnExcel_Click" />
+                        <asp:ImageButton ID="imgpdf" ImageUrl="images/PDFIcon.png" runat="server" Height="35px"
+                            ToolTip="Export To PDf" OnClick="imgpdf_Click" />
                     </div>
                     <div class="col-lg-3 form-group">
                         <input id="target" type="text" class="form-control" placeholder="Text To Search" />
@@ -32,175 +36,16 @@
                         Style="font-size: 110%;" ForeColor="Black">
                         <PagerStyle CssClass="pagination_grid" />
                         <Columns>
-                            <asp:TemplateField HeaderText="Quote" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblQuote" Text='<%#Eval("Quote") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="ID" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Source">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lbllsSourceRef" Text='<%#Eval("lsSourceRef") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Created By">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lbllsConsultantName" Text='<%#Eval("ConsultantName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="SourceID" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lbllsSource" Text='<%#Eval("lsSource") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Others" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lbllsOthersInfo" Text='<%#Eval("lsOthersInfo") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Client Name">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblName" Text='<%#Eval("lsFirstName") + " " +Eval("lsLastName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="First Name" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblFirstName" Text='<%#Eval("lsFirstName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Last Name" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("lsLastName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Mobile" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblMobile" Text='<%#Eval("lsPhone") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Email ID" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblEmailID" Text='<%#Eval("lsEmailId") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Status" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lsLeadActionsID" Text='<%#Eval("LeadActionsID") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Product">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblProdType" Text='<%#Eval("ProductType") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Product ID" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblProdID" Text='<%#Eval("lsProdType") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Source">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblOrigin" Text='<%#Eval("lsOriginName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Destination">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblDestination" Text='<%#Eval("lsDestinationName") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Depart Date">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblDepartDate" Text='<%#Eval("lsDepartureDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Return Date">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblReturnDate" Text='<%#Eval("lsReturnDate", "{0:dd-MM-yyyy}").ToString() == ""? "NA": Eval("lsReturnDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="NoofAdults" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblAdult" Text='<%#Eval("lsAdults") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="NoofChild" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblChildren" Text='<%#Eval("lsChildren") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="NoofInfants" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblInfants" Text='<%#Eval("lsInfants") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Budget" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblBudget" Text='<%#Eval("lsBudget") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Notes" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblNotes" Text='<%#Eval("lsNotes") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Quoted Price" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblQuotedPrice" Text='<%#Eval("lsQuotedPrice") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Final Price" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblFinalPrice" Text='<%#Eval("lsFinalPrice") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="CreatedBy" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblCreatedBy" Text='<%#Eval("lsCreatedBy") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Assigned To">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblAssignedto" Text='<%#Eval("AssignedTo").ToString() == "" ? "Not assigned to anyone" : Eval("AssignedTo") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Assigned By">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblAssignedby" Text='<%#Eval("AssignedBy").ToString() == "" ? "Not assigned by anyone" : Eval("AssignedBy") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Status">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Description" Visible="false">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblDescription" Text='<%#Eval("Description") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <%--  <asp:TemplateField HeaderText="Action" HeaderStyle-Width="110px">
-                                <ItemTemplate>
-                                    <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
-                                        CommandName="EditLead" ToolTip="Edit" />
-                                    <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
-                                        CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
-                                    <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
-                                        CommandName="Action" ToolTip="Actions" />
-                                    <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
-                                        CommandName="Quote" ToolTip="Generate Quote" />
-                                    <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
-                                        CommandName="PDF" ToolTip="Download Quote" Visible="false" />
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
+                            <asp:BoundField DataField="Quote" HeaderText="Quote No" ReadOnly="true" />
+                            <asp:BoundField DataField="lsSourceRef" HeaderText="Source" ReadOnly="true" />
+                            <asp:BoundField DataField="ConsultantName" HeaderText="Created By" ReadOnly="true" />
+                            <asp:BoundField DataField="ClientName" HeaderText="Client Name" ReadOnly="true" />
+                            <%--<asp:BoundField DataField="CREATEDDATE" HeaderText="Date & Time" ReadOnly="true" />
+                            <asp:BoundField DataField="CREATEDBY" HeaderText="Lead Created By" ReadOnly="true" />
+                            <asp:BoundField DataField="ASSIGNEDTO" HeaderText="Lead Allocated To(TC)" ReadOnly="true" />
+                            <asp:BoundField DataField="STATUS" HeaderText="Lead Status" ReadOnly="true" />
+                            <asp:BoundField DataField="SERVICES" HeaderText="Services" ReadOnly="true" />
+                            <asp:BoundField DataField="CLASS" HeaderText="Flight Class" ReadOnly="true" />--%>                          
                         </Columns>
                     </asp:GridView>
                 </div>
