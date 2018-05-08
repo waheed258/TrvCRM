@@ -244,7 +244,7 @@ public partial class Quote : System.Web.UI.Page
         {
             QuoteEntity qtEntity = new QuoteEntity();
 
-            qtEntity.CarHireDetails = txtHotelInfo.Text;
+            qtEntity.CarHireDetails = txtCarHireDetails.Text;
             qtEntity.ConsultantName = Session["Name"].ToString();
             qtEntity.CostForAdult = txtAdultPrice.Text;
             qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
