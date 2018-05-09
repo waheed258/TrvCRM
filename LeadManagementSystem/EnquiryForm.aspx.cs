@@ -131,6 +131,9 @@ public partial class EnquiryForm : System.Web.UI.Page
                         leadEntity.UpdatedBy = 0;
                         leadEntity.LeadStatus = 2;
                         leadEntity.CreatedBy = 2;
+                        leadEntity.FollowupDate = "";
+                        leadEntity.FollowupDesc = "";
+                        leadEntity.LeadDescription = "";
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
                         {
@@ -181,7 +184,8 @@ public partial class EnquiryForm : System.Web.UI.Page
                  string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                  string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
                 // string FromPassword = "Active@321#";
-                 string MailTo = "ramesh.palaparti@dinoosys.com";
+                // string MailTo = "ramesh.palaparti@dinoosys.com";
+                 string MailTo = string.Empty;
                  string DisplayNameTo = string.Empty;
                  string MailCc = string.Empty;
                  string DisplayNameCc = string.Empty;
@@ -194,14 +198,14 @@ public partial class EnquiryForm : System.Web.UI.Page
                  {
                      Subject = "New website enquiry submitted";
                      MailCc = "";
-
+                     MailTo = "consultants@serendipitytours.co.za";
                      MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";
                      MailText += "<table border='1'><tbody>";
                      MailText += "<tr><td>Name</td><td>" + clName + "</td></tr>";
                      MailText += "<tr><td>Email</td><td>" + clEmail + "</td></tr>";
                      MailText += "<tr><td>Phone</td><td>" + clPhone + "</td></tr>";
-                     MailText += "<tr><td>Enquiry URL</td><td>URL</td></tr>";
-                     MailText += "<tr><td>View Lead</td><td>URL</td></tr>";
+                     MailText += "<tr><td>Enquiry URL</td><td>http://tcrm.askswg.co.za/EnquiryForm</td></tr>";
+                     MailText += "<tr><td>View Lead</td><td>http://tcrm.askswg.co.za/NewLead</td></tr>";
                      MailText += "";
                      MailText += "</tbody></table>";
 

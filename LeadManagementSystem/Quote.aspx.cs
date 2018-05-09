@@ -495,7 +495,7 @@ public partial class Quote : System.Web.UI.Page
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();              
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();               
-                string MailTo = "ramesh.palaparti@dinoosys.com";
+                string MailTo = clEmail;
                 string DisplayNameTo = string.Empty;
                 string MailCc = string.Empty;
                 string DisplayNameCc = string.Empty;

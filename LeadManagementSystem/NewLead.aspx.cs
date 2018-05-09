@@ -505,7 +505,7 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.QuotedPrice = 0;
                         leadEntity.FinalPrice = 0;
                         leadEntity.UpdatedBy = 0;
-                        leadEntity.LeadStatus = 6;
+                        leadEntity.LeadStatus = 2;
                         leadEntity.FollowupDate = txtFollowUp.Text;
                         leadEntity.FollowupDesc = txtDescription.Text;
                         leadEntity.LeadDescription = txtDescription.Text;
