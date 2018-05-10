@@ -44,8 +44,10 @@
                 else {
                     alert("Enter Adult Price");
                     $('#ContentPlaceHolder1_ddlAdultPersons').attr("disabled", "disabled");
-                }
+                }  
             });
+
+
 
             $("#ContentPlaceHolder1_txtChildPrice").blur(function () {
                 var value = $(this).val();
