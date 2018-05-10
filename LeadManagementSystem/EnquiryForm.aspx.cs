@@ -198,7 +198,8 @@ public partial class EnquiryForm : System.Web.UI.Page
                  {
                      Subject = "New website enquiry submitted";
                      MailCc = "";
-                     MailTo = "consultants@serendipitytours.co.za";
+                     MailTo = clEmail;
+                     //MailTo = "consultants@serendipitytours.co.za";
                      MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";
                      MailText += "<table border='1'><tbody>";
                      MailText += "<tr><td>Name</td><td>" + clName + "</td></tr>";
