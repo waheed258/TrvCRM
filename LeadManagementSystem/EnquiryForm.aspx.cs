@@ -18,10 +18,16 @@ public partial class EnquiryForm : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {
+        {         
+
             if (!IsPostBack)
             {
                 GetProducts();
+
+                hdfpackid.Value = Request.QueryString["packid"];
+                hdfpacktype.Value = Request.QueryString["ptype"];
+                ddlPackage.SelectedValue = hdfpacktype.Value;
+                txtBudget.Text = Request.QueryString["price"];
             }
         }
         catch { }
@@ -134,6 +140,7 @@ public partial class EnquiryForm : System.Web.UI.Page
                         leadEntity.FollowupDate = "";
                         leadEntity.FollowupDesc = "";
                         leadEntity.LeadDescription = "";
+                        leadEntity.PackageId = hdfpackid.Value;
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
                         {
@@ -143,7 +150,10 @@ public partial class EnquiryForm : System.Web.UI.Page
 
                             SendMail(clName, txtEmail.Text, txtMobile.Text, ddlPackage.SelectedItem.Text);
 
-                            Clear();
+                            //Clear();
+
+                            Response.Redirect("http://www.serendipitytravel.co.za/");
+
                         }
                         else
                         {

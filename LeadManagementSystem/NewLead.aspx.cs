@@ -271,6 +271,7 @@ public partial class NewLead : System.Web.UI.Page
             leadEntity.Notes = txtNotes.Text;
             leadEntity.QuotedPrice = 0;
             leadEntity.FinalPrice = 0;
+            leadEntity.PackageId = "";
 
             int result = leadBL.CUDLead(leadEntity, 'D');
             if (result == 1)
@@ -407,6 +408,7 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.LeadStatus = Convert.ToInt32(ddlStatus.SelectedValue);
                         leadEntity.CreatedBy = 0;
                         leadEntity.LeadDescription = txtDescription.Text;
+                        leadEntity.PackageId = "";
 
                         if (ddlStatus.SelectedValue == "4")
                         {
@@ -510,6 +512,7 @@ public partial class NewLead : System.Web.UI.Page
                         leadEntity.FollowupDesc = txtDescription.Text;
                         leadEntity.LeadDescription = txtDescription.Text;
                         leadEntity.CreatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
+                        leadEntity.PackageId = "";
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result == 1)
                         {

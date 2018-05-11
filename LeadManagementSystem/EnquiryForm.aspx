@@ -90,6 +90,8 @@
 </head>
 <body>
    <form id="form1" runat="server">
+       <asp:HiddenField ID="hdfpackid" Value="0" runat="server" />
+       <asp:HiddenField ID="hdfpacktype" Value="0" runat="server" />
         <h1>Enquiry Form </h1>
         <div class="booking-form-w3layouts">
              <div class="main-flex-w3ls-sectns">               
