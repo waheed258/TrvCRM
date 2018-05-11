@@ -45,6 +45,9 @@ namespace BusinessEntities
 
         public int FollowupID { get; set; }       
         public string FollowupDate { get; set; }
-        public string FollowupDesc { get; set; }    
+        public string FollowupDesc { get; set; }
+
+        public string PackageId { get; set; } 
+
     }
 }

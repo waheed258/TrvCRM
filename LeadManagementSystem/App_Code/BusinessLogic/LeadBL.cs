@@ -66,6 +66,7 @@ namespace BusinessLogic
             hashtable.Add("@lsOriginName", leadEntity.OriginName);
             hashtable.Add("@lsDestinationName", leadEntity.DestinationName);
             hashtable.Add("@lsLeadDesc", leadEntity.LeadDescription);
+
             if (leadEntity.DepartureDate != "")
             {
                 hashtable.Add("@lsDepartureDate", DateTime.ParseExact(leadEntity.DepartureDate, "dd-MM-yyyy", null));
@@ -91,6 +92,7 @@ namespace BusinessLogic
             hashtable.Add("@lsQuotedPrice", leadEntity.QuotedPrice);
             hashtable.Add("@lsFinalPrice", leadEntity.FinalPrice);
             hashtable.Add("@Operation", Operation);
+            hashtable.Add("@lsPackageId", leadEntity.PackageId);
 
             int result = dataUtilities.ExecuteNonQuery("usp_CUDLead", hashtable);
             return result;
