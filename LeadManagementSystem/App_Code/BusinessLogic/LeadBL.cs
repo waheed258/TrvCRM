@@ -28,6 +28,13 @@ namespace BusinessLogic
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAllLeads", hashtable);
             return ds;
         }
+
+        public DataSet GetLeadsReport(string strSearchBy,string strSearchValue)
+        {
+
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_LeadReport",strSearchBy,strSearchValue);
+            return ds;
+        }
         public int CUDLead(LeadEntity leadEntity, char Operation)
         {
             Hashtable hashtable = new Hashtable();

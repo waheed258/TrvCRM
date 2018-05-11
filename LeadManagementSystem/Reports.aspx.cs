@@ -8,10 +8,10 @@ using BusinessEntities;
 using BusinessLogic;
 using System.Data;
 using System.IO;
-using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.text.html.simpleparser;
+
+
 
 
 public partial class Reports : System.Web.UI.Page
@@ -32,9 +32,49 @@ public partial class Reports : System.Web.UI.Page
             {
                 _objComman.getRecordsPerPage(DropPage);
                 GetLeadsList();
+                GetProducts();
+                GetSourceData("A");
             }
         }
         catch { }
+    }
+
+    protected void GetProducts()
+    {
+        try
+        {
+            dataset = leadBL.GetProduct();
+            ddlProduct.DataSource = dataset;
+            ddlProduct.DataTextField = "ProductType";
+            ddlProduct.DataValueField = "ProductTypeID";
+            ddlProduct.DataBind();
+            ddlProduct.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select Product", "-1"));
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
+    protected void GetSourceData(string Opeartion)
+    {
+        try
+        {
+            dataset = leadBL.GetSourceData(Opeartion);
+            ddlSource.DataSource = dataset;
+            ddlSource.DataTextField = "SourceType";
+            ddlSource.DataValueField = "SourceTypeID";
+            ddlSource.DataBind();
+            ddlSource.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select Source", "-1"));
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
     }
     protected void GetLeadsList()
     {
@@ -42,14 +82,7 @@ public partial class Reports : System.Web.UI.Page
         {
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = leadBL.GetLeadsList(0);
-            if (dataset.Tables[0].Rows.Count > 0)
-            {
-                search.Visible = true;
-            }
-            else
-            {
-                search.Visible = false;
-            }
+            
             gvLeadList.DataSource = dataset;
             gvLeadList.DataBind();
         }
@@ -77,6 +110,7 @@ public partial class Reports : System.Web.UI.Page
     {
         try
         {
+            gvLeadList.Visible = true;
             ExportGridToExcel();
         }
         catch { }
@@ -86,6 +120,7 @@ public partial class Reports : System.Web.UI.Page
         try
         {
             PdfPTable pdfptable = new PdfPTable(gvLeadList.HeaderRow.Cells.Count);
+       
             foreach (TableCell headerCell in gvLeadList.HeaderRow.Cells)
             {
 
@@ -107,7 +142,7 @@ public partial class Reports : System.Web.UI.Page
                 }
 
             }
-            Document pdfDocument = new Document(PageSize.A4, 10f, 10f, 10f, 10f);
+            Document pdfDocument = new Document(PageSize.A4.Rotate(), 0, 0, 10, 0);          
             PdfWriter.GetInstance(pdfDocument, Response.OutputStream);
             pdfDocument.Open();
             pdfDocument.Add(pdfptable);
@@ -148,5 +183,51 @@ public partial class Reports : System.Web.UI.Page
         Response.End();
 
     }
+   
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
 
+            string strSearchBy = ddlSearch.SelectedValue;
+
+            if (strSearchBy == "0") {
+                dataset = leadBL.GetLeadsReport(strSearchBy, "");
+            }
+            else if (strSearchBy == "1") {
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlProduct.SelectedValue);
+            }
+            else if (strSearchBy == "2")
+            {
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlSource.SelectedValue);
+            }
+            else if (strSearchBy == "3")
+            {
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlDayWise.SelectedValue);
+            }
+            else if (strSearchBy == "4")
+            {
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlWeek.SelectedValue);
+            }
+            else if (strSearchBy == "5")
+            {
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlMonth.SelectedValue);
+            }
+            else if (strSearchBy == "6")
+            {
+                dataset = leadBL.GetLeadsReport(strSearchBy, txtFrom.Text + "," + txtTo.Text);
+            }
+            
+            gvLeadList.DataSource = dataset;
+            gvLeadList.DataBind();
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+   
 }

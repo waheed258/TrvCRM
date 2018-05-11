@@ -163,7 +163,42 @@ namespace DataLogic
             return dsData;
         }
 
+        public DataSet ExecuteDataSet(string commandText, string parameter1, string parameter2)
+        {
+            var dsData = new DataSet();
+            var objMyDataAdapter = new SqlDataAdapter();
+            SqlConnection objMySqlConn = GetSqlConnection();
+            try
+            {
+                if (objMySqlConn == null)
+                {
+                    return null;
+                }
+                var objSqlCommand = new SqlCommand
+                {
+                    Connection = objMySqlConn,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = commandText,
+                    CommandTimeout = 0
+                };
 
+                objSqlCommand.Parameters.AddWithValue("@SearchBy", parameter1);
+                objSqlCommand.Parameters.AddWithValue("@Value", parameter2);
+
+                objMyDataAdapter.SelectCommand = objSqlCommand;
+                objMyDataAdapter.Fill(dsData);
+
+                return dsData;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                objMySqlConn.Close();
+            }
+        }
 
 
         #endregion
