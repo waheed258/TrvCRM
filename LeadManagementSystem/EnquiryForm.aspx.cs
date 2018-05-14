@@ -208,8 +208,9 @@ public partial class EnquiryForm : System.Web.UI.Page
                  {
                      Subject = "New website enquiry submitted";
                      MailCc = "";
-                     MailTo = clEmail;
+                     //MailTo = clEmail;
                      //MailTo = "consultants@serendipitytours.co.za";
+                     MailTo = "karen@serendipitytours.co.za";
                      MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";
                      MailText += "<table border='1'><tbody>";
                      MailText += "<tr><td>Name</td><td>" + clName + "</td></tr>";
@@ -229,7 +230,8 @@ public partial class EnquiryForm : System.Web.UI.Page
                  try
                  {
                      Subject = "Thank You for Inquiring with Serendipity Tours !!";
-                     MailTo = clEmail;
+                     //MailTo = clEmail;
+                     MailTo = "karen@serendipitytours.co.za";
                      MailCc = "";
 
                      MailText = "<b> Dear " + clName + ", </b><br/><br/>";
