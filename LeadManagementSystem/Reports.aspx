@@ -71,6 +71,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="outter-wp">
+        <asp:HiddenField ID="hdfSearchValue" runat="server" Value="" />
+        <asp:HiddenField ID="hdfSearchBy" runat="server" Value="0" />
         <div>
             <div class="row">
                 <div class="col-lg-12">

@@ -31,7 +31,10 @@ public partial class Reports : System.Web.UI.Page
             if (!IsPostBack)
             {
                 _objComman.getRecordsPerPage(DropPage);
-                GetLeadsList();
+
+                //GetLeadsList();
+                dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+                bindGrid(dataset);
                 GetProducts();
                 GetSourceData("A");
             }
@@ -95,12 +98,16 @@ public partial class Reports : System.Web.UI.Page
     }
     protected void DropPage_SelectedIndexChanged(object sender, EventArgs e)
     {
-        GetLeadsList();
+        //GetLeadsList();
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        bindGrid(dataset);
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvLeadList.PageIndex = e.NewPageIndex;
-        GetLeadsList();
+        //GetLeadsList();
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        bindGrid(dataset);
     }
     protected void gvLeadList_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -188,39 +195,48 @@ public partial class Reports : System.Web.UI.Page
     {
         try
         {
+            
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
 
             string strSearchBy = ddlSearch.SelectedValue;
+            hdfSearchBy.Value = strSearchBy;
 
             if (strSearchBy == "0") {
                 dataset = leadBL.GetLeadsReport(strSearchBy, "");
+                hdfSearchValue.Value = "";
             }
             else if (strSearchBy == "1") {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlProduct.SelectedValue);
+                hdfSearchValue.Value = ddlProduct.SelectedValue;
             }
             else if (strSearchBy == "2")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlSource.SelectedValue);
+                hdfSearchValue.Value = ddlSource.SelectedValue;
             }
             else if (strSearchBy == "3")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlDayWise.SelectedValue);
+                hdfSearchValue.Value = ddlDayWise.SelectedValue;
             }
             else if (strSearchBy == "4")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlWeek.SelectedValue);
+                hdfSearchValue.Value = ddlWeek.SelectedValue;
             }
             else if (strSearchBy == "5")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlMonth.SelectedValue);
+                hdfSearchValue.Value = ddlMonth.SelectedValue;
             }
             else if (strSearchBy == "6")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, txtFrom.Text + "," + txtTo.Text);
+                hdfSearchValue.Value = txtFrom.Text + "," + txtTo.Text;
             }
+
+            bindGrid(dataset);
             
-            gvLeadList.DataSource = dataset;
-            gvLeadList.DataBind();
         }
         catch (Exception ex)
         {
@@ -229,5 +245,23 @@ public partial class Reports : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
+
+    private void bindGrid(DataSet ds)
+    {
+        try
+        {
+            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+
+            gvLeadList.DataSource = ds;
+            gvLeadList.DataBind();
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }   
+    }
+
    
 }
