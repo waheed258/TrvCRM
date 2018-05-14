@@ -81,7 +81,10 @@
                 }
             });
             $('#txtBudget').on('change', function () {
-                this.value = parseFloat(this.value).toFixed(2);
+                if (this.value == "")
+                    this.value = 0;
+                else
+                    this.value = parseFloat(this.value).toFixed(2);                
             });
            
         });
@@ -116,7 +119,7 @@
 
             <div class="main-flex-w3ls-sectns">
                 <div class="field-agileinfo-spc form-w3-agile-text1">
-                    <asp:TextBox ID="txtDepart" class="form-control" runat="server" placeholder="Deapart (DD-MM-YYYY)"></asp:TextBox>
+                    <asp:TextBox ID="txtDepart" class="form-control" runat="server" placeholder="Depart (DD-MM-YYYY)"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvDepart" runat="server" ControlToValidate="txtDepart" ForeColor="#d0582e"
                         ErrorMessage="Please Enter Depart Date" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
@@ -173,7 +176,7 @@
                         ErrorMessage="Please Select Product" ValidationGroup="Consultant" InitialValue="-1" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
                 <div class="field-agileinfo-spc form-w3-agile-text2">
-                    <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price"></asp:TextBox>
+                    <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price" Text="0"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvBudget" runat="server" ControlToValidate="txtBudget" ForeColor="#d0582e"
                         ErrorMessage="Please Enter Budget" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>

@@ -152,7 +152,8 @@ public partial class EnquiryForm : System.Web.UI.Page
 
                             //Clear();
 
-                            Response.Redirect("http://www.serendipitytravel.co.za/");
+                            //Response.Redirect("http://www.serendipitytravel.co.za/");
+                            Response.Redirect("Thankyou");
 
                         }
                         else
@@ -194,7 +195,7 @@ public partial class EnquiryForm : System.Web.UI.Page
                  string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                  string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
                 // string FromPassword = "Active@321#";
-                // string MailTo = "ramesh.palaparti@dinoosys.com";
+                 //string MailTo = "ramesh.palaparti@dinoosys.com";
                  string MailTo = string.Empty;
                  string DisplayNameTo = string.Empty;
                  string MailCc = string.Empty;
@@ -207,8 +208,7 @@ public partial class EnquiryForm : System.Web.UI.Page
                  try
                  {
                      Subject = "New website enquiry submitted";
-                     MailCc = "";
-                     //MailTo = clEmail;
+                     MailCc = "";                    
                      //MailTo = "consultants@serendipitytours.co.za";
                      MailTo = "karen@serendipitytours.co.za";
                      MailText = "Hi, <br/><br/><b> New enquiry created : </b><br/><br/><br/>";

@@ -98,6 +98,7 @@ public partial class NewLead : System.Web.UI.Page
             ddlConsultants.DataValueField = "ConsultantID";
             ddlConsultants.DataBind();
             ddlConsultants.Items.Insert(0, new ListItem("--Select Consultant --", "-1"));
+            ViewState["consultData"] = dataset;
         }
         catch
         {
@@ -228,15 +229,15 @@ public partial class NewLead : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
                 else if (e.CommandName == "PDF")
-                {   
+                {
                     string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
                     //string path = Server.MapPath("~/QuotePDF");
                     //Process.Start(fileName);
                     string path = "http://tcrm.askswg.co.za/QuotePDF/";
                     string fileName = path + "\\" + quoteNumber + ".pdf";
                     string s = "window.open('" + fileName + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                   
-                   
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+
                 }
             }
         }
@@ -566,7 +567,52 @@ public partial class NewLead : System.Web.UI.Page
         leadEntity.AssignedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
         if (ddlAssignLead.SelectedValue == "1")
         {
+            string Email = string.Empty;
             leadEntity.AssignedTo = Convert.ToInt32(ddlConsultants.SelectedValue);
+            DataSet data = (DataSet)ViewState["consultData"];
+
+            DataTable selectedTable = data.Tables[0].AsEnumerable()
+                            .Where(r => r.Field<int>("ConsultantID") == Convert.ToInt32(ddlConsultants.SelectedValue))
+                            .CopyToDataTable();
+            Email = selectedTable.Rows[0]["Email"].ToString();
+            string Name = selectedTable.Rows[0]["Name"].ToString();
+
+            DataSet ds = leadBL.GetMailInfo();
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();               
+                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();               
+                string MailTo = string.Empty;
+                string DisplayNameTo = string.Empty;
+                string MailCc = string.Empty;
+                string DisplayNameCc = string.Empty;
+                string MailBcc = string.Empty;
+                string Subject = string.Empty;
+                string MailText = string.Empty;
+                string Attachment = string.Empty;
+
+                try
+                {
+                    Subject = "New Lead Assigned to you.";
+                    MailCc = "";                  
+                    //MailTo = Email;
+                    MailTo = "karen@serendipitytours.co.za";
+
+                    MailText = "Hi " + Name + ", <br/><br/><br/>";
+                    MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
+                    MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
+                  
+
+                    CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+
+                }
+                catch
+                { }
+            }
+
         }
         else if (ddlAssignLead.SelectedValue == "2")
         {
