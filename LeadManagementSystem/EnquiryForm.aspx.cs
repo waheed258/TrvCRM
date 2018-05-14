@@ -229,7 +229,7 @@ public partial class EnquiryForm : System.Web.UI.Page
 
                  try
                  {
-                     Subject = "Thank You for Inquiring with Serendipity Tours !!";
+                     Subject = "Thank You for Enquiring with Serendipity Tours !!";
                      //MailTo = clEmail;
                      MailTo = "karen@serendipitytours.co.za";
                      MailCc = "";
