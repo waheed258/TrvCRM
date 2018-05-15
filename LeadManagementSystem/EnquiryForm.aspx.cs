@@ -202,11 +202,12 @@ public partial class EnquiryForm : System.Web.UI.Page
                  string DisplayNameCc = string.Empty;
                  string MailBcc = string.Empty;
                  string Subject = string.Empty;
-                 string MailText = string.Empty;
+                 
                  string Attachment = string.Empty;
 
                  try
                  {
+                     string MailText = string.Empty;
                      Subject = "New website enquiry submitted";
                      MailCc = "";                    
                      //MailTo = "consultants@serendipitytours.co.za";
@@ -229,23 +230,24 @@ public partial class EnquiryForm : System.Web.UI.Page
 
                  try
                  {
+                     string MailText = string.Empty;
                      Subject = "Thank You for Enquiring with Serendipity Tours !!";
                      //MailTo = clEmail;
                      MailTo = "karen@serendipitytours.co.za";
                      MailCc = "";
 
-                     MailText = "<b> Dear " + clName + ", </b><br/><br/>";
+                     MailText = "<b> Dear " + clName + ", </b><br/>";
 
-                     MailText += "Trust you are well. <br/>";
-                     MailText += "Thank you for your query. <br/><br/>";
+                     MailText += "Thank you for your travel enquiry. <br/><br/>";
 
-                     MailText += "Query / Package :" + clPackageName + "<br/><br/>";
-                     MailText += "We will get back to you at the earliest. <br/><br/>";
+                     MailText += "Query / Package : " + clPackageName + "<br/><br/>";
+                     MailText += "A consultant will be in touch shortly. <br/><br/>";
 
                      MailText += "Have Serendipitous Day! <br/><br/><br/>";
-
-                     MailText += "Kind Regards <br/><br/>";
-                     MailText += "Serendipity Team";
+                     
+                     MailText += "<img src='http://tcrm.askswg.co.za/images/Regards.jpg' /> <br/>";
+                     MailText += "<strong style='color:#0b5394;'> Serendipity​ Travel </strong>​ <br/>";
+                     MailText += "<img src='http://tcrm.askswg.co.za/images/Footer.png' width='300' /> <br/>";
 
                      CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
