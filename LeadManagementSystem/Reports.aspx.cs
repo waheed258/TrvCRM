@@ -163,17 +163,21 @@ public partial class Reports : System.Web.UI.Page
     {
         //required to avoid the runtime error "  
         //Control 'GridView1' of type 'GridView' must be placed inside a form tag with runat=server."  
-    }  
+    }
 
 
     private void ExportGridToExcel()
     {
+        gvLeadList.AllowPaging = false;
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        bindGrid(dataset);
+
         Response.Clear();
         Response.Buffer = true;
         Response.ClearContent();
         Response.ClearHeaders();
         Response.Charset = "";
-        string FileName = "LeadReport" + DateTime.Now + ".xls";
+        string FileName = "Lead_Report - " + DateTime.Now + ".xls";
         StringWriter strwritter = new StringWriter();
         HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
         Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -183,9 +187,9 @@ public partial class Reports : System.Web.UI.Page
         gvLeadList.HeaderStyle.Font.Bold = true;
         gvLeadList.RenderControl(htmltextwrtter);
         Response.Write(strwritter.ToString());
-        Response.End();
+        Response.End();      
 
-    }
+    }    
    
     protected void btnSearch_Click(object sender, EventArgs e)
     {
@@ -247,8 +251,8 @@ public partial class Reports : System.Web.UI.Page
         try
         {
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
-
-            gvLeadList.DataSource = ds;
+            DataSet dsData = ds;
+            gvLeadList.DataSource = dsData;
             gvLeadList.DataBind();
         }
         catch (Exception ex)
