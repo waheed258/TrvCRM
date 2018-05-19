@@ -111,7 +111,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li id="menu-academico-boletim"><a href="widget.html">Consultants List</a></li>
                             </ul>--%>
                         </li>
-                        <li id="menu-academico" title="Leads"><a href="NewLead.aspx"><i class="fa fa-file-text-o"></i><span>Leads</span> </a>
+                        <li id="menu-academico" title="Leads"><a href="Lead.aspx"><i class="fa fa-file-text-o"></i><span>Leads</span> </a>
                             <%-- <ul id="menu-academico-sub">
                                 <li id="menu-academico-avaliacoes"><a href="forms.html">New Lead</a></li>
                                 <li id="menu-academico-boletim"><a href="validation.html">Leads List</a></li>
