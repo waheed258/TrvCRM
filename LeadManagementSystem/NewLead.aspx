@@ -83,13 +83,7 @@
     <div class="outter-wp">
         <!--/sub-heard-part-->
         <div class="row">
-            <div class="col-lg-8">
-                <%-- <div class="sub-heard-part">
-                    <ol class="breadcrumb m-b-0">
-                        <li><a>Consultant</a></li>
-                        <li class="active">New Consultant</li>
-                    </ol>
-                </div>--%>
+            <div class="col-lg-8">               
                 <asp:ImageButton ID="imgbtnAddLead" ImageUrl="~/images/add-lead.png" runat="server" OnClick="imgbtnAddLead_Click" />
             </div>
             <div class="col-lg-4 text-right">

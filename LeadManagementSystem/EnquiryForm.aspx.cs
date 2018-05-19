@@ -236,7 +236,7 @@ public partial class EnquiryForm : System.Web.UI.Page
                      MailTo = "karen@serendipitytours.co.za";
                      MailCc = "";
 
-                     MailText = "<b> Dear " + clName + ", </b><br/>";
+                     MailText = "<b> Dear " + clName + ", </b><br/><br/>";
 
                      MailText += "Thank you for your travel enquiry. <br/><br/>";
 

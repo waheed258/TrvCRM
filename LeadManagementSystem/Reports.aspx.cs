@@ -10,10 +10,6 @@ using System.Data;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-
-
-
-
 public partial class Reports : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();

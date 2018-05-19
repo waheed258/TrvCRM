@@ -6,6 +6,9 @@ using DataLogic;
 using BusinessEntities;
 using System.Data;
 using System.Collections;
+using System.Data;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace BusinessLogic
 {
@@ -26,6 +29,13 @@ namespace BusinessLogic
             Hashtable hashtable = new Hashtable();
             hashtable.Add("@lsID", ID);
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAllLeads", hashtable);
+            return ds;
+        }
+        public DataSet GetAssignedLeadsList(int ID)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@lsID", ID);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAllAssignedLeads", hashtable);
             return ds;
         }
 
@@ -104,8 +114,7 @@ namespace BusinessLogic
             int result = dataUtilities.ExecuteNonQuery("usp_CUDLead", hashtable);
             return result;
         }
-
-
+           
         public int LeadAction(LeadEntity leadEntity)
         {
             Hashtable hashtable = new Hashtable();
