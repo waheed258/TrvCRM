@@ -296,15 +296,14 @@ public partial class Lead : System.Web.UI.Page
     }
     protected void gvLeadList_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //if (e.Row.RowType == DataControlRowType.DataRow)
-        //{
-        //    string quote = ((Label)e.Row.FindControl("lblQuote")).Text.ToString();
-        //    if (quote != "0")
-        //    {
-        //        ImageButton controlButton = e.Row.FindControl("imgbtnPDF") as ImageButton;
-        //        controlButton.Visible = true;
-        //    }
-        //}
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            if (Session["LoginID"].ToString() == "admin")
+            {
+                ImageButton deleteButton = e.Row.FindControl("btnDelete") as ImageButton;
+                deleteButton.Visible = true;
+            }
+        }
     }
     protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
     {
@@ -618,6 +617,8 @@ public partial class Lead : System.Web.UI.Page
             leadEntity.SourceID = 0;
             leadEntity.SourceRef = "";
             leadEntity.Others = txtOthers.Text;
+            leadEntity.AssignedTo = 0;
+            leadEntity.AssignedBy = 0;
             leadEntity.FirstName = txtFirstName.Text;
             leadEntity.LastName = txtLastName.Text;
             leadEntity.Mobile = txtMobile.Text;
@@ -634,8 +635,13 @@ public partial class Lead : System.Web.UI.Page
             leadEntity.Notes = txtNotes.Text;
             leadEntity.QuotedPrice = 0;
             leadEntity.FinalPrice = 0;
+            leadEntity.UpdatedBy = 0;
+            leadEntity.LeadStatus = 0;
+            leadEntity.CreatedBy = 0;
             leadEntity.PackageId = "";
-
+            leadEntity.FollowupDate = "";
+            leadEntity.FollowupDesc = "";
+            leadEntity.LeadDescription = "";
             int result = leadBL.CUDLead(leadEntity, 'D');
             if (result == 1)
             {
@@ -644,7 +650,7 @@ public partial class Lead : System.Web.UI.Page
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                 GetLeadsList();
                 Clear();
-
+                GetAssinedLeadsList();
             }
             else
             {
@@ -739,7 +745,7 @@ public partial class Lead : System.Web.UI.Page
                 {
 
                     _objComman.GetStatus(ddlStatus);
-                   //status.Visible = true;
+                    //status.Visible = true;
                     newlead.Visible = true;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
@@ -807,7 +813,7 @@ public partial class Lead : System.Web.UI.Page
                     lbldeletemessage.Text = "Are you sure, you want to delete Consultant Details?";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
                 }
-                
+
                 else if (e.CommandName == "Quote")
                 {
                     string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
@@ -849,6 +855,11 @@ public partial class Lead : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            if (Session["LoginID"].ToString() == "admin")
+            {
+                ImageButton deleteButton = e.Row.FindControl("btnDelete") as ImageButton;
+                deleteButton.Visible = true;
+            }
             string quote = ((Label)e.Row.FindControl("lblQuote")).Text.ToString();
             if (quote != "0")
             {
