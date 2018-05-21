@@ -519,7 +519,11 @@
                                                             <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-
+                                                    <asp:TemplateField HeaderText="Creted On">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Description" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblDescription" Text='<%#Eval("Description") %>'></asp:Label>
@@ -728,7 +732,11 @@
                                                             <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-
+                                                    <asp:TemplateField HeaderText="Creted On">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Description" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblDescription" Text='<%#Eval("Description") %>'></asp:Label>
