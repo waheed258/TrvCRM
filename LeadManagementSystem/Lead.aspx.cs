@@ -341,8 +341,8 @@ public partial class Lead : System.Web.UI.Page
                 {
                     Subject = "New Lead Assigned to you.";
                     MailCc = "";
-                    //MailTo = Email;
-                    MailTo = "karen@serendipitytours.co.za";
+                    MailTo = Email;
+                    //MailTo = "karen@serendipitytours.co.za";
 
                     MailText = "Hi " + Name + ", <br/><br/><br/>";
                     MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
