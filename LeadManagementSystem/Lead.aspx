@@ -262,7 +262,7 @@
                     </div>
                     <div class="vali-form" id="status" runat="server">
                         <div class="col-md-3">
-                            <label class="control-label">Staus</label>
+                            <label class="control-label">Status</label>
                             <asp:DropDownList ID="ddlStatus" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
                             </asp:DropDownList>
                             <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus" ForeColor="#d0582e"
