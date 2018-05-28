@@ -519,7 +519,7 @@
                                                             <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Creted On">
+                                                    <asp:TemplateField HeaderText="Created On">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -536,7 +536,7 @@
                                                             <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
                                                                 CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
                                                             <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
-                                                                CommandName="Action" ToolTip="Actions" />
+                                                                CommandName="Action" ToolTip="Pickup/Assign" />
                                                            <%-- <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                                                 CommandName="Quote" ToolTip="Generate Quote" />
                                                             <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
@@ -732,7 +732,7 @@
                                                             <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Creted On">
+                                                    <asp:TemplateField HeaderText="Created On">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>
