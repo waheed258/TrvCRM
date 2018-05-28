@@ -186,18 +186,18 @@
                         <Columns>
                             <asp:BoundField DataField="QuoteNumber" HeaderText="Quote No" ReadOnly="true" />
                             <asp:BoundField DataField="lsSourceRef" HeaderText="Source" ReadOnly="true" />
-                            <asp:BoundField DataField="ProductType" HeaderText="Product" ReadOnly="true" />
-                            <asp:BoundField DataField="ConsultantName" HeaderText="Created By" ReadOnly="true" />
+                            <asp:BoundField DataField="ProductType" HeaderText="Product" ReadOnly="true"/>
+                            <asp:BoundField DataField="ConsultantName" HeaderText="Created By" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="ClientName" HeaderText="Client Name" ReadOnly="true" />
-                            <asp:BoundField DataField="lsEmailId" HeaderText="Email" ReadOnly="true" />
-                            <asp:BoundField DataField="lsPhone" HeaderText="Phone" ReadOnly="true" />
-                            <asp:BoundField DataField="lsOriginName" HeaderText="Source" ReadOnly="true" />
+                            <asp:BoundField DataField="lsEmailId" HeaderText="Email" ReadOnly="true" Visible="false"/>
+                            <asp:BoundField DataField="lsPhone" HeaderText="Phone" ReadOnly="true" Visible="false" />
+                            <asp:BoundField DataField="lsOriginName" HeaderText="Origin" ReadOnly="true" />
                             <asp:BoundField DataField="lsDestinationName" HeaderText="Destination" ReadOnly="true" />
-                            <asp:BoundField DataField="lsDepartureDate" HeaderText="DepartureDate" ReadOnly="true" />
-                            <asp:BoundField DataField="lsReturnDate" HeaderText="ReturnDate" ReadOnly="true" />
+                            <asp:BoundField DataField="lsDepartureDate" HeaderText="DepartureDate" ReadOnly="true" Visible="false" />
+                            <asp:BoundField DataField="lsReturnDate" HeaderText="ReturnDate" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="lsQuotedPrice" HeaderText="Quote Price" ReadOnly="true" />
                             <asp:BoundField DataField="AssignedTo" HeaderText="Assigned To" ReadOnly="true" />
-                            <asp:BoundField DataField="AssignedBy" HeaderText="Assigned By" ReadOnly="true" />
+                            <asp:BoundField DataField="AssignedBy" HeaderText="Assigned By" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="LeadStatusAction" HeaderText="Status" ReadOnly="true" />
                         </Columns>
                     </asp:GridView>
