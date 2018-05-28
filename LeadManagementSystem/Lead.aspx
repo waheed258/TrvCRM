@@ -385,7 +385,7 @@
                                                             <asp:Label runat="server" ID="lbllsSourceRef" Text='<%#Eval("lsSourceRef") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Created By">
+                                                    <asp:TemplateField HeaderText="Created By" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lbllsConsultantName" Text='<%#Eval("ConsultantName") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -432,7 +432,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField HeaderText="Product">
+                                                    <asp:TemplateField HeaderText="Product" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblProdType" Text='<%#Eval("ProductType") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -508,7 +508,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField HeaderText="Assigned By">
+                                                    <asp:TemplateField HeaderText="Assigned By" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblAssignedby" Text='<%#Eval("AssignedBy").ToString() == "" ? "Not assigned by anyone" : Eval("AssignedBy") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -598,7 +598,7 @@
                                                             <asp:Label runat="server" ID="lbllsSourceRef" Text='<%#Eval("lsSourceRef") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Created By">
+                                                    <asp:TemplateField HeaderText="Created By" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lbllsConsultantName" Text='<%#Eval("ConsultantName") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -645,7 +645,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField HeaderText="Product">
+                                                    <asp:TemplateField HeaderText="Product" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblProdType" Text='<%#Eval("ProductType") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -721,7 +721,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField HeaderText="Assigned By">
+                                                    <asp:TemplateField HeaderText="Assigned By" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblAssignedby" Text='<%#Eval("AssignedBy").ToString() == "" ? "Not assigned by anyone" : Eval("AssignedBy") %>'></asp:Label>
                                                         </ItemTemplate>

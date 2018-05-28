@@ -122,11 +122,10 @@ namespace BusinessLogic
             try
             {
                 ddlRpP.Items.Clear();
-                Dictionary<int, string> objRp = new Dictionary<int, string>();
-                objRp.Add(5, "5");
-                objRp.Add(10, "10");
+                Dictionary<int, string> objRp = new Dictionary<int, string>();                
                 objRp.Add(20, "20");
                 objRp.Add(50, "50");
+                objRp.Add(100, "100");
                 ddlRpP.DataSource = objRp;
                 ddlRpP.DataTextField = "Value";
                 ddlRpP.DataValueField = "Key";
