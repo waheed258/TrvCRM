@@ -170,7 +170,7 @@ public partial class Reports : System.Web.UI.Page
     {
         gvLeadList.AllowPaging = false;
         dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
-        bindGrid(dataset);
+        bindExcel(dataset);
 
         Response.Clear();
         Response.Buffer = true;
@@ -183,12 +183,11 @@ public partial class Reports : System.Web.UI.Page
         Response.Cache.SetCacheability(HttpCacheability.NoCache);
         Response.ContentType = "application/vnd.ms-excel";
         Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
-        gvLeadList.GridLines = GridLines.Both;
-        gvLeadList.HeaderStyle.Font.Bold = true;
-        gvLeadList.RenderControl(htmltextwrtter);
+        gvExcel.GridLines = GridLines.Both;
+        gvExcel.HeaderStyle.Font.Bold = true;
+        gvExcel.RenderControl(htmltextwrtter);
         Response.Write(strwritter.ToString());
         Response.End();      
-
     }    
    
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -263,5 +262,20 @@ public partial class Reports : System.Web.UI.Page
         }   
     }
 
-   
+    private void bindExcel(DataSet ds)
+    {
+        try
+        {
+           // gvExcel.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            DataSet dsData = ds;
+            gvExcel.DataSource = dsData;
+            gvExcel.DataBind();
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
 }

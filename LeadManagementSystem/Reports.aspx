@@ -1,12 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.master" AutoEventWireup="true" CodeFile="Reports.aspx.cs" Inherits="Reports" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-     <link href="css/jquery-ui.css" rel="stylesheet" />
+    <link href="css/jquery-ui.css" rel="stylesheet" />
     <script>
         $(function () {
-          
+
             $('#ContentPlaceHolder1_txtFrom').datepicker({
-                startDate: 'today',                
+                startDate: 'today',
                 numberOfMonths: 1,
                 autoclose: true,
                 dateFormat: 'dd-mm-yy',
@@ -40,9 +40,9 @@
                     val == "4" ? $('#dvWeek').removeClass("hide").addClass("show") : $('#dvWeek').removeClass("show").addClass("hide");
                     val == "5" ? $('#dvMonth').removeClass("hide").addClass("show") : $('#dvMonth').removeClass("show").addClass("hide");
                     val == "6" ? $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show") : $('#dvDuration,#dvFrom,#dvTo').removeClass("show").addClass("hide");
-                }               
-                
-                
+                }
+
+
             });
 
             var value = $('#ContentPlaceHolder1_ddlSearch').val();
@@ -73,6 +73,7 @@
     <div class="outter-wp">
         <asp:HiddenField ID="hdfSearchValue" runat="server" Value="" />
         <asp:HiddenField ID="hdfSearchBy" runat="server" Value="0" />
+        <h2 class="inner-tittle">Leads Report</h2>
         <div>
             <div class="row">
                 <div class="col-lg-12">
@@ -141,16 +142,16 @@
                                 <asp:ListItem Value="12">Dec</asp:ListItem>
                             </asp:DropDownList>
                         </div>
-                         <div class="col-lg-8 hide" id="dvDuration">
-                             <div class="col-lg-6" id="dvFrom">
-                                 <label class="control-label">From</label>
-                                 <asp:TextBox runat="server" ID="txtFrom" placeholder="DD-MM-YYYY" CssClass="form-control"></asp:TextBox>
-                             </div>
-                             <div class="col-lg-6" id="dvTo">
-                                 <label class="control-label">To</label>
-                                 <asp:TextBox runat="server" ID="txtTo" placeholder="DD-MM-YYYY" CssClass="form-control"></asp:TextBox>
-                             </div>
-                         </div>
+                        <div class="col-lg-8 hide" id="dvDuration">
+                            <div class="col-lg-6" id="dvFrom">
+                                <label class="control-label">From</label>
+                                <asp:TextBox runat="server" ID="txtFrom" placeholder="DD-MM-YYYY" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="col-lg-6" id="dvTo">
+                                <label class="control-label">To</label>
+                                <asp:TextBox runat="server" ID="txtTo" placeholder="DD-MM-YYYY" CssClass="form-control"></asp:TextBox>
+                            </div>
+                        </div>
                         <div class="col-lg-1" id="dvBtn">
                             <label></label>
                             <asp:Button ID="btnSearch" runat="server" Text="Go" CssClass="btn-default" Style="height: 37px; width: 50px; border: 1px solid #ddd;" OnClick="btnSearch_Click" />
@@ -171,7 +172,7 @@
                         <label class="control-label">Export</label>
                         <asp:ImageButton ID="imgbtnExcel" ImageUrl="images/icon-excel.png" runat="server" Height="35px"
                             ToolTip="Export To Excel" OnClick="imgbtnExcel_Click" />
-                       <%-- <asp:ImageButton ID="imgpdf" ImageUrl="images/PDFIcon.png" runat="server" Height="35px"
+                        <%-- <asp:ImageButton ID="imgpdf" ImageUrl="images/PDFIcon.png" runat="server" Height="35px"
                             ToolTip="Export To PDf" OnClick="imgpdf_Click" />--%>
                     </div>
                 </div>
@@ -186,10 +187,10 @@
                         <Columns>
                             <asp:BoundField DataField="QuoteNumber" HeaderText="Quote No" ReadOnly="true" />
                             <asp:BoundField DataField="lsSourceRef" HeaderText="Source" ReadOnly="true" />
-                            <asp:BoundField DataField="ProductType" HeaderText="Product" ReadOnly="true"/>
+                            <asp:BoundField DataField="ProductType" HeaderText="Product" ReadOnly="true" />
                             <asp:BoundField DataField="ConsultantName" HeaderText="Created By" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="ClientName" HeaderText="Client Name" ReadOnly="true" />
-                            <asp:BoundField DataField="lsEmailId" HeaderText="Email" ReadOnly="true" Visible="false"/>
+                            <asp:BoundField DataField="lsEmailId" HeaderText="Email" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="lsPhone" HeaderText="Phone" ReadOnly="true" Visible="false" />
                             <asp:BoundField DataField="lsOriginName" HeaderText="Origin" ReadOnly="true" />
                             <asp:BoundField DataField="lsDestinationName" HeaderText="Destination" ReadOnly="true" />
@@ -198,6 +199,33 @@
                             <asp:BoundField DataField="lsQuotedPrice" HeaderText="Quote Price" ReadOnly="true" />
                             <asp:BoundField DataField="AssignedTo" HeaderText="Assigned To" ReadOnly="true" />
                             <asp:BoundField DataField="AssignedBy" HeaderText="Assigned By" ReadOnly="true" Visible="false" />
+                            <asp:BoundField DataField="LeadStatusAction" HeaderText="Status" ReadOnly="true" />
+                        </Columns>
+                    </asp:GridView>
+                </div>
+            </div>
+            <div class="tables" style="display:none;">
+                <div class="table table-responsive">
+                    <asp:GridView ID="gvExcel" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true"
+                        EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
+                        PageSize="100"
+                        Style="font-size: 110%;" ForeColor="Black">
+                        <PagerStyle CssClass="pagination_grid" />
+                        <Columns>
+                            <asp:BoundField DataField="QuoteNumber" HeaderText="Quote No" ReadOnly="true" />
+                            <asp:BoundField DataField="lsSourceRef" HeaderText="Source" ReadOnly="true" />
+                            <asp:BoundField DataField="ProductType" HeaderText="Product" ReadOnly="true" />
+                            <asp:BoundField DataField="ConsultantName" HeaderText="Created By" ReadOnly="true" />
+                            <asp:BoundField DataField="ClientName" HeaderText="Client Name" ReadOnly="true" />
+                            <asp:BoundField DataField="lsEmailId" HeaderText="Email" ReadOnly="true"/>
+                            <asp:BoundField DataField="lsPhone" HeaderText="Phone" ReadOnly="true"/>
+                            <asp:BoundField DataField="lsOriginName" HeaderText="Origin" ReadOnly="true" />
+                            <asp:BoundField DataField="lsDestinationName" HeaderText="Destination" ReadOnly="true" />
+                            <asp:BoundField DataField="lsDepartureDate" HeaderText="DepartureDate" ReadOnly="true" />
+                            <asp:BoundField DataField="lsReturnDate" HeaderText="ReturnDate" ReadOnly="true" />
+                            <asp:BoundField DataField="lsQuotedPrice" HeaderText="Quote Price" ReadOnly="true" />
+                            <asp:BoundField DataField="AssignedTo" HeaderText="Assigned To" ReadOnly="true" />
+                            <asp:BoundField DataField="AssignedBy" HeaderText="Assigned By" ReadOnly="true"/>
                             <asp:BoundField DataField="LeadStatusAction" HeaderText="Status" ReadOnly="true" />
                         </Columns>
                     </asp:GridView>
