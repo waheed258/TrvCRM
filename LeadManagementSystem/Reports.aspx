@@ -31,15 +31,16 @@
                 var val = $(this).val();
 
                 $('#dvControls').find('div').removeClass("show").addClass("hide");
-                $('#dvBtn').removeClass("hide").addClass("show")
+                $('#dvBtn').removeClass("hide").addClass("show");
+                $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show");
 
                 if (val != '0') {
                     val == "1" ? $('#dvProduct').removeClass("hide").addClass("show") : $('#dvProduct').removeClass("show").addClass("hide");
                     val == "2" ? $('#dvSource').removeClass("hide").addClass("show") : $('#dvSource').removeClass("show").addClass("hide");
-                    val == "3" ? $('#dvDays').removeClass("hide").addClass("show") : $('#dvDays').removeClass("show").addClass("hide");
-                    val == "4" ? $('#dvWeek').removeClass("hide").addClass("show") : $('#dvWeek').removeClass("show").addClass("hide");
-                    val == "5" ? $('#dvMonth').removeClass("hide").addClass("show") : $('#dvMonth').removeClass("show").addClass("hide");
-                    val == "6" ? $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show") : $('#dvDuration,#dvFrom,#dvTo').removeClass("show").addClass("hide");
+                    val == "3" ? $('#dvConsultant').removeClass("hide").addClass("show") : $('#dvConsultant').removeClass("show").addClass("hide");
+                    //val == "4" ? $('#dvWeek').removeClass("hide").addClass("show") : $('#dvWeek').removeClass("show").addClass("hide");
+                    //val == "5" ? $('#dvMonth').removeClass("hide").addClass("show") : $('#dvMonth').removeClass("show").addClass("hide");
+                    //val == "6" ? $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show") : $('#dvDuration,#dvFrom,#dvTo').removeClass("show").addClass("hide");
                 }
 
 
@@ -50,14 +51,32 @@
             if (value != '0') {
                 value == "1" ? $('#dvProduct').removeClass("hide").addClass("show") : $('#dvProduct').removeClass("show").addClass("hide");
                 value == "2" ? $('#dvSource').removeClass("hide").addClass("show") : $('#dvSource').removeClass("show").addClass("hide");
-                value == "3" ? $('#dvDays').removeClass("hide").addClass("show") : $('#dvDays').removeClass("show").addClass("hide");
-                value == "4" ? $('#dvWeek').removeClass("hide").addClass("show") : $('#dvWeek').removeClass("show").addClass("hide");
-                value == "5" ? $('#dvMonth').removeClass("hide").addClass("show") : $('#dvMonth').removeClass("show").addClass("hide");
-                value == "6" ? $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show") : $('#dvDuration,#dvFrom,#dvTo').removeClass("show").addClass("hide");
+                value == "3" ? $('#dvConsultant').removeClass("hide").addClass("show") : $('#dvConsultant').removeClass("show").addClass("hide");
+                //value == "3" ? $('#dvDays').removeClass("hide").addClass("show") : $('#dvDays').removeClass("show").addClass("hide");
+                //value == "4" ? $('#dvWeek').removeClass("hide").addClass("show") : $('#dvWeek').removeClass("show").addClass("hide");
+                //value == "5" ? $('#dvMonth').removeClass("hide").addClass("show") : $('#dvMonth').removeClass("show").addClass("hide");
+                //value == "6" ? $('#dvDuration,#dvFrom,#dvTo').removeClass("hide").addClass("show") : $('#dvDuration,#dvFrom,#dvTo').removeClass("show").addClass("hide");
             }
 
 
         });
+
+        function dateValidation() {
+            var from = $('#ContentPlaceHolder1_txtFrom').val();
+            var to = $('#ContentPlaceHolder1_txtTo').val();
+            debugger;
+            if (from != '' && to == '')
+            {
+                alert('Please Select To Date');
+                return false;
+            } else if (to != '' && from == '') {
+                alert('Please Select From Date');
+                return false;
+            } else {
+                return true;
+            }
+        }
+
     </script>
     <style>
         .hide {
@@ -73,6 +92,7 @@
     <div class="outter-wp">
         <asp:HiddenField ID="hdfSearchValue" runat="server" Value="" />
         <asp:HiddenField ID="hdfSearchBy" runat="server" Value="0" />
+        <asp:HiddenField ID="hdfDates" runat="server" Value="" />
         <h2 class="inner-tittle">Leads Report</h2>
         <div>
             <div class="row">
@@ -88,21 +108,26 @@
                         <asp:DropDownList runat="server" ID="ddlSearch" CssClass="form-control" Style="padding: 0px;">
                             <asp:ListItem Value="0">All</asp:ListItem>
                             <asp:ListItem Value="1">Product</asp:ListItem>
-                            <asp:ListItem Value="2">Source</asp:ListItem>
-                            <asp:ListItem Value="3">Day wise Report</asp:ListItem>
+                            <asp:ListItem Value="2">Lead Source</asp:ListItem>
+                            <asp:ListItem Value="3">Consultant</asp:ListItem>
+                           <%-- <asp:ListItem Value="3">Day wise Report</asp:ListItem>
                             <asp:ListItem Value="4">Weekly Report</asp:ListItem>
-                            <asp:ListItem Value="5">Monthly Report</asp:ListItem>
-                            <asp:ListItem Value="6">Duration wise Report</asp:ListItem>
+                            <asp:ListItem Value="5">Monthly Report</asp:ListItem>--%>
+                            <%--<asp:ListItem Value="6">Duration wise Report</asp:ListItem>--%>
                         </asp:DropDownList>
                     </div>
-                    <div class="col-lg-7" id="dvControls">
-                        <div class="col-lg-4 hide" id="dvProduct">
+                    <div class="col-lg-8" id="dvControls">
+                        <div class="col-lg-3 hide" id="dvProduct">
                             <label class="control-label">Product</label>
                             <asp:DropDownList ID="ddlProduct" runat="server" CssClass="form-control" Style="padding: 0px;"></asp:DropDownList>
                         </div>
-                        <div class="col-lg-4 hide" id="dvSource">
+                        <div class="col-lg-3 hide" id="dvSource">
                             <label class="control-label">Source</label>
                             <asp:DropDownList ID="ddlSource" runat="server" CssClass="form-control" Style="padding: 0px;"></asp:DropDownList>
+                        </div>
+                        <div class="col-lg-3 hide" id="dvConsultant">
+                            <label class="control-label">Consultants</label>
+                            <asp:DropDownList ID="ddlConsultants" runat="server" CssClass="form-control" Style="padding: 0px;"></asp:DropDownList>
                         </div>
                         <div class="col-lg-3 hide" id="dvDays">
                             <label class="control-label">No of Days</label>
@@ -142,7 +167,7 @@
                                 <asp:ListItem Value="12">Dec</asp:ListItem>
                             </asp:DropDownList>
                         </div>
-                        <div class="col-lg-8 hide" id="dvDuration">
+                        <div class="col-lg-8" id="dvDuration">
                             <div class="col-lg-6" id="dvFrom">
                                 <label class="control-label">From</label>
                                 <asp:TextBox runat="server" ID="txtFrom" placeholder="DD-MM-YYYY" CssClass="form-control"></asp:TextBox>
@@ -154,7 +179,7 @@
                         </div>
                         <div class="col-lg-1" id="dvBtn">
                             <label></label>
-                            <asp:Button ID="btnSearch" runat="server" Text="Go" CssClass="btn-default" Style="height: 37px; width: 50px; border: 1px solid #ddd;" OnClick="btnSearch_Click" />
+                            <asp:Button ID="btnSearch" runat="server" Text="Go" CssClass="btn-default" Style="height: 37px; width: 50px; border: 1px solid #ddd;" OnClick="btnSearch_Click" OnClientClick="return dateValidation();"  />
                         </div>
 
                     </div>

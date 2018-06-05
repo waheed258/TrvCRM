@@ -3,6 +3,14 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <script src="js/jquery-2.1.4.min.js"></script>
+    <style>
+        .LeadColor{
+            width:50px;
+            height:30px;
+            background-color:LightBlue;
+            margin-right:15px;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $("#ContentPlaceHolder1_txtReturnDate").prop('disabled', true);
@@ -123,7 +131,9 @@
             <div class="col-lg-8">
                 <asp:ImageButton ID="imgbtnAddLead" ImageUrl="~/images/add-lead.png" runat="server" OnClick="imgbtnAddLead_Click1" />
             </div>
-            <div class="col-lg-4 text-right">
+            <div class="col-lg-4">
+                <div class="col-lg-3 LeadColor"></div>
+                <strong>Existing Customer</strong>
             </div>
         </div>
         <div class="forms-main" id="newlead" runat="server">
@@ -292,7 +302,8 @@
                 </div>
             </div>
         </div>
-        <div class="forms-main" id="actions" runat="server">
+       
+         <div class="forms-main" id="actions" runat="server">
             <div class="graph-form">
                 <div class="validation-form">
                     <div class="vali-form">
@@ -322,6 +333,8 @@
                 </div>
             </div>
         </div>
+               
+        
         <!--/sub-heard-part-->
         <!--/tabs-->
         <div class="tab-main" id="LeadList" runat="server">
@@ -378,6 +391,11 @@
                                                     <asp:TemplateField HeaderText="ID" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="ID" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblDuplicateLeadList" Text='<%#Eval("lsDuplicateLead") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Source">
@@ -591,6 +609,11 @@
                                                     <asp:TemplateField HeaderText="ID" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                     <asp:TemplateField HeaderText="ID" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblDuplicateLead" Text='<%#Eval("lsDuplicateLead") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Source">

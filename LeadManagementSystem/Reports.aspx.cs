@@ -29,10 +29,11 @@ public partial class Reports : System.Web.UI.Page
                 _objComman.getRecordsPerPage(DropPage);
 
                 //GetLeadsList();
-                dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+                dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
                 bindGrid(dataset);
                 GetProducts();
                 GetSourceData("A");
+                GetConsultants();
             }
         }
         catch { }
@@ -47,7 +48,7 @@ public partial class Reports : System.Web.UI.Page
             ddlProduct.DataTextField = "ProductType";
             ddlProduct.DataValueField = "ProductTypeID";
             ddlProduct.DataBind();
-            ddlProduct.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select Product", "-1"));
+            ddlProduct.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
         }
         catch (Exception ex)
         {
@@ -66,7 +67,26 @@ public partial class Reports : System.Web.UI.Page
             ddlSource.DataTextField = "SourceType";
             ddlSource.DataValueField = "SourceTypeID";
             ddlSource.DataBind();
-            ddlSource.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select Source", "-1"));
+            ddlSource.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
+    protected void GetConsultants()
+    {
+        try
+        {
+            dataset = consultantBL.GetConsultants(0);
+            ddlConsultants.DataSource = dataset;
+            ddlConsultants.DataTextField = "Name";
+            ddlConsultants.DataValueField = "ConsultantID";
+            ddlConsultants.DataBind();
+            ddlConsultants.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));           
         }
         catch
         {
@@ -95,14 +115,14 @@ public partial class Reports : System.Web.UI.Page
     protected void DropPage_SelectedIndexChanged(object sender, EventArgs e)
     {
         //GetLeadsList();
-        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindGrid(dataset);
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvLeadList.PageIndex = e.NewPageIndex;
         //GetLeadsList();
-        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindGrid(dataset);
     }
     protected void gvLeadList_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -169,7 +189,7 @@ public partial class Reports : System.Web.UI.Page
     private void ExportGridToExcel()
     {
         gvLeadList.AllowPaging = false;
-        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value);
+        dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindExcel(dataset);
 
         Response.Clear();
@@ -201,38 +221,41 @@ public partial class Reports : System.Web.UI.Page
             hdfSearchBy.Value = strSearchBy;
 
             if (strSearchBy == "0") {
-                dataset = leadBL.GetLeadsReport(strSearchBy, "");
+                dataset = leadBL.GetLeadsReport(strSearchBy, "", txtFrom.Text + "," + txtTo.Text);
                 hdfSearchValue.Value = "";
             }
             else if (strSearchBy == "1") {
-                dataset = leadBL.GetLeadsReport(strSearchBy, ddlProduct.SelectedValue);
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlProduct.SelectedValue, txtFrom.Text + "," + txtTo.Text);
                 hdfSearchValue.Value = ddlProduct.SelectedValue;
             }
             else if (strSearchBy == "2")
             {
-                dataset = leadBL.GetLeadsReport(strSearchBy, ddlSource.SelectedValue);
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlSource.SelectedValue, txtFrom.Text + "," + txtTo.Text);
                 hdfSearchValue.Value = ddlSource.SelectedValue;
             }
             else if (strSearchBy == "3")
             {
-                dataset = leadBL.GetLeadsReport(strSearchBy, ddlDayWise.SelectedValue);
-                hdfSearchValue.Value = ddlDayWise.SelectedValue;
+                dataset = leadBL.GetLeadsReport(strSearchBy, ddlConsultants.SelectedValue, txtFrom.Text + "," + txtTo.Text);
+                //dataset = leadBL.GetLeadsReport(strSearchBy, ddlDayWise.SelectedValue);
+                hdfSearchValue.Value = ddlConsultants.SelectedValue;
             }
-            else if (strSearchBy == "4")
-            {
-                dataset = leadBL.GetLeadsReport(strSearchBy, ddlWeek.SelectedValue);
-                hdfSearchValue.Value = ddlWeek.SelectedValue;
-            }
-            else if (strSearchBy == "5")
-            {
-                dataset = leadBL.GetLeadsReport(strSearchBy, ddlMonth.SelectedValue);
-                hdfSearchValue.Value = ddlMonth.SelectedValue;
-            }
-            else if (strSearchBy == "6")
-            {
-                dataset = leadBL.GetLeadsReport(strSearchBy, txtFrom.Text + "," + txtTo.Text);
-                hdfSearchValue.Value = txtFrom.Text + "," + txtTo.Text;
-            }
+            //else if (strSearchBy == "4")
+            //{
+            //    dataset = leadBL.GetLeadsReport(strSearchBy, ddlWeek.SelectedValue);
+            //    hdfSearchValue.Value = ddlWeek.SelectedValue;
+            //}
+            //else if (strSearchBy == "5")
+            //{
+            //    dataset = leadBL.GetLeadsReport(strSearchBy, ddlMonth.SelectedValue);
+            //    hdfSearchValue.Value = ddlMonth.SelectedValue;
+            //}
+            //else if (strSearchBy == "6")
+            //{
+            //    dataset = leadBL.GetLeadsReport(strSearchBy, txtFrom.Text + "," + txtTo.Text);
+            //    hdfSearchValue.Value = txtFrom.Text + "," + txtTo.Text;
+            //}
+
+            hdfDates.Value = txtFrom.Text + "," + txtTo.Text;
 
             bindGrid(dataset);
             

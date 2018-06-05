@@ -39,10 +39,12 @@ namespace BusinessLogic
             return ds;
         }
 
-        public DataSet GetLeadsReport(string strSearchBy,string strSearchValue)
+        public DataSet GetLeadsReport(string strSearchBy, string strSearchValue, string Dates)
         {
+            if (Dates.Length == 1)
+                Dates = "";
 
-            DataSet ds = dataUtilities.ExecuteDataSet("usp_LeadReport",strSearchBy,strSearchValue);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_LeadReport", strSearchBy, strSearchValue, Dates);
             return ds;
         }
         public int CUDLead(LeadEntity leadEntity, char Operation)

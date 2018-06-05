@@ -303,6 +303,10 @@ public partial class Lead : System.Web.UI.Page
                 ImageButton deleteButton = e.Row.FindControl("btnDelete") as ImageButton;
                 deleteButton.Visible = true;
             }
+
+            e.Row.BackColor = ((Label)e.Row.FindControl("lblDuplicateLeadList")).Text.ToString() == "Y" ? System.Drawing.Color.LightBlue : System.Drawing.Color.White;
+            e.Row.ForeColor = ((Label)e.Row.FindControl("lblDuplicateLeadList")).Text.ToString() == "Y" ? System.Drawing.Color.White : System.Drawing.Color.Black;
+
         }
     }
     protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
@@ -866,6 +870,13 @@ public partial class Lead : System.Web.UI.Page
                 ImageButton controlButton = e.Row.FindControl("imgbtnPDF") as ImageButton;
                 controlButton.Visible = true;
             }
+
+            e.Row.BackColor = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? System.Drawing.Color.LightBlue : System.Drawing.Color.White;
+            e.Row.ForeColor = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? System.Drawing.Color.White : System.Drawing.Color.Black;
+
+           
+            //e.Row.Attributes.CssStyle.Value = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? "color: Red" : "color: White";
+
         }
     }
 }
