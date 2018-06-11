@@ -1,14 +1,15 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.master" AutoEventWireup="true" CodeFile="Lead.aspx.cs" Inherits="Lead" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.master" AutoEventWireup="true" CodeFile="Lead.aspx.cs" Inherits="Lead" ValidateRequest="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="ckeditor/ckeditor.js"></script>
     <style>
-        .LeadColor{
-            width:50px;
-            height:30px;
-            background-color:LightBlue;
-            margin-right:15px;
+        .LeadColor {
+            width: 50px;
+            height: 30px;
+            background-color: LightBlue;
+            margin-right: 15px;
         }
     </style>
     <script>
@@ -121,6 +122,50 @@
                             });
                 }
             });
+
+
+            $("#ContentPlaceHolder1_txtEReturn").prop('disabled', true);
+            $('#ContentPlaceHolder1_txtEDepart').datepicker({
+                startDate: 'today',
+                minDate: 0,
+                numberOfMonths: 1,
+                autoclose: true,
+                dateFormat: 'dd-mm-yy',
+                onSelect: function (selected) {
+                    $("#ContentPlaceHolder1_txtEReturn").prop('disabled', false);
+                    $("#ContentPlaceHolder1_txtEReturn").val('');
+                    var date = $(this).datepicker('getDate');
+                    if (date) {
+                        date.setDate(date.getDate());
+                    }
+                    $("#ContentPlaceHolder1_txtEReturn").datepicker("option", "minDate", date)
+                }
+            });
+            $("#ContentPlaceHolder1_txtEReturn").datepicker({
+                startDate: 'today',
+                numberOfMonths: 1,
+                dateFormat: 'dd-mm-yy',
+                autoclose: true
+            });
+
+            $("#ContentPlaceHolder1_txtEReminder").datepicker({
+                startDate: 'today',
+                minDate: 0,
+                numberOfMonths: 1,
+                autoclose: true,
+                dateFormat: 'dd-mm-yy'
+            });
+
+            CKEDITOR.disableAutoInline = true;           
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtMailTemp', {
+                toolbar:
+            [
+                { name: 'basicstyles', items: ['Bold', 'Italic'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+                { name: 'tools', items: ['Maximize', '-', 'About'] }
+            ],
+                height: '300px'
+            });
         });
     </script>
 </asp:Content>
@@ -132,8 +177,8 @@
                 <asp:ImageButton ID="imgbtnAddLead" ImageUrl="~/images/add-lead.png" runat="server" OnClick="imgbtnAddLead_Click1" />
             </div>
             <div class="col-lg-4">
-                <div class="col-lg-3 LeadColor"></div>
-                <strong>Existing Customer</strong>
+                <%-- <div class="col-lg-3 LeadColor"></div>
+                <strong>Existing Customer</strong>--%>
             </div>
         </div>
         <div class="forms-main" id="newlead" runat="server">
@@ -270,40 +315,257 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="vali-form" id="status" runat="server">
-                        <div class="col-md-3">
-                            <label class="control-label">Status</label>
-                            <asp:DropDownList ID="ddlStatus" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
-                            </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus" ForeColor="#d0582e"
-                                ErrorMessage="Please select status" ValidationGroup="Consultant" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
-                        </div>
-                        <div class="col-md-3" id="followupdate" runat="server">
-                            <label class="control-label">Follow up Date</label>
-                            <asp:TextBox ID="txtFollowUp" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvFollowupdate" runat="server" ControlToValidate="txtFollowUp" ForeColor="#d0582e"
-                                ErrorMessage="Please Enter Follow up Date" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                        <div class="col-md-3" id="desc" runat="server">
-                            <label class="control-label">Description</label>
-                            <asp:TextBox ID="txtDescription" runat="server" class="form-control" placeholder="Description"></asp:TextBox>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
+
                     <div class="col-md-3 form-group button-2">
                         <asp:ImageButton ID="ImageButton1" runat="server" OnClick="ImageButton1_Click" ImageUrl="~/images/Save.png" ValidationGroup="Consultant" Height="35px" />
                         <asp:ImageButton ID="btnUpdate" runat="server" ImageUrl="~/images/Update.png" OnClick="btnUpdate_Click" ValidationGroup="Consultant" Height="35px" />
                         <asp:ImageButton ID="btnReset" runat="server" OnClick="btnReset_Click" ImageUrl="~/images/Back.png" Height="35px" />
                     </div>
-                    <div class="col-md-9 form-group button-2">
-                        <asp:Label ID="lblFollowup" runat="server"></asp:Label>
-                    </div>
+
                     <div class="clearfix"></div>
                 </div>
             </div>
         </div>
-       
-         <div class="forms-main" id="actions" runat="server">
+
+        <div class="forms-main" id="dvEdit" runat="server">
+            <div class="graph-form">
+                <div class="validation-form">
+                    <div class="vali-form">
+                        <div class="col-md-12 text-center">
+                            <asp:Label ID="MailMessage" runat="server"></asp:Label>
+                        </div>
+                        <div class="col-md-6" style="border: 1px black dashed; padding: 15px 0px;">
+                            <div class="col-md-12 text-center">
+                                <asp:Label ID="lblFollowup" runat="server"></asp:Label>
+                            </div>
+                            <div class="vali-form" id="status" runat="server">
+                                <div class="col-md-4">
+                                    <label class="control-label">Status</label>
+                                    <asp:DropDownList ID="ddlStatus" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                    <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus" ForeColor="#d0582e"
+                                        ErrorMessage="Please select status" ValidationGroup="Consultant" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-md-4" id="followupdate" runat="server">
+                                    <label class="control-label">Follow up Date</label>
+                                    <asp:TextBox ID="txtFollowUp" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvFollowupdate" runat="server" ControlToValidate="txtFollowUp" ForeColor="#d0582e"
+                                        ErrorMessage="Please Enter Follow up Date" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-md-4" id="desc" runat="server">
+                                    <label class="control-label">Description</label>
+                                    <asp:TextBox ID="txtDescription" runat="server" class="form-control" placeholder="Description" MaxLength="200"></asp:TextBox>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">First Name</label>
+                                <asp:TextBox ID="txtEFirstName" runat="server" class="form-control" placeholder="Given Name" MaxLength="50"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvtxtEFirstName" runat="server" ControlToValidate="txtEFirstName" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter First Name" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Last Name</label>
+                                <asp:TextBox ID="txtELastName" runat="server" class="form-control" placeholder="Surname" MaxLength="50"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvtxtELastName" runat="server" ControlToValidate="txtELastName" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Last Name" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Email</label>
+                                <asp:TextBox ID="txtEEmail" runat="server" class="form-control" placeholder="Email" MaxLength="50"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvtxtEEmail" runat="server" ControlToValidate="txtEEmail" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Email" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="rgtxtEEmail" runat="server" ForeColor="#d0582e" Display="Dynamic" ErrorMessage="Please check Email Format"
+                                    ControlToValidate="txtEEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidationGroup="LeadEdit">
+                                </asp:RegularExpressionValidator>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Tel</label>
+                                <asp:TextBox ID="txtEMobile" runat="server" class="form-control" placeholder="Mobile" MaxLength="10"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvtxtEMobile" runat="server" ControlToValidate="txtEMobile" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Mobile" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="rgtxtEMobile" runat="server" ErrorMessage="Please enter 10 digits" ValidationExpression="[0-9]{10}" Display="Dynamic"
+                                    ControlToValidate="txtEMobile" ForeColor="#d0582e" ValidationGroup="LeadEdit"></asp:RegularExpressionValidator>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <label class="control-label"><strong>Final Travel Dates</strong></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Depart</label>
+                                <asp:TextBox ID="txtEDepart" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvtxtEDepart" runat="server" ControlToValidate="txtEDepart" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Depart Date" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Return</label>
+                                <asp:TextBox ID="txtEReturn" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                            </div>
+
+                            
+                            <div class="col-md-12" style="margin: 15px 0px; padding: 0px;" id="dvClientFileId" runat="server">
+                                <div class="col-md-3">
+                                    <label class="control-label">Client file Id: </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <asp:TextBox ID="txtClientFileId" runat="server" class="form-control" placeholder="Client file Id" MaxLength="100"></asp:TextBox>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="control-label">Consultant Notes</label>
+                                <asp:TextBox ID="txtEConsultNotes" runat="server" class="form-control" placeholder="Notes" TextMode="MultiLine" MaxLength="200"></asp:TextBox>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12" style="margin-top: 15px;">
+                                <label class="control-label" style="float: left;">Set Reminder</label>
+                                <div class="col-md-6">
+                                    <asp:TextBox ID="txtEReminder" runat="server" class="form-control" placeholder="dd-mm-yyyy" MaxLength="10"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12">
+                                <label class="control-label">Reminder Notes</label>
+                                <asp:TextBox ID="txtERemindNotes" runat="server" class="form-control" placeholder="Notes" TextMode="MultiLine" MaxLength="200"></asp:TextBox>
+                            </div>
+                            <div class="col-md-12 text-center" style="margin-top: 15px;">
+                                <asp:ImageButton ID="imgEUpdate" runat="server" OnClick="imgEUpdate_Click" ImageUrl="~/images/Update.png" ValidationGroup="LeadEdit" Height="35px" />
+                                <asp:ImageButton ID="imgECancel" runat="server" OnClick="imgECancel_Click" ImageUrl="~/images/Back.png" Height="35px" />
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="col-md-12" style="border: 1px black dashed; padding: 15px;">
+                                <label class="control-label"><strong>LEAD DATA</strong> </label>
+
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Client Name: </label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLName" runat="server"></asp:Label></strong></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Email: </label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLEmail" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Travel Dates:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLDates" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Budget:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLBudget" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Tel:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLPhone" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">URL:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLUrl" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Notes:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblLNotes" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="col-md-6" style="border: 1px solid black;">
+                                    <label class="control-label">
+                                        <%--<asp:LinkButton ID="lnkMoreInfo" Text="Send more Info" runat="server" ></asp:LinkButton>--%>
+                                        <%--<a href="#" data-target="#EmailModal">Send more Info</a>--%>
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">Send more Info</button>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-12" style="border: 1px solid black; margin-top: 15px;">
+                                    <label class="control-label"><strong>CREATE QUOTE</strong> </label>
+
+                                    <ul>
+                                        <li>Quote from new</li>
+                                        <li>Quote from template</li>
+                                        <li>Quote Custom</li>
+                                    </ul>
+
+                                    <div class="col-md-6">
+                                        <strong>QUOTE TO BOOKING</strong>
+                                        <strong>GENERATE INVOICE</strong>
+                                        <strong>ISSUE VOUCHER</strong>
+                                        <%--<label class="control-label"><strong>QUOTE TO BOOKING</strong> </label>
+                                        <label class="control-label"><strong>GENERATE INVOICE</strong> </label>
+                                        <label class="control-label"><strong>ISSUE VOUCHER</strong> </label>--%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" id="dvHistory" style="margin-top: 15px;">
+                            <asp:PlaceHolder ID = "HistoryPlaceholder" runat="server" />                           
+                        </div>
+
+
+
+                        <style>
+                           #dvHistory table tr th {
+                                padding: 10px;
+                            }
+
+                          #dvHistory table tr td {
+                                padding: 10px;
+                            }
+                        </style>
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="forms-main" id="actions" runat="server">
             <div class="graph-form">
                 <div class="validation-form">
                     <div class="vali-form">
@@ -333,8 +595,8 @@
                 </div>
             </div>
         </div>
-               
-        
+
+
         <!--/sub-heard-part-->
         <!--/tabs-->
         <div class="tab-main" id="LeadList" runat="server">
@@ -550,12 +812,12 @@
                                                     <asp:TemplateField HeaderText="Action" HeaderStyle-Width="110px">
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="btnEdit" runat="server" Width="23px" Height="23px" ImageUrl="~/images/edit-user.png"
-                                                                CommandName="EditLead" ToolTip="Edit" />
+                                                                CommandName="EditLead" ToolTip="Edit" Visible="false" />
                                                             <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
                                                                 CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
                                                             <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
                                                                 CommandName="Action" ToolTip="Pickup/Assign" />
-                                                           <%-- <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
+                                                            <%-- <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                                                 CommandName="Quote" ToolTip="Generate Quote" />
                                                             <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
                                                                 CommandName="PDF" ToolTip="Download Quote" Visible="false" />--%>
@@ -611,7 +873,7 @@
                                                             <asp:Label runat="server" ID="lblID" Text='<%#Eval("lsId") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField HeaderText="ID" Visible="false">
+                                                    <asp:TemplateField HeaderText="ID" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblDuplicateLead" Text='<%#Eval("lsDuplicateLead") %>'></asp:Label>
                                                         </ItemTemplate>
@@ -800,6 +1062,31 @@
         </div>
         <!--//tabs-inner-->
     </div>
+
+    <div class="modal fade" id="EmailModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title">Email Template</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12 text-center">
+                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ></asp:TextBox>
+                        <%--<button type="button" class="btn btn-default" data-dismiss="modal">Send Mail</button>--%>
+                        <asp:Button ID="btnSendMail" Text="Send Mail" runat="server" OnClick="btnSendMail_Click" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <%--<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Send Mail</button>
+                </div>--%>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">

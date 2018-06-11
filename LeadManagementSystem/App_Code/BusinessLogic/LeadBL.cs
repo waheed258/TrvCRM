@@ -116,7 +116,61 @@ namespace BusinessLogic
             int result = dataUtilities.ExecuteNonQuery("usp_CUDLead", hashtable);
             return result;
         }
-           
+
+        public int UpdateLeadInfo(LeadEntity leadEntity, char Operation)
+        {
+            Hashtable hashtable = new Hashtable();
+
+
+            hashtable.Add("@lsId", leadEntity.LeadID);            
+            hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
+
+
+            if (leadEntity.FollowupDate != "")
+            {
+                hashtable.Add("@FollowupDate", DateTime.ParseExact(leadEntity.FollowupDate, "dd-MM-yyyy", null));
+            }
+            else
+            {
+                hashtable.Add("@FollowupDate", DBNull.Value);
+            }
+            hashtable.Add("@FollowupDesc", leadEntity.FollowupDesc);           
+            
+            hashtable.Add("@lsOthersInfo", ""); 
+            hashtable.Add("@lsFirstName", leadEntity.FirstName);
+            hashtable.Add("@lsLastName", leadEntity.LastName);
+            hashtable.Add("@lsMobile", leadEntity.Mobile);
+            hashtable.Add("@lsEmailID", leadEntity.Email);
+            hashtable.Add("@lsLeadDesc", leadEntity.LeadDescription);
+
+            if (leadEntity.DepartureDate != "")
+            {
+                hashtable.Add("@lsDepartureDate", DateTime.ParseExact(leadEntity.DepartureDate, "dd-MM-yyyy", null));
+            }
+            else
+            {
+                hashtable.Add("@lsDepartureDate", DBNull.Value);
+            }
+            if (leadEntity.ReturnDate != "")
+            {
+                hashtable.Add("@lsReturnDate", DateTime.ParseExact(leadEntity.ReturnDate, "dd-MM-yyyy", null));
+            }
+            else
+            {
+                hashtable.Add("@lsReturnDate", DBNull.Value);
+            }
+            hashtable.Add("@lsLeadStatus", leadEntity.LeadStatus);            
+            hashtable.Add("@lsNotes", leadEntity.Notes);           
+            hashtable.Add("@Operation", Operation);
+
+            hashtable.Add("@ClientFileId", leadEntity.ClientFileId);
+            hashtable.Add("@lsConsultantNotes", leadEntity.ConsultantNotes);
+            hashtable.Add("@lsReminder", DateTime.ParseExact(leadEntity.Reminder, "dd-MM-yyyy", null));
+            hashtable.Add("@lsReminderNotes", leadEntity.ReminderNotes);
+
+            int result = dataUtilities.ExecuteNonQuery("usp_UpdtLeadInfo", hashtable);
+            return result;
+        }
         public int LeadAction(LeadEntity leadEntity)
         {
             Hashtable hashtable = new Hashtable();
@@ -156,6 +210,14 @@ namespace BusinessLogic
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetFollowupCount", hashtable);
             return ds;
         }
+
+        public DataSet GetLeadInfo(int LeadID)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@LeadID", LeadID);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetLeadInfo", hashtable);
+            return ds;
+        } 
        
     }
 }

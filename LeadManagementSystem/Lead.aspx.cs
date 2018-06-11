@@ -8,6 +8,7 @@ using BusinessEntities;
 using BusinessLogic;
 using System.Data;
 using System.Diagnostics;
+using System.Text;
 public partial class Lead : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -36,9 +37,13 @@ public partial class Lead : System.Web.UI.Page
                 _objComman.GetAssigLeadOptions(ddlAssignLead);
                 consultant.Visible = false;
                 actions.Visible = false;
-                status.Visible = false;
+                //status.Visible = false;
                 followupdate.Visible = false;
                 desc.Visible = false;
+
+                dvEdit.Visible = false;
+                
+
             }
         }
         catch { }
@@ -67,6 +72,9 @@ public partial class Lead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
+
+    
+
     protected void GetAssinedLeadsList()
     {
         try
@@ -160,14 +168,14 @@ public partial class Lead : System.Web.UI.Page
                 {
 
                     _objComman.GetStatus(ddlStatus);
-                    status.Visible = true;
+                    //status.Visible = true;
                     newlead.Visible = true;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
                     btnUpdate.Visible = true;
                     ImageButton1.Visible = false;
                     GetProducts();
-                    DataSet ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
+                    //DataSet ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
 
                     ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
                     if (ddlSource.SelectedValue == "10")
@@ -191,37 +199,37 @@ public partial class Lead : System.Web.UI.Page
                     txtNotes.Text = ((Label)row.FindControl("lblNotes")).Text.ToString();
                     ddlStatus.SelectedValue = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
                     txtDescription.Text = ((Label)row.FindControl("lblDescription")).Text.ToString();
-                    if (ddlStatus.SelectedValue == "4")
-                    {
-                        if (ds.Tables[0].Rows.Count == 3)
-                        {
-                            message.Text = "Maximum follow ups reached!";
-                            message.ForeColor = System.Drawing.Color.Red;
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                        }
-                        else
-                        {
-                            lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
-                            followupdate.Visible = true;
-                        }
+                    //if (ddlStatus.SelectedValue == "4")
+                    //{
+                    //    if (ds.Tables[0].Rows.Count == 3)
+                    //    {
+                    //        message.Text = "Maximum follow ups reached!";
+                    //        message.ForeColor = System.Drawing.Color.Red;
+                    //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                    //    }
+                    //    else
+                    //    {
+                    //        lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
+                    //        followupdate.Visible = true;
+                    //    }
 
-                        followupdate.Visible = true;
-                        lblFollowup.ForeColor = System.Drawing.Color.Red;
-                        lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(ds.Tables[0].Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
-                    }
-                    else
-                    {
-                        lblFollowup.Text = "";
-                        followupdate.Visible = false;
-                    }
-                    if (ddlStatus.SelectedValue == "2")
-                    {
-                        desc.Visible = false;
-                    }
-                    else
-                    {
-                        desc.Visible = true;
-                    }
+                    //    followupdate.Visible = true;
+                    //    lblFollowup.ForeColor = System.Drawing.Color.Red;
+                    //    lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(ds.Tables[0].Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
+                    //}
+                    //else
+                    //{
+                    //    lblFollowup.Text = "";
+                    //    followupdate.Visible = false;
+                    //}
+                    //if (ddlStatus.SelectedValue == "2")
+                    //{
+                    //    desc.Visible = false;
+                    //}
+                    //else
+                    //{
+                    //    desc.Visible = true;
+                    //}
                 }
                 else if (e.CommandName == "DeleteLead")
                 {
@@ -416,7 +424,7 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            status.Visible = false;
+            //status.Visible = false;
             int a = Convert.ToInt32(ddlAdults.SelectedValue);
             int c = Convert.ToInt32(ddlChild.SelectedValue);
             int i = Convert.ToInt32(ddlInfant.SelectedValue);
@@ -611,7 +619,7 @@ public partial class Lead : System.Web.UI.Page
         newlead.Visible = false;
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
-        status.Visible = false;
+        //status.Visible = false;
     }
     protected void btnSure_Click(object sender, EventArgs e)
     {
@@ -683,9 +691,12 @@ public partial class Lead : System.Web.UI.Page
                 message.ForeColor = System.Drawing.Color.Red;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
             }
-            else
+            else if (ds.Tables[0].Rows.Count > 0)
             {
                 lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
+                followupdate.Visible = true;
+            }
+            else {
                 followupdate.Visible = true;
             }
         }
@@ -747,62 +758,84 @@ public partial class Lead : System.Web.UI.Page
                 GetSourceData("U");
                 if (e.CommandName == "EditLead")
                 {
-
+                    MailMessage.Text = "";
                     _objComman.GetStatus(ddlStatus);
                     //status.Visible = true;
-                    newlead.Visible = true;
+                    newlead.Visible = false;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
-                    btnUpdate.Visible = true;
-                    ImageButton1.Visible = false;
-                    GetProducts();
-                    DataSet ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
+                    //btnUpdate.Visible = true;
+                    //ImageButton1.Visible = false;
 
-                    ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
-                    if (ddlSource.SelectedValue == "10")
+                    dvEdit.Visible = true;
+
+                    //GetProducts();
+                    string strStatusId = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
+                    DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                    DataTable dtLead = ds.Tables[0];
+                    DataTable dtLeadHistory = ds.Tables[1];
+                    if (dtLead.Rows.Count > 0)
                     {
-                        others.Visible = true;
-                    }
-                    txtOthers.Text = ((Label)row.FindControl("lbllsOthersInfo")).Text.ToString();
-                    txtFirstName.Text = ((Label)row.FindControl("lblFirstName")).Text.ToString();
-                    txtLastName.Text = ((Label)row.FindControl("lblLastName")).Text.ToString();
-                    txtMobile.Text = ((Label)row.FindControl("lblMobile")).Text.ToString();
-                    txtEmail.Text = ((Label)row.FindControl("lblEmailID")).Text.ToString();
-                    txtSource.Text = ((Label)row.FindControl("lblOrigin")).Text.ToString();
-                    txtDestination.Text = ((Label)row.FindControl("lblDestination")).Text.ToString();
-                    ddlPackage.SelectedValue = ((Label)row.FindControl("lblProdID")).Text.ToString();
-                    ddlAdults.SelectedValue = ((Label)row.FindControl("lblAdult")).Text.ToString();
-                    ddlChild.SelectedValue = ((Label)row.FindControl("lblChildren")).Text.ToString();
-                    ddlInfant.SelectedValue = ((Label)row.FindControl("lblInfants")).Text.ToString();
-                    txtDepart.Text = ((Label)row.FindControl("lblDepartDate")).Text.ToString();
-                    txtReturnDate.Text = ((Label)row.FindControl("lblReturnDate")).Text.ToString();
-                    txtBudget.Text = ((Label)row.FindControl("lblBudget")).Text.ToString();
-                    txtNotes.Text = ((Label)row.FindControl("lblNotes")).Text.ToString();
-                    ddlStatus.SelectedValue = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
-                    txtDescription.Text = ((Label)row.FindControl("lblDescription")).Text.ToString();
-                    if (ddlStatus.SelectedValue == "4")
-                    {
-                        if (ds.Tables[0].Rows.Count == 3)
+                        txtEFirstName.Text = dtLead.Rows[0]["lsFirstName"].ToString();
+                        txtELastName.Text = dtLead.Rows[0]["lsLastName"].ToString();
+                        txtEMobile.Text = dtLead.Rows[0]["lsPhone"].ToString();
+                        txtEEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
+                        txtEDepart.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsDepartureDate"]);
+                        txtEReturn.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReturnDate"]);
+
+                        lblLName.Text = string.Format("{0} {1}", dtLead.Rows[0]["lsFirstName"].ToString(), dtLead.Rows[0]["lsLastName"].ToString());
+                        lblLEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
+                        lblLDates.Text = string.Format("{0} / {1}", String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsDepartureDate"]), String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReturnDate"]));
+                        lblLBudget.Text = dtLead.Rows[0]["lsBudget"].ToString();
+                        lblLPhone.Text = dtLead.Rows[0]["lsPhone"].ToString();
+                        lblLUrl.Text = "";
+                        lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
+
+                        txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
+                        txtEConsultNotes.Text = dtLead.Rows[0]["lsConsultantNotes"].ToString();
+                        txtEReminder.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReminder"]);
+                        txtERemindNotes.Text = dtLead.Rows[0]["lsReminderNotes"].ToString();
+
+                        ddlStatus.SelectedValue = strStatusId;
+
+                        if (strStatusId == "6")
                         {
-                            message.Text = "Maximum follow ups reached!";
-                            message.ForeColor = System.Drawing.Color.Red;
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                            // Client File Id TextBox Show
+                            dvClientFileId.Visible = true;
+                            txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
                         }
                         else
                         {
-                            lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
-                            followupdate.Visible = true;
+                            txtClientFileId.Text = "";
+                            dvClientFileId.Visible = false;
                         }
 
-                        followupdate.Visible = true;
-                        lblFollowup.ForeColor = System.Drawing.Color.Red;
-                        lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(ds.Tables[0].Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
-                    }
-                    else
-                    {
-                        lblFollowup.Text = "";
-                        followupdate.Visible = false;
-                    }
+                        if (ddlStatus.SelectedValue == "4")
+                        {
+                            if (Convert.ToInt32(dtLead.Rows[0]["Followups"]) == 3)
+                            {
+                                message.Text = "Maximum follow ups reached!";
+                                message.ForeColor = System.Drawing.Color.Red;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                            }
+                            else
+                            {
+                                lblFollowup.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["FollowupDate"]);
+                                followupdate.Visible = true;
+                            }
+
+                            followupdate.Visible = true;
+                            lblFollowup.ForeColor = System.Drawing.Color.Red;
+                            lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(dtLead.Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
+                        }
+                        else
+                        {
+                            lblFollowup.Text = "";
+                            followupdate.Visible = false;
+                        }
+
+                    }                   
+                    
                     if (ddlStatus.SelectedValue == "2")
                     {
                         desc.Visible = false;
@@ -811,6 +844,27 @@ public partial class Lead : System.Web.UI.Page
                     {
                         desc.Visible = true;
                     }
+
+                    // Lead Hostory
+                    LeadHistory(dtLeadHistory);
+
+                    // Email Template                    
+                    StringBuilder sb = new StringBuilder();
+                    string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblLName.Text);
+                    sb.Append(strHeading);
+                    sb.Append("<p>Thank you so much for your enquiry I received today. In order to quote you accurately, I require the following additional information.</p>");
+                    sb.Append("<p>1.&nbsp;&nbsp;&nbsp; Dates of travel</p>");
+                    sb.Append("<p>2.&nbsp;&nbsp;&nbsp; Destination</p>");
+                    sb.Append("<p>3.&nbsp;&nbsp;&nbsp; Where will you be travelling from ie. Joburg, Durban or Cape Town</p>");
+                    sb.Append("<p>4.&nbsp;&nbsp;&nbsp; Estimated budget</p>");
+                    sb.Append("<p>5.&nbsp;&nbsp;&nbsp; How many people will be travelling incl. children (and their ages)</p>");
+                    sb.Append("<p>6.&nbsp;&nbsp;&nbsp; Are you travelling for a special occation ie. birthday, anniversary, honeymoon etc.</p>");
+                    sb.Append("<p>As soon as I receive the above information, I can work on some options for you.</p>");
+                    sb.Append("<p><strong>Kind regards</strong></p>");
+                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");                
+
+                    txtMailTemp.Text = sb.ToString();
+
                 }
                 else if (e.CommandName == "DeleteLead")
                 {
@@ -850,6 +904,31 @@ public partial class Lead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
+
+    protected void GetLeadInfo()
+    {
+        try
+        {
+            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            dataset = leadBL.GetLeadsList(0);
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                search.Visible = true;
+            }
+            else
+            {
+                search.Visible = false;
+            }
+            gvLeadList.DataSource = dataset;
+            gvLeadList.DataBind();
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
     protected void gvAssignedList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvAssignedList.PageIndex = e.NewPageIndex;
@@ -879,4 +958,204 @@ public partial class Lead : System.Web.UI.Page
 
         }
     }
+    protected void imgEUpdate_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+            leadEntity.SourceID = 0;
+            leadEntity.SourceRef = "";
+            leadEntity.Others = "";
+            leadEntity.AssignedTo = 0;
+            leadEntity.AssignedBy = 0;
+            leadEntity.FirstName = txtEFirstName.Text;
+            leadEntity.LastName = txtELastName.Text;
+            leadEntity.Mobile = txtEMobile.Text;
+            leadEntity.Email = txtEEmail.Text;
+            leadEntity.OriginName = "";
+            leadEntity.DestinationName = "";
+            leadEntity.DepartureDate = txtEDepart.Text;
+            leadEntity.ReturnDate = txtEReturn.Text;
+            leadEntity.Adult = 0;
+            leadEntity.Child = 0;
+            leadEntity.Infant = 0;
+            leadEntity.ProductType = 0;
+            leadEntity.Budget = 0;
+            leadEntity.Notes = "";
+            leadEntity.QuotedPrice = 0;
+            leadEntity.FinalPrice = 0;
+            leadEntity.UpdatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
+            leadEntity.LeadStatus = Convert.ToInt32(ddlStatus.SelectedValue);
+            leadEntity.CreatedBy = 0;
+            leadEntity.LeadDescription = txtDescription.Text;
+            leadEntity.PackageId = "";
+
+            if (ddlStatus.SelectedValue == "4")
+            {
+                leadEntity.FollowupDate = txtFollowUp.Text;
+                leadEntity.FollowupDesc = txtDescription.Text;
+            }
+            else
+            {
+                leadEntity.FollowupDate = "";
+                leadEntity.FollowupDesc = "";
+            }
+
+            leadEntity.ClientFileId = txtClientFileId.Text;
+            leadEntity.ConsultantNotes = txtEConsultNotes.Text;
+            leadEntity.Reminder = txtEReminder.Text;
+            leadEntity.ReminderNotes = txtERemindNotes.Text;
+
+            int result = leadBL.UpdateLeadInfo(leadEntity, 'U');
+            if (result == 2)
+            {
+                message.Text = "Lead Details updated Successfully!";
+                message.ForeColor = System.Drawing.Color.Green;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                LeadList.Visible = true;
+                newlead.Visible = false;
+                dvEdit.Visible = false;
+                GetLeadsList();
+                GetAssinedLeadsList();
+                EditClear();
+                //imgbtnAddLead.Visible = true;
+
+            }
+            else
+            {
+                message.Text = "Please try again!";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
+    private void EditClear()
+    {
+        txtFollowUp.Text = "";
+        txtDescription.Text = "";
+        txtEFirstName.Text = "";
+        txtELastName.Text = "";
+        txtEEmail.Text = "";
+        txtEDepart.Text = "";
+        txtEReturn.Text = "";
+        txtEMobile.Text = "";
+        txtClientFileId.Text = "";
+        txtEConsultNotes.Text = "";
+        txtEReminder.Text = "";
+        txtERemindNotes.Text = "";        
+    }
+
+    protected void imgECancel_Click(object sender, ImageClickEventArgs e)
+    {
+        dvEdit.Visible = false;
+        LeadList.Visible = true;
+        imgbtnAddLead.Visible = true;
+    }
+    protected void btnSendMail_Click(object sender, EventArgs e)
+    {
+        string strEmail = lblLEmail.Text;
+        string strBody = txtMailTemp.Text;
+        SendMail(strEmail, strBody);
+    }
+
+    public void SendMail(string clEmail, string strText)
+    {
+        try
+        {
+            DataSet ds = leadBL.GetMailInfo();
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                string MailTo = clEmail;
+                //string MailTo = "ramesh.palaparti@dinoosys.com";
+                string DisplayNameTo = string.Empty;
+                string MailCc = string.Empty;
+                string DisplayNameCc = string.Empty;
+                string MailBcc = string.Empty;
+                string Subject = string.Empty;
+                string MailText = string.Empty;
+                string Attachment = string.Empty;
+
+
+                try
+                {
+                    Subject = "Serendipity Tours >> Lead Status ";
+                    MailCc = "";
+
+                    MailText = strText;
+
+                    bool mailSent = CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+
+                    if (mailSent)
+                    {
+                        MailMessage.Text = "Email sent successfully.";
+                        MailMessage.ForeColor = System.Drawing.Color.Green;
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "");
+                    }
+                    else
+                    {
+                        MailMessage.Text = "Email not sent.";
+                        MailMessage.ForeColor = System.Drawing.Color.Red;
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MailMessage.Text = "Email not sent.";
+                    MailMessage.ForeColor = System.Drawing.Color.Red;
+                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message);
+                }
+
+            }
+        }
+        catch
+        { }
+    }
+
+    public void LeadHistory(DataTable dt)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        if (dt.Rows.Count > 0)
+        {
+            sb.Append(" <table border='1'>");
+            sb.Append("<tr>");
+            sb.Append("<th>LEAD HISTORY</th>");
+            sb.Append("<th>DATE</th>");
+            sb.Append("</tr>");
+            foreach (DataRow row in dt.Rows)
+            {
+                sb.Append("<tr>");
+                foreach (DataColumn column in dt.Columns)
+                {
+                    sb.Append("<td>");
+                    sb.Append(row[column.ColumnName]);
+                    sb.Append("</td>");
+                }
+                sb.Append("</tr>");
+            }
+
+            sb.Append("</table>");
+
+            //dvHistory.InnerText = sb.ToString();
+            //Append the HTML string to Placeholder.
+            HistoryPlaceholder.Controls.Add(new Literal { Text = sb.ToString() });
+        }
+
+
+        
+    }
+
 }

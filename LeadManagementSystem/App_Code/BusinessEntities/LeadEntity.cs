@@ -47,7 +47,12 @@ namespace BusinessEntities
         public string FollowupDate { get; set; }
         public string FollowupDesc { get; set; }
 
-        public string PackageId { get; set; } 
+        public string PackageId { get; set; }
+
+        public string ClientFileId { get; set; }
+        public string ConsultantNotes { get; set; }
+        public string Reminder { get; set; }
+        public string ReminderNotes { get; set; } 
 
     }
 }

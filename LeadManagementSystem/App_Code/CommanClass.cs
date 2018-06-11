@@ -11,6 +11,9 @@ using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Globalization;
+using DataLogic;
+using System.Data.SqlClient;
+using System.Collections;
 
 namespace BusinessLogic
 {
@@ -249,6 +252,21 @@ namespace BusinessLogic
                 myMessage = null;
             }
             return IsSucces;
+        }
+
+        public static int MailStatusLog(int leadId, string strMailCode, string strMailStatus,string strMailError)
+        {
+            DataUtilities dtUtil = new DataUtilities();
+            string strConnection = dtUtil.GetConnectionString();
+
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@mlLeadId", leadId);
+            hashtable.Add("@mlCode", strMailCode);
+            hashtable.Add("@mlSent", strMailStatus);
+            hashtable.Add("@mlError", strMailError);
+
+            int result = dtUtil.ExecuteNonQuery("usp_MailLog", hashtable);
+            return result;
         }
 
     }
