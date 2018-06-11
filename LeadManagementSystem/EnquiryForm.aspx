@@ -92,7 +92,7 @@
 
 </head>
 <body>
-   <form id="form1" runat="server">
+   <form id="form1" runat="server" autocomplete="off">
        <asp:HiddenField ID="hdfpackid" Value="0" runat="server" />
        <asp:HiddenField ID="hdfpacktype" Value="0" runat="server" />
         <h1>Enquiry Form </h1>
@@ -221,10 +221,10 @@
             <div class="clear"></div>
             <div></div>
             <div class="main-flex-w3ls-sectns">
-                 <div class="field-agileinfo-spc form-w3-agile-button1">
+                 <div class="field-agileinfo-spc form-w3-agile-button2">
                      <asp:Button ID="btnSubmit" runat="server" ValidationGroup="Consultant" Text="Submit" CssClass="submit" OnClick="btnSubmit_Click" />
                  </div>
-                 <div class="field-agileinfo-spc form-w3-agile-button2">
+                 <div class="field-agileinfo-spc form-w3-agile-button1">
                      <asp:Button ID="btnClear" runat="server"  Text="Clear From" CssClass="clear" OnClick="btnClear_Click" />
                  </div>
                 
