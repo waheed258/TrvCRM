@@ -790,13 +790,17 @@ public partial class Lead : System.Web.UI.Page
                         lblLDates.Text = string.Format("{0} / {1}", String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsDepartureDate"]), String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReturnDate"]));
                         lblLBudget.Text = dtLead.Rows[0]["lsBudget"].ToString();
                         lblLPhone.Text = dtLead.Rows[0]["lsPhone"].ToString();
-                        lblLUrl.Text = "";
+                        lnkUrl.Text = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
+                        lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
                         lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
 
                         txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
                         txtEConsultNotes.Text = dtLead.Rows[0]["lsConsultantNotes"].ToString();
                         txtEReminder.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReminder"]);
                         txtERemindNotes.Text = dtLead.Rows[0]["lsReminderNotes"].ToString();
+
+                        txtToEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
+                        txtEmailSubject.Text = "Serendipity Tours >> More Info Required";
 
                         ddlStatus.SelectedValue = strStatusId;
 
@@ -855,12 +859,12 @@ public partial class Lead : System.Web.UI.Page
                     string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblLName.Text);
                     sb.Append(strHeading);
                     sb.Append("<p>Thank you so much for your enquiry I received today. In order to quote you accurately, I require the following additional information.</p>");
-                    sb.Append("<p>1.&nbsp;&nbsp;&nbsp; Dates of travel</p>");
-                    sb.Append("<p>2.&nbsp;&nbsp;&nbsp; Destination</p>");
-                    sb.Append("<p>3.&nbsp;&nbsp;&nbsp; Where will you be travelling from ie. Joburg, Durban or Cape Town</p>");
-                    sb.Append("<p>4.&nbsp;&nbsp;&nbsp; Estimated budget</p>");
-                    sb.Append("<p>5.&nbsp;&nbsp;&nbsp; How many people will be travelling incl. children (and their ages)</p>");
-                    sb.Append("<p>6.&nbsp;&nbsp;&nbsp; Are you travelling for a special occation ie. birthday, anniversary, honeymoon etc.</p>");
+                    sb.Append("<p>1.&nbsp;Dates of travel</p>");
+                    sb.Append("<p>2.&nbsp;Destination</p>");
+                    sb.Append("<p>3.&nbsp;Where will you be travelling from ie. Joburg, Durban or Cape Town</p>");
+                    sb.Append("<p>4.&nbsp;Estimated budget</p>");
+                    sb.Append("<p>5.&nbsp;How many people will be travelling incl. children (and their ages)</p>");
+                    sb.Append("<p>6.&nbsp;Are you travelling for a special occation ie. birthday, anniversary, honeymoon etc.</p>");
                     sb.Append("<p>As soon as I receive the above information, I can work on some options for you.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
                     sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");                
@@ -1062,12 +1066,14 @@ public partial class Lead : System.Web.UI.Page
     }
     protected void btnSendMail_Click(object sender, EventArgs e)
     {
-        string strEmail = lblLEmail.Text;
+        string strEmail = txtToEmail.Text;
+        string strCC = txtCCEmail.Text;
+        string strSubject = txtEmailSubject.Text;
         string strBody = txtMailTemp.Text;
-        SendMail(strEmail, strBody);
+        SendMail(strEmail,strCC,strSubject, strBody);
     }
 
-    public void SendMail(string clEmail, string strText)
+    public void SendMail(string clEmail,string strCC, string srtSubject, string strText)
     {
         try
         {
@@ -1092,8 +1098,8 @@ public partial class Lead : System.Web.UI.Page
 
                 try
                 {
-                    Subject = "Serendipity Tours >> Lead Status ";
-                    MailCc = "";
+                    Subject = srtSubject;
+                    MailCc = !string.IsNullOrEmpty(strCC) ? strCC : "";
 
                     MailText = strText;
 
@@ -1104,12 +1110,22 @@ public partial class Lead : System.Web.UI.Page
                         MailMessage.Text = "Email sent successfully.";
                         MailMessage.ForeColor = System.Drawing.Color.Green;
                         CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "");
+
+                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                        DataTable dtLeadHistory = dsInfo.Tables[1];
+                        // Lead Hostory
+                        LeadHistory(dtLeadHistory);
                     }
                     else
                     {
                         MailMessage.Text = "Email not sent.";
                         MailMessage.ForeColor = System.Drawing.Color.Red;
                         CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "");
+
+                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                        DataTable dtLeadHistory = dsInfo.Tables[1];
+                        // Lead Hostory
+                        LeadHistory(dtLeadHistory);
                     }
 
                 }
@@ -1118,6 +1134,11 @@ public partial class Lead : System.Web.UI.Page
                     MailMessage.Text = "Email not sent.";
                     MailMessage.ForeColor = System.Drawing.Color.Red;
                     CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message);
+
+                    DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                    DataTable dtLeadHistory = dsInfo.Tables[1];
+                    // Lead Hostory
+                    LeadHistory(dtLeadHistory);
                 }
 
             }

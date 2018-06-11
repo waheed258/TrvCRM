@@ -496,7 +496,8 @@
                                         <td>
                                             <label class="control-label">
                                                 <strong>
-                                                    <asp:Label ID="lblLUrl" runat="server"></asp:Label></strong></label>
+                                                    <asp:HyperLink ID="lnkUrl" runat="server" Target="_blank"></asp:HyperLink>
+                                                    <%--<asp:Label ID="lblLUrl" runat="server"></asp:Label>--%></strong></label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1071,16 +1072,33 @@
                     <h5 class="modal-title">Email Template</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="col-md-12 text-center">
-                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ></asp:TextBox>
-                        <%--<button type="button" class="btn btn-default" data-dismiss="modal">Send Mail</button>--%>
+
+                    <div class="col-md-12">
+                       
+                         <div class="col-md-4">
+                                <label class="control-label">To</label>
+                                <asp:TextBox ID="txtToEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rqftxtToEmail" runat="server" ControlToValidate="txtToEmail" ForeColor="#d0582e"
+                                    ErrorMessage="Please Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">CC</label>
+                                <asp:TextBox ID="txtCCEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            </div>
+                          <div class="col-md-4">
+                                <label class="control-label">Subject</label>
+                                <asp:TextBox ID="txtEmailSubject" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                              <asp:RequiredFieldValidator ID="rqftxtEmailSubject" runat="server" ControlToValidate="txtEmailSubject" ForeColor="#d0582e"
+                                    ErrorMessage="Please Email Subject" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+                    </div>
+
+                    <div class="col-md-12 text-center" style="margin-top:15px;">
+                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ValidationGroup="Email"></asp:TextBox>                       
                         <asp:Button ID="btnSendMail" Text="Send Mail" runat="server" OnClick="btnSendMail_Click" />
                     </div>
                     <div class="clearfix"></div>
-                </div>
-                <%--<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Send Mail</button>
-                </div>--%>
+                </div>              
             </div>
             <!-- /.modal-content -->
         </div>
