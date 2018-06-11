@@ -112,7 +112,7 @@ namespace BusinessLogic
             hashtable.Add("@lsFinalPrice", leadEntity.FinalPrice);
             hashtable.Add("@Operation", Operation);
             hashtable.Add("@lsPackageId", leadEntity.PackageId);
-
+            hashtable.Add("@lsProductId", leadEntity.ProductID);
             int result = dataUtilities.ExecuteNonQuery("usp_CUDLead", hashtable);
             return result;
         }

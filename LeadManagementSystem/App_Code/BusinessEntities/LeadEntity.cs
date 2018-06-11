@@ -52,7 +52,8 @@ namespace BusinessEntities
         public string ClientFileId { get; set; }
         public string ConsultantNotes { get; set; }
         public string Reminder { get; set; }
-        public string ReminderNotes { get; set; } 
+        public string ReminderNotes { get; set; }
+        public string ProductID { get; set; }
 
     }
 }
