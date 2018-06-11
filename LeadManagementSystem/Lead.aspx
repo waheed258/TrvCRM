@@ -529,8 +529,8 @@
                                     </ul>
 
                                     <div class="col-md-6">
-                                        <strong>QUOTE TO BOOKING</strong>
-                                        <strong>GENERATE INVOICE</strong>
+                                        <strong>QUOTE TO BOOKING</strong> <br />
+                                        <strong>GENERATE INVOICE</strong><br />
                                         <strong>ISSUE VOUCHER</strong>
                                         <%--<label class="control-label"><strong>QUOTE TO BOOKING</strong> </label>
                                         <label class="control-label"><strong>GENERATE INVOICE</strong> </label>
