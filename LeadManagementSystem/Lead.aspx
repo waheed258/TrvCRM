@@ -513,10 +513,8 @@
                                 </table>
 
                                 <div class="col-md-6" style="border: 1px solid black;">
-                                    <label class="control-label">
-                                        <%--<asp:LinkButton ID="lnkMoreInfo" Text="Send more Info" runat="server" ></asp:LinkButton>--%>
-                                        <%--<a href="#" data-target="#EmailModal">Send more Info</a>--%>
-                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">Send more Info</button>
+                                    <label class="control-label">                                   
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal"><img src="images/send-more-info.png" /></button>                                        
                                     </label>
                                 </div>
 
