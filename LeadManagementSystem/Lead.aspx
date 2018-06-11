@@ -512,7 +512,7 @@
                                     </tr>
                                 </table>
 
-                                <div class="col-md-6" style="border: 1px solid black;">
+                                <div class="col-md-6">
                                     <label class="control-label">                                   
                                         <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal"><img src="images/send-more-info.png" /></button>                                        
                                     </label>
