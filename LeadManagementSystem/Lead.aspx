@@ -525,7 +525,7 @@
                             <div class="col-md-12" style="border: 1px black dashed; padding: 10px; margin-top: 15px;">
 
                                 <div class="col-md-2">
-                                    <label class="control-label"><strong>QUOTE</strong> </label>
+                                    <label class="control-label"><strong>Quote</strong> </label>
                                 </div>
                                 <div class="col-md-5">
                                     <asp:DropDownList ID="ddlQuoteDetails" CssClass="form-control" runat="server" Style="padding: 10px;">
