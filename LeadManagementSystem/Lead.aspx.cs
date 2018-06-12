@@ -18,11 +18,13 @@ public partial class Lead : System.Web.UI.Page
     ConsultantBL consultantBL = new ConsultantBL();
     FollowupEntity followupEntity = new FollowupEntity();
     EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
+   
     int j = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {
+        {           
+
             if (!IsPostBack)
             {
                 _objComman.getRecordsPerPage(DropPage);
@@ -871,6 +873,18 @@ public partial class Lead : System.Web.UI.Page
 
                     txtMailTemp.Text = sb.ToString();
 
+
+                   
+                    // Generate Quote URL
+                    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
+                    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
+                    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
+                    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
+                    string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
+                    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
+                    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
+                    hdfQuoteUrl.Value = url;
+
                 }
                 else if (e.CommandName == "DeleteLead")
                 {
@@ -1181,4 +1195,15 @@ public partial class Lead : System.Web.UI.Page
         
     }
 
+    protected void imgQuoteSubmit_Click(object sender, ImageClickEventArgs e)
+    {
+        string strValue = ddlQuoteDetails.SelectedValue;
+        if (strValue == "1")
+        {
+            string url = hdfQuoteUrl.Value;
+            Response.Write("<script>window.open ('" + url + "','_blank');</script>");
+        }
+
+       
+    }
 }

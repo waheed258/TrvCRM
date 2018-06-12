@@ -156,7 +156,7 @@
                 dateFormat: 'dd-mm-yy'
             });
 
-            CKEDITOR.disableAutoInline = true;           
+            CKEDITOR.disableAutoInline = true;
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtMailTemp', {
                 toolbar:
             [
@@ -170,6 +170,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:HiddenField ID="hdfQuoteUrl" runat="server" />
     <div class="outter-wp">
         <!--/sub-heard-part-->
         <div class="row">
@@ -387,7 +388,7 @@
                                 <asp:RegularExpressionValidator ID="rgtxtEMobile" runat="server" ErrorMessage="Please enter 10 digits" ValidationExpression="[0-9]{10}" Display="Dynamic"
                                     ControlToValidate="txtEMobile" ForeColor="#d0582e" ValidationGroup="LeadEdit"></asp:RegularExpressionValidator>
                             </div>
-                            <div class="col-md-12" style="margin-top:15px;">
+                            <div class="col-md-12" style="margin-top: 15px;">
                                 <label class="control-label"><strong>Final Travel Dates</strong></label>
                             </div>
                             <div class="col-md-6">
@@ -401,7 +402,7 @@
                                 <asp:TextBox ID="txtEReturn" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
                             </div>
 
-                            
+
                             <div class="col-md-12" style="margin: 15px 0px; padding: 0px;" id="dvClientFileId" runat="server">
                                 <div class="col-md-3">
                                     <label class="control-label">Client file Id: </label>
@@ -432,7 +433,7 @@
                                 <asp:ImageButton ID="imgEUpdate" runat="server" OnClick="imgEUpdate_Click" ImageUrl="~/images/Update.png" ValidationGroup="LeadEdit" Height="35px" />
                                 <asp:ImageButton ID="imgECancel" runat="server" OnClick="imgECancel_Click" ImageUrl="~/images/Back.png" Height="35px" />
                             </div>
-                            
+
                         </div>
 
                         <div class="col-md-6">
@@ -513,44 +514,50 @@
                                 </table>
 
                                 <div class="col-md-6">
-                                    <label class="control-label">                                   
-                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal"><img src="images/send-more-info.png" /></button>                                        
+                                    <label class="control-label">
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
+                                            <img src="images/send-more-info.png" /></button>
                                     </label>
                                 </div>
 
-                                <div class="col-md-12" style="border: 1px solid black; margin-top: 15px;">
-                                    <label class="control-label"><strong>CREATE QUOTE</strong> </label>
+                            </div>
 
-                                    <ul>
-                                        <li>Quote from new</li>
-                                        <li>Quote from template</li>
-                                        <li>Quote Custom</li>
-                                    </ul>
+                            <div class="col-md-12" style="border: 1px black dashed; padding: 10px; margin-top: 15px;">
 
-                                    <div class="col-md-6">
+                                <div class="col-md-2">
+                                    <label class="control-label"><strong>QUOTE</strong> </label>
+                                </div>
+                                <div class="col-md-5">
+                                    <asp:DropDownList ID="ddlQuoteDetails" CssClass="form-control" runat="server" Style="padding: 10px;">
+                                        <asp:ListItem Value="1">Quote from New</asp:ListItem>
+                                        <asp:ListItem Value="2">Quote from Template</asp:ListItem>
+                                        <asp:ListItem Value="3">Quote Custom</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:ImageButton ID="imgQuoteSubmit" runat="server" ImageUrl="~/images/GenerateQuote.png" Height="35px" OnClick="imgQuoteSubmit_Click" />
+                                </div>
+
+
+                                <%--<div class="col-md-6">
                                         <strong>QUOTE TO BOOKING</strong> <br />
                                         <strong>GENERATE INVOICE</strong><br />
-                                        <strong>ISSUE VOUCHER</strong>
-                                        <%--<label class="control-label"><strong>QUOTE TO BOOKING</strong> </label>
-                                        <label class="control-label"><strong>GENERATE INVOICE</strong> </label>
-                                        <label class="control-label"><strong>ISSUE VOUCHER</strong> </label>--%>
-                                    </div>
-                                </div>
+                                        <strong>ISSUE VOUCHER</strong>                                       
+                                    </div>--%>
                             </div>
+
                         </div>
 
                         <div class="col-md-12" id="dvHistory" style="margin-top: 15px;">
-                            <asp:PlaceHolder ID = "HistoryPlaceholder" runat="server" />                           
+                            <asp:PlaceHolder ID="HistoryPlaceholder" runat="server" />
                         </div>
 
-
-
                         <style>
-                           #dvHistory table tr th {
+                            #dvHistory table tr th {
                                 padding: 10px;
                             }
 
-                          #dvHistory table tr td {
+                            #dvHistory table tr td {
                                 padding: 10px;
                             }
                         </style>
@@ -1035,7 +1042,7 @@
                                                             <%--<asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
                                                                 CommandName="Action" ToolTip="Actions" />--%>
                                                             <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
-                                                                CommandName="Quote" ToolTip="Generate Quote" />
+                                                                CommandName="Quote" ToolTip="Generate Quote" Visible="false" />
                                                             <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
                                                                 CommandName="PDF" ToolTip="Download Quote" Visible="false" />
                                                         </ItemTemplate>
@@ -1072,31 +1079,31 @@
                 <div class="modal-body">
 
                     <div class="col-md-12">
-                       
-                         <div class="col-md-4">
-                                <label class="control-label">To</label>
-                                <asp:TextBox ID="txtToEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="rqftxtToEmail" runat="server" ControlToValidate="txtToEmail" ForeColor="#d0582e"
-                                    ErrorMessage="Please Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="control-label">CC</label>
-                                <asp:TextBox ID="txtCCEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
-                            </div>
-                          <div class="col-md-4">
-                                <label class="control-label">Subject</label>
-                                <asp:TextBox ID="txtEmailSubject" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
-                              <asp:RequiredFieldValidator ID="rqftxtEmailSubject" runat="server" ControlToValidate="txtEmailSubject" ForeColor="#d0582e"
-                                    ErrorMessage="Please Email Subject" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
-                            </div>
+
+                        <div class="col-md-4">
+                            <label class="control-label">To</label>
+                            <asp:TextBox ID="txtToEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rqftxtToEmail" runat="server" ControlToValidate="txtToEmail" ForeColor="#d0582e"
+                                ErrorMessage="Please Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">CC</label>
+                            <asp:TextBox ID="txtCCEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Subject</label>
+                            <asp:TextBox ID="txtEmailSubject" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rqftxtEmailSubject" runat="server" ControlToValidate="txtEmailSubject" ForeColor="#d0582e"
+                                ErrorMessage="Please Email Subject" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
                     </div>
 
-                    <div class="col-md-12 text-center" style="margin-top:15px;">
-                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ValidationGroup="Email"></asp:TextBox>                       
+                    <div class="col-md-12 text-center" style="margin-top: 15px;">
+                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ValidationGroup="Email"></asp:TextBox>
                         <asp:Button ID="btnSendMail" Text="Send Mail" runat="server" OnClick="btnSendMail_Click" />
                     </div>
                     <div class="clearfix"></div>
-                </div>              
+                </div>
             </div>
             <!-- /.modal-content -->
         </div>
