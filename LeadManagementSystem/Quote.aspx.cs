@@ -7,10 +7,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using BusinessEntities;
 using BusinessLogic;
-using System.Data;
 using System.IO;
 using System.Text;
-
+using System.Data.SqlClient;
+using MySql.Data;
+using MySql.Web;
+using MySql.Data.MySqlClient;
+using System.Collections;
+using System.Configuration;
 public partial class Quote : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -20,6 +24,7 @@ public partial class Quote : System.Web.UI.Page
     string city = string.Empty;
     string clEmail = string.Empty;
     LeadBL leadBL = new LeadBL();
+    ProductBL productBL = new ProductBL();
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -31,12 +36,13 @@ public partial class Quote : System.Web.UI.Page
             if (!IsPostBack)
             {               
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
-                lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
-                lblSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
-                lblDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
+                //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
+                txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
+                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
+                ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
-                
+                GetProducts();
                 string result = GetQuoteData();
 
                 if (result == "0")
@@ -69,7 +75,122 @@ public partial class Quote : System.Web.UI.Page
         catch
         {  }
     }
-    
+    protected void GetProducts()
+    {
+        try
+        {
+            dataset = productBL.GetProduct();
+            ddlPackage.DataSource = dataset;
+            ddlPackage.DataTextField = "package_short_des";
+            ddlPackage.DataValueField = "package_id";
+            ddlPackage.DataBind();
+            ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
+    public class ProductBL
+    {
+        DataManager dataManager = new DataManager();
+        public DataSet GetProduct()
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("inOperationName", "SELECT");
+            DataSet ds = dataManager.ExecuteDataSet("get_packages", hashtable);
+            return ds;
+        }
+    }
+    public class DataManager
+    {
+        #region SqlConnection
+
+        /// <summary>
+        /// This method gets the connection string.
+        /// </summary>
+        /// <returns>Connection String</returns>
+        public string GetConnectionString()
+        {
+            string str = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            /* This code takes connection string from the web.config file.*/
+
+            //return "Data Source=209.222.108.170;Database=trvcrm_dev;User Id=trvcrm_dev_user;Password=Dino@321;";
+            //return "server=67.225.171.204;user id=seren_web_padmin; password=Dino@123;database=seren_web_prod";
+            //return "Data Source=67.225.171.204;Database=seren_web_prod;User Id=seren_web_padmin;Password=Dino@123;Connect Timeout=12000";
+            return str;
+        }
+
+
+        /// <summary>
+        /// This method returns SqlConnection object.
+        /// </summary>
+        /// <returns>SqlConnection</returns>
+        public MySqlConnection GetSqlConnection()
+        {
+            string strConnection = GetConnectionString();
+            if (strConnection == null)
+                return null;
+            var objSqlConnection = new MySqlConnection(strConnection);
+            return objSqlConnection;
+        }
+
+        #endregion
+
+
+        #region EXECUTE DATASET
+
+        /// <summary>
+        /// This method returns the data in dataset form. 
+        /// </summary>
+        /// <param name="commandText">Command text</param>
+        /// <returns>Data in the form of Dataset.</returns>
+        public DataSet ExecuteDataSet(string commandText, Hashtable htParameters)
+        {
+
+            var dsData = new DataSet();
+            var objMyDataAdapter = new MySqlDataAdapter();
+            MySqlConnection objMySqlConn = GetSqlConnection();
+            try
+            {
+                if (objMySqlConn == null)
+                {
+                    return null;
+                }
+                var objMyCommand = new MySqlCommand
+                {
+                    Connection = objMySqlConn,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = commandText
+                };
+                foreach (DictionaryEntry parameter in htParameters)
+                {
+                    objMyCommand.Parameters.AddWithValue(parameter.Key.ToString(), parameter.Value);
+                }
+                objMyDataAdapter.SelectCommand = objMyCommand;
+
+                objMyDataAdapter.Fill(dsData);
+                //objMySqlConn.Close();
+                //objMySqlConn.Dispose();
+
+                return dsData;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                objMySqlConn.Close();
+            }
+        }
+
+        #endregion
+    }
+
     protected void GetCostTypeDataAdult()
     {
         try
@@ -413,7 +534,7 @@ public partial class Quote : System.Web.UI.Page
               if (pdf)
               {
                   string consultName = Session["Name"].ToString();
-                  SendMail(lblClientName.Text, clEmail, lblDestination.Text, consultName, QuoteNumber);
+                  SendMail(lblClientName.Text, clEmail, txtDestination.Text, consultName, QuoteNumber);
               }              
 
             }

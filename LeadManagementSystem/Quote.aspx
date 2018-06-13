@@ -104,15 +104,19 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="control-label">Product</label>
-                                    <asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>
+                                    <%--<asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>--%>
+                                    <asp:DropDownList ID="ddlPackage" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control">
+                                    </asp:DropDownList>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="control-label">Source</label>
-                                    <asp:Label ID="lblSource" class="form-control" runat="server"></asp:Label>
+                                    <%--<asp:Label ID="lblSource" class="form-control" runat="server"></asp:Label>--%>
+                                    <asp:TextBox ID="txtSource" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="control-label">Destination</label>
-                                    <asp:Label ID="lblDestination" class="form-control" runat="server"></asp:Label>
+                                    <%--<asp:Label ID="lblDestination" class="form-control" runat="server"></asp:Label>--%>
+                                    <asp:TextBox ID="txtDestination" runat="server" class="form-control" ></asp:TextBox>
                                 </div>
                             </div>
                         </div>

@@ -1028,6 +1028,11 @@
                                                             <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
+                                                     <asp:TemplateField HeaderText="ProductID" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblProductID" Text='<%#Eval("ProductID") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Description" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblDescription" Text='<%#Eval("Description") %>'></asp:Label>

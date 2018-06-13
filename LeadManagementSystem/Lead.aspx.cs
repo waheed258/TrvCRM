@@ -882,7 +882,9 @@ public partial class Lead : System.Web.UI.Page
                     string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
                     string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
                     string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
-                    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
+                    string encryptedparamlblProductID = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProductID")).Text.ToString());
+
+                    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email) + "&prodid=" + Server.UrlEncode(encryptedparamlblProductID);
                     hdfQuoteUrl.Value = url;
 
                 }
@@ -892,29 +894,29 @@ public partial class Lead : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
                 }
 
-                else if (e.CommandName == "Quote")
-                {
-                    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
-                    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
-                    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
-                    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
-                    string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
-                    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
-                    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
-                    string s = "window.open('" + url + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                }
-                else if (e.CommandName == "PDF")
-                {
-                    string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
-                    //string path = Server.MapPath("~/QuotePDF");
-                    //Process.Start(fileName);
-                    string path = "http://tcrm.askswg.co.za/QuotePDF/";
-                    string fileName = path + "\\" + quoteNumber + ".pdf";
-                    string s = "window.open('" + fileName + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                //else if (e.CommandName == "Quote")
+                //{
+                //    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
+                //    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
+                //    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
+                //    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
+                //    string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
+                //    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
+                //    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
+                //    string s = "window.open('" + url + "', '_blank');";
+                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                //}
+                //else if (e.CommandName == "PDF")
+                //{
+                //    string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
+                //    //string path = Server.MapPath("~/QuotePDF");
+                //    //Process.Start(fileName);
+                //    string path = "http://tcrm.askswg.co.za/QuotePDF/";
+                //    string fileName = path + "\\" + quoteNumber + ".pdf";
+                //    string s = "window.open('" + fileName + "', '_blank');";
+                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
 
-                }
+                //}
             }
         }
         catch
