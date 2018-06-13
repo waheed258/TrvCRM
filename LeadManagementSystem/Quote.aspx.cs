@@ -48,7 +48,7 @@ public partial class Quote : System.Web.UI.Page
                 GetProducts();
                 ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
 
-                if (TempId == "2")
+                if (QuoteType == "2")
                 {
                     GetTemplateQuoteData(TempId);               
                 }                    
@@ -306,10 +306,14 @@ public partial class Quote : System.Web.UI.Page
 
                     if (QuoteType == "3")
                     {
+                        dvProdct.Visible = false;
+                        dvCustomProduct.Visible = true;
                         txtProduct.Text = dataset.Tables[0].Rows[0]["PackageId"].ToString();
                     }
                     else
                     {
+                        dvProdct.Visible = true;
+                        dvCustomProduct.Visible = false;
                         ddlPackage.SelectedValue = string.IsNullOrEmpty(dataset.Tables[0].Rows[0]["PackageId"].ToString()) ? "-1" : dataset.Tables[0].Rows[0]["PackageId"].ToString();
                     }
                     
@@ -318,6 +322,16 @@ public partial class Quote : System.Web.UI.Page
                 else
                 {
                     strResult = "0";
+                    if (QuoteType == "3")
+                    {
+                        dvProdct.Visible = false;
+                        dvCustomProduct.Visible = true;                       
+                    }
+                    else
+                    {
+                        dvProdct.Visible = true;
+                        dvCustomProduct.Visible = false;                       
+                    }
                 }
             }
             
