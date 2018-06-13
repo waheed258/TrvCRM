@@ -23,6 +23,8 @@ public partial class Quote : System.Web.UI.Page
     int LeadID = 0;
     string city = string.Empty;
     string clEmail = string.Empty;
+    string QuoteType = string.Empty;
+    string TempId = string.Empty;
     LeadBL leadBL = new LeadBL();
     ProductBL productBL = new ProductBL();
     protected void Page_Load(object sender, EventArgs e)
@@ -32,27 +34,36 @@ public partial class Quote : System.Web.UI.Page
             city = encryptdecrypt.Decrypt(Request.QueryString["city"]);
             LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
             clEmail = encryptdecrypt.Decrypt(Request.QueryString["em"]);
+            QuoteType = Request.QueryString["qtype"];
+            TempId = Request.QueryString["temp"];
 
             if (!IsPostBack)
             {               
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
                 //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
                 txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
-                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
-                ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
+                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);                
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
                 GetProducts();
-                string result = GetQuoteData();
+                ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
 
-                if (result == "0")
+                if (TempId == "2")
                 {
-                    Clear();
-                    GetIncludeExcludeData();
-                }
-
-            }            
-
+                    GetTemplateQuoteData(TempId);               
+                }                    
+                else
+                {
+                    dvProdct.Visible = false;
+                    dvCustomProduct.Visible = true;
+                    string result = GetQuoteData();
+                    if (result == "0")
+                    {
+                        Clear();
+                        GetIncludeExcludeData();
+                    } 
+                } 
+            }           
             if (txtAdultPrice.Text != "")
             {
                 ddlAdultPersons.Enabled = true;
@@ -71,6 +82,21 @@ public partial class Quote : System.Web.UI.Page
                 ddlChildPersons.Enabled = false;
             }
 
+            if (QuoteType == "2")
+            {
+                btnTemplageName.Visible = false;
+            }
+
+            //if (QuoteType == "3")
+            //{
+            //    dvProdct.Visible = false;
+            //    dvCustomProduct.Visible = true;
+            //}
+            //else
+            //{
+            //    dvProdct.Visible = true;
+            //    dvCustomProduct.Visible = false;
+            //} 
         }
         catch
         {  }
@@ -262,6 +288,95 @@ public partial class Quote : System.Web.UI.Page
                     txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
                     txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
 
+                    
+
+                    if (ddlAdultType.SelectedValue == "1")
+                    {
+                        dvAdultPersons.Visible = true;
+                        dvAdultTot.Visible = true;
+                        ddlAdultPersons.Enabled = true;
+                    }
+
+                    if (ddlChildType.SelectedValue == "3")
+                    {
+                        dvChildPersons.Visible = true;
+                        ddlChildPersons.Enabled = true;
+                        dvChildTotalPrice.Visible = true;
+                    }
+
+                    if (QuoteType == "3")
+                    {
+                        txtProduct.Text = dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
+                    else
+                    {
+                        ddlPackage.SelectedValue = string.IsNullOrEmpty(dataset.Tables[0].Rows[0]["PackageId"].ToString()) ? "-1" : dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
+                    
+
+                }
+                else
+                {
+                    strResult = "0";
+                }
+            }
+            
+
+        }
+        catch
+        { strResult = "0"; }
+
+        return strResult;
+    }
+
+    protected string GetTemplateQuoteData(string id)
+    {
+        string strResult = string.Empty;
+        try
+        {
+            dataset = qtBL.GetTemplateData(Convert.ToInt32(id));
+
+            if (dataset.Tables.Count > 0)
+            {
+
+                if (dataset.Tables[0].Rows.Count > 0)
+                {
+                    strResult = "1";
+                    txtDate.Text = dataset.Tables[0].Rows[0]["QuoteDate"].ToString();
+                    ddlAdultType.SelectedValue = dataset.Tables[0].Rows[0]["CostForAdultType"].ToString();
+
+                    txtAdultPrice.Text = dataset.Tables[0].Rows[0]["CostForAdult"].ToString();
+                    ddlAdultPersons.SelectedValue = dataset.Tables[0].Rows[0]["NoOfAdults"].ToString();
+                    lblAdultTotPrice.Text = dataset.Tables[0].Rows[0]["AdultTotal"].ToString();
+
+                    ddlChildType.SelectedValue = dataset.Tables[0].Rows[0]["CostForChildType"].ToString();
+                    txtChildPrice.Text = dataset.Tables[0].Rows[0]["CostForChild"].ToString();
+                    ddlChildPersons.SelectedValue = dataset.Tables[0].Rows[0]["NoOfChildren"].ToString();
+                    lblChildTotPrice.Text = dataset.Tables[0].Rows[0]["ChildTotal"].ToString();
+
+                    txtFlightDetails.Text = dataset.Tables[0].Rows[0]["FlightDetails"].ToString();
+                    txtCarHireDetails.Text = dataset.Tables[0].Rows[0]["CarHireDetails"].ToString();
+                    txtHotelInfo.Text = dataset.Tables[0].Rows[0]["HotelInfo"].ToString();
+                    txtItinerary.Text = dataset.Tables[0].Rows[0]["ItineraryDetails"].ToString();
+                    txtIncludes.Text = dataset.Tables[0].Rows[0]["Includes"].ToString();
+                    txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
+                    txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
+
+                    string strCustom = dataset.Tables[0].Rows[0]["IsCustomTemplate"].ToString();
+
+                    if (strCustom == "Y")
+                    {
+                        dvProdct.Visible = false;
+                        dvCustomProduct.Visible = true;
+                        txtProduct.Text = dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
+                    else
+                    {
+                        dvProdct.Visible = true;
+                        dvCustomProduct.Visible = false;
+                        ddlPackage.SelectedValue = dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
+                   
 
                     if (ddlAdultType.SelectedValue == "1")
                     {
@@ -283,7 +398,7 @@ public partial class Quote : System.Web.UI.Page
                     strResult = "0";
                 }
             }
-            
+
 
         }
         catch
@@ -388,6 +503,16 @@ public partial class Quote : System.Web.UI.Page
             qtEntity.QuoteNumber = "";
             qtEntity.Operation = "I";
 
+            if (QuoteType == "3")
+            {
+                qtEntity.PackageId = txtProduct.Text;
+            }
+            else {
+                qtEntity.PackageId = ddlPackage.SelectedValue;
+            }
+
+            
+
 
             //string result = qtBL.CUDQuote(qtEntity);
 
@@ -397,7 +522,7 @@ public partial class Quote : System.Web.UI.Page
             {
                 message.Text = "Quote Details saved Successfully!";
                 message.ForeColor = System.Drawing.Color.Green;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);               
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                 GetPdf(QuoteNumber);
                 Clear();
             }
@@ -697,4 +822,74 @@ public partial class Quote : System.Web.UI.Page
         {   }
     }
 
+   
+    protected void btnTemplageName_Click(object sender, ImageClickEventArgs e)
+    {
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "TemplageModal();", true);
+    }
+    protected void btnSaveTemplate_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            QuoteEntity qtEntity = new QuoteEntity();
+
+            qtEntity.CarHireDetails = txtCarHireDetails.Text;
+            qtEntity.ConsultantName = Session["Name"].ToString();
+            qtEntity.CostForAdult = txtAdultPrice.Text;
+            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+            qtEntity.CostForChild = txtChildPrice.Text;
+            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+            qtEntity.Excludes = txtExcludes.Text;
+            qtEntity.FlightDetails = txtFlightDetails.Text;
+            qtEntity.HotelInfo = txtHotelInfo.Text;
+            qtEntity.Includes = txtIncludes.Text;
+            qtEntity.ItineraryDetails = txtItinerary.Text;
+            qtEntity.LeadID = LeadID;
+            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+            qtEntity.QuoteDate = txtDate.Text;
+            qtEntity.ToCity = city;
+            qtEntity.TravelInsurance = txtTravelInsur.Text;
+            qtEntity.AdultTotal = lblAdultTotPrice.Text;
+            qtEntity.ChildTotal = lblChildTotPrice.Text;
+            qtEntity.IsMailSent = "N";
+            qtEntity.QuoteNumber = "";
+            qtEntity.Operation = "I";
+            if (QuoteType == "3")
+            {
+                qtEntity.PackageId = txtProduct.Text;
+                qtEntity.IsCustomTemplate = "Y";
+            }
+            else
+            {
+                qtEntity.PackageId = ddlPackage.SelectedValue;
+                qtEntity.IsCustomTemplate = "N";
+            }
+
+            qtEntity.TemplateName = txtTemplateName.Text;  
+            
+
+            int result = qtBL.CreateQuoteTemplate(qtEntity);
+
+            if (result == 1)
+            {
+                message.Text = "Template Details saved Successfully!";
+                message.ForeColor = System.Drawing.Color.Green;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                //GetPdf(QuoteNumber);
+                //Clear();
+            }
+            else
+            {
+                message.Text = "Please try again!";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

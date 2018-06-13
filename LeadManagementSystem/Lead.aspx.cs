@@ -45,6 +45,7 @@ public partial class Lead : System.Web.UI.Page
 
                 dvEdit.Visible = false;
                 
+                
 
             }
         }
@@ -170,6 +171,7 @@ public partial class Lead : System.Web.UI.Page
                 {
 
                     _objComman.GetStatus(ddlStatus);
+                    
                     //status.Visible = true;
                     newlead.Visible = true;
                     LeadList.Visible = false;
@@ -778,6 +780,9 @@ public partial class Lead : System.Web.UI.Page
                     DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                     DataTable dtLead = ds.Tables[0];
                     DataTable dtLeadHistory = ds.Tables[1];
+
+                    GetTemplateNames(ViewState["lsID"].ToString());
+
                     if (dtLead.Rows.Count > 0)
                     {
                         txtEFirstName.Text = dtLead.Rows[0]["lsFirstName"].ToString();
@@ -1200,12 +1205,45 @@ public partial class Lead : System.Web.UI.Page
     protected void imgQuoteSubmit_Click(object sender, ImageClickEventArgs e)
     {
         string strValue = ddlQuoteDetails.SelectedValue;
-        if (strValue == "1")
-        {
-            string url = hdfQuoteUrl.Value;
-            Response.Write("<script>window.open ('" + url + "','_blank');</script>");
-        }
 
-       
+        string strTemp = ddlTemplateNames.SelectedValue;
+
+        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp;
+        Response.Write("<script>window.open ('" + url + "','_blank');</script>");
+
     }
+    protected void ddlQuoteDetails_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlQuoteDetails.SelectedValue == "2")
+        {
+            dvTemplates.Visible = true;
+            imgQuoteSubmit.Style.Add("margin-top", "15px;");
+        }
+        else
+        {
+            dvTemplates.Visible = false;
+            imgQuoteSubmit.Style.Add("margin-top", "0px;");
+        }
+    }
+
+    protected void GetTemplateNames(string strLeadId)
+    {
+        ddlTemplateNames.Items.Clear();
+        try
+        {
+           DataSet ds = leadBL.GetTemplateNames(Convert.ToInt32(strLeadId));
+           ddlTemplateNames.DataSource = ds;
+            ddlTemplateNames.DataTextField = "TemplateName";
+            ddlTemplateNames.DataValueField = "ID";
+            ddlTemplateNames.DataBind();
+            ddlTemplateNames.Items.Insert(0, new ListItem("--Select Template --", "-1"));
+        }
+        catch (Exception ex)
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+
 }

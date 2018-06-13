@@ -31,5 +31,9 @@ public class QuoteEntity
     public string IsMailSent { get; set; }
     public string QuoteNumber { get; set; }
     public string Operation { get; set; }
+    public string PackageId { get; set; }
+
+    public string TemplateName { get; set; }
+    public string IsCustomTemplate { get; set; }
 
 }

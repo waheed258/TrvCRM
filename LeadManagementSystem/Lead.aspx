@@ -528,14 +528,19 @@
                                     <label class="control-label"><strong>Quote</strong> </label>
                                 </div>
                                 <div class="col-md-5">
-                                    <asp:DropDownList ID="ddlQuoteDetails" CssClass="form-control" runat="server" Style="padding: 10px;">
+                                    <asp:DropDownList ID="ddlQuoteDetails" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlQuoteDetails_SelectedIndexChanged" runat="server" Style="padding: 10px;">
                                         <asp:ListItem Value="1">Quote from New</asp:ListItem>
                                         <asp:ListItem Value="2">Quote from Template</asp:ListItem>
                                         <asp:ListItem Value="3">Quote Custom</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
+                                <div class="col-md-5" runat="server" id="dvTemplates" visible="false">
+                                    <asp:DropDownList ID="ddlTemplateNames" runat="server" CssClass="form-control" Style="padding: 10px;"></asp:DropDownList>
+                                    <asp:RequiredFieldValidator ID="rqfddlTemplateNames" runat="server" ControlToValidate="ddlTemplateNames" ForeColor="#d0582e"
+                                        ErrorMessage="Please select Template" ValidationGroup="TemplateName" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                </div>
                                 <div class="col-md-4">
-                                    <asp:ImageButton ID="imgQuoteSubmit" runat="server" ImageUrl="~/images/GenerateQuote.png" Height="35px" OnClick="imgQuoteSubmit_Click" />
+                                    <asp:ImageButton ID="imgQuoteSubmit" runat="server" ImageUrl="~/images/GenerateQuote.png" Height="35px" ValidationGroup="TemplateName" OnClick="imgQuoteSubmit_Click" />
                                 </div>
 
 

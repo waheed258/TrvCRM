@@ -136,6 +136,8 @@ namespace BusinessLogic
             }
             catch { }
         }
+
+       
         public static bool SendEmail(string SmtpHost, int SmtpPort, string MailFrom, string DisplayNameFrom, string FromPassword, string MailTo, string DisplayNameTo, string MailCc, string mailCc2, string mailCc3, string mailCc4, string DisplayNameCc, string MailBcc, string Subject, string MailText, string Attachment)
         {
             MailMessage myMessage = new MailMessage();

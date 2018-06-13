@@ -217,6 +217,14 @@ namespace BusinessLogic
             hashtable.Add("@LeadID", LeadID);
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetLeadInfo", hashtable);
             return ds;
+        }
+
+        public DataSet GetTemplateNames(int LeadID)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@leadId", LeadID);
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetTemplateNames", hashtable);
+            return ds;
         } 
        
     }

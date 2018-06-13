@@ -3,9 +3,14 @@
 <%--<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
-    <link href="css/jquery-ui.css" rel="stylesheet" />
+    
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src="ckeditor/ckeditor.js"></script>
+
+    <link href="css/jquery-ui.css" rel="stylesheet" />
+
+
+
     <script>
         $(document).ready(function () {
             $('#ContentPlaceHolder1_txtDate').datepicker({
@@ -79,6 +84,10 @@
             $('#myModal').modal('show');
         }
 
+        function TemplageModal() {
+            $('#TemplateModal').modal('show');
+        }
+
     </script>
 
     <style>
@@ -86,6 +95,9 @@
             /*font-size: 1.5em !important;*/
             margin-top: 15px;
         }
+
+        #ui-datepicker-div{display:none;}
+
     </style>
 
 </asp:Content>
@@ -102,11 +114,19 @@
                                     <label class="control-label">Client Name</label>
                                     <asp:Label ID="lblClientName" class="form-control" runat="server"></asp:Label>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3" id="dvProdct" runat="server">
                                     <label class="control-label">Product</label>
                                     <%--<asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>--%>
-                                    <asp:DropDownList ID="ddlPackage" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control">
+                                    <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control">
                                     </asp:DropDownList>
+                                     <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
+                                    ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-md-3" id="dvCustomProduct" runat="server" visible="false">
+                                    <label class="control-label">Product</label>                                   
+                                    <asp:TextBox ID="txtProduct" runat="server" MaxLength="200" CssClass="form-control"></asp:TextBox>
+                                     <asp:RequiredFieldValidator ID="rqftxtProduct" runat="server" ControlToValidate="txtProduct" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Product" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="control-label">Source</label>
@@ -244,8 +264,9 @@
                     <div class="clearfix"></div>
 
                     <div class="vali-form">
-                        <div class="col-md-3" style="margin-bottom: 20px; margin-top: 10px;">
+                        <div class="col-md-6" style="margin-bottom: 20px; margin-top: 10px;">
                             <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click" ValidationGroup="Quote" Height="35px" />
+                            <asp:ImageButton ID="btnTemplageName" runat="server" ValidationGroup="Quote" ImageUrl="~/images/save-as-template.png" OnClick="btnTemplageName_Click" Height="35px" />
                             <asp:ImageButton ID="imgbtnClear" runat="server" ImageUrl="~/images/clear.png" OnClick="imgbtnClear_Click" Height="35px" />
                         </div>
                         <div class="clearfix"></div>
@@ -273,6 +294,38 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="TemplateModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title">Template Name</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <label class="control-label">Template Name</label>
+                        </div>
+                        <div class="col-md-6">
+                            <asp:TextBox ID="txtTemplateName" runat="server" CssClass="form-control" MaxLength="200" ></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvtxtTemplateName" runat="server" ControlToValidate="txtTemplateName" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter Template Name" ValidationGroup="Template" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-3">
+                            <asp:Button ID="btnSaveTemplate" runat="server" CssClass="btn btn-default" ValidationGroup="Template" OnClick="btnSaveTemplate_Click" Text="Save Template" style="margin:4px;" />
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
 
 </asp:Content>
 

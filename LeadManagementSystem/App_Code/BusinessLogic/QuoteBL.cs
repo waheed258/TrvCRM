@@ -30,6 +30,14 @@ public class QuoteBL
         return ds;
     }
 
+    public DataSet GetTemplateData(int ID)
+    {
+        Hashtable hashtable = new Hashtable();
+        hashtable.Add("@ID", ID);
+        DataSet ds = dataUtilities.ExecuteDataSet("usp_TemplateData", hashtable);
+        return ds;
+    }
+
     public DataSet GetIncudeExcludes()
     {
         DataSet ds = dataUtilities.ExecuteDataSet("usp_GetIncules_Excludes");
@@ -107,6 +115,7 @@ public class QuoteBL
                     cmd.Parameters.AddWithValue("@ChildTotal", quoteEntity.ChildTotal);
                     cmd.Parameters.AddWithValue("@IsMailSent", quoteEntity.IsMailSent);
                     cmd.Parameters.AddWithValue("@LeadID", quoteEntity.LeadID);
+                    cmd.Parameters.AddWithValue("@PackageId", quoteEntity.PackageId);                    
 
                     if (quoteEntity.QuoteDate != "")
                     {
@@ -135,6 +144,47 @@ public class QuoteBL
         return strQuoteNumber;
     }
 
+    public int CreateQuoteTemplate(QuoteEntity quoteEntity)
+    {
+        Hashtable hashtable = new Hashtable();
 
+        hashtable.Add("@ToCity", quoteEntity.ToCity);
+        hashtable.Add("@FlightDetails", quoteEntity.FlightDetails);
+        hashtable.Add("@CarHireDetails", quoteEntity.CarHireDetails);
+        hashtable.Add("@HotelInfo", quoteEntity.HotelInfo);
+        hashtable.Add("@ItineraryDetails", quoteEntity.ItineraryDetails);
+        hashtable.Add("@Includes", quoteEntity.Includes);
+        hashtable.Add("@Excludes", quoteEntity.Excludes);
+        hashtable.Add("@CostForAdultType", quoteEntity.CostForAdultType);
+        hashtable.Add("@CostForAdult", quoteEntity.CostForAdult);
+        hashtable.Add("@NoOfAdults", quoteEntity.NoOfAdults);
+        hashtable.Add("@CostForChildType", quoteEntity.CostForChildType);
+        hashtable.Add("@CostForChild", quoteEntity.CostForChild);
+        hashtable.Add("@NoOfChildren", quoteEntity.NoOfChildren);
+        hashtable.Add("@TravelInsurance", quoteEntity.TravelInsurance);
+        hashtable.Add("@ConsultantName", quoteEntity.ConsultantName);
+        hashtable.Add("@AdultTotal", quoteEntity.AdultTotal);
+        hashtable.Add("@ChildTotal", quoteEntity.ChildTotal);
+        hashtable.Add("@IsMailSent", quoteEntity.IsMailSent);
+        hashtable.Add("@LeadID", quoteEntity.LeadID);
+        hashtable.Add("@PackageId", quoteEntity.PackageId);
+        hashtable.Add("@TemplateName", quoteEntity.TemplateName);
+
+        if (quoteEntity.QuoteDate != "")
+        {
+            hashtable.Add("@QuoteDate", DateTime.ParseExact(quoteEntity.QuoteDate, "dd-MM-yyyy", null));
+        }
+        else
+        {
+            hashtable.Add("@QuoteDate", DBNull.Value);
+        }
+
+        hashtable.Add("@Operation", quoteEntity.Operation);
+        hashtable.Add("@QuoteNumber", quoteEntity.QuoteNumber);
+        hashtable.Add("@IsCustomTemplate", quoteEntity.IsCustomTemplate);
+
+        int result = dataUtilities.ExecuteNonQuery("usp_CreateQuoteTemplate", hashtable);
+        return result;
+    }
 
 }
