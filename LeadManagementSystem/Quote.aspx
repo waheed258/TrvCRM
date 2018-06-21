@@ -3,7 +3,7 @@
 <%--<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
-    
+
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src="ckeditor/ckeditor.js"></script>
 
@@ -14,7 +14,7 @@
     <script>
         $(document).ready(function () {
             $('#ContentPlaceHolder1_txtDate').datepicker({
-                startDate: 'today',                
+                startDate: 'today',
                 minDate: 0,
                 numberOfMonths: 1,
                 autoclose: true,
@@ -38,9 +38,9 @@
                         function (e) {
                             for (instance in CKEDITOR.instances)
                                 CKEDITOR.instances[instance].updateElement();
-                     });
+                        });
                 });
-            });           
+            });
 
             $("#ContentPlaceHolder1_txtAdultPrice").blur(function () {
                 var value = $(this).val();
@@ -49,7 +49,7 @@
                 else {
                     alert("Enter Adult Price");
                     $('#ContentPlaceHolder1_ddlAdultPersons').attr("disabled", "disabled");
-                }  
+                }
             });
 
 
@@ -96,8 +96,9 @@
             margin-top: 15px;
         }
 
-        #ui-datepicker-div{display:none;}
-
+        #ui-datepicker-div {
+            display: none;
+        }
     </style>
 
 </asp:Content>
@@ -107,7 +108,8 @@
             <div class="graph-form">
                 <div class="validation-form">
                     <div class="vali-form">
-                        <h5>Lead Details</h5>
+                        <%--<h5>Lead Details</h5>--%>
+                          <label class="control-label" style="color: #58a2e6;font-size: 20px;">Lead Details</label>
                         <div class="graph-form">
                             <div class="row">
                                 <div class="col-md-3">
@@ -119,24 +121,24 @@
                                     <%--<asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>--%>
                                     <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control">
                                     </asp:DropDownList>
-                                     <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
-                                    ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                    <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
+                                        ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-3" id="dvCustomProduct" runat="server" visible="false">
-                                    <label class="control-label">Product</label>                                   
+                                    <label class="control-label">Product</label>
                                     <asp:TextBox ID="txtProduct" runat="server" MaxLength="200" CssClass="form-control"></asp:TextBox>
-                                     <asp:RequiredFieldValidator ID="rqftxtProduct" runat="server" ControlToValidate="txtProduct" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Product" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
+                                    <asp:RequiredFieldValidator ID="rqftxtProduct" runat="server" ControlToValidate="txtProduct" ForeColor="#d0582e"
+                                        ErrorMessage="Please Enter Product" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="control-label">Source</label>
+                                    <label class="control-label">Departing from</label>
                                     <%--<asp:Label ID="lblSource" class="form-control" runat="server"></asp:Label>--%>
                                     <asp:TextBox ID="txtSource" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="control-label">Destination</label>
+                                    <label class="control-label">Travelling to</label>
                                     <%--<asp:Label ID="lblDestination" class="form-control" runat="server"></asp:Label>--%>
-                                    <asp:TextBox ID="txtDestination" runat="server" class="form-control" ></asp:TextBox>
+                                    <asp:TextBox ID="txtDestination" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +181,7 @@
                                     <asp:ListItem Value="9">9</asp:ListItem>
                                     <asp:ListItem Value="10">10</asp:ListItem>
                                 </asp:DropDownList>
-                             
+
                                 <asp:RequiredFieldValidator ID="rfvAdultQty" runat="server" ControlToValidate="ddlAdultPersons" ForeColor="#d0582e"
                                     ErrorMessage="Please Select No Of Persons" ValidationGroup="Quote" Display="Dynamic" InitialValue="0"></asp:RequiredFieldValidator>
                             </div>
@@ -201,7 +203,7 @@
                             </div>
                             <div class="col-md-3" id="dvChildPrice">
                                 <label class="control-label">Price</label>
-                                <asp:TextBox ID="txtChildPrice" runat="server" class="form-control" placeholder="Child Price" MaxLength="9"></asp:TextBox>                 
+                                <asp:TextBox ID="txtChildPrice" runat="server" class="form-control" placeholder="Child Price" MaxLength="9"></asp:TextBox>
                             </div>
                             <div class="col-md-3" id="dvChildPersons" runat="server" visible="false">
                                 <label class="control-label">No Of Childrens</label>
@@ -218,7 +220,7 @@
                                     <asp:ListItem Value="9">9</asp:ListItem>
                                     <asp:ListItem Value="10">10</asp:ListItem>
                                 </asp:DropDownList>
-                              
+
                                 <asp:RequiredFieldValidator ID="rfvChildPersons" runat="server" ControlToValidate="ddlChildPersons" ForeColor="#d0582e"
                                     ErrorMessage="Please Select No Of Childrens" ValidationGroup="Quote" Display="Dynamic" InitialValue="0"></asp:RequiredFieldValidator>
                             </div>
@@ -229,33 +231,40 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="vali-form">
-                        <label class="control-label">Flight Details</label>                     
-                        <asp:TextBox ID="txtFlightDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>                   
+                    <div class="vali-form" style="margin-top:30px">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="control-label" style="color: #58a2e6;font-size: 20px;">Flight Details</label>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                <asp:ImageButton ID="imgbtnGetDots" runat="server" ImageUrl="~/images/button_get-from-dots.png" Height="35px" />
+                            </div>
+                        </div>
+                        <asp:TextBox ID="txtFlightDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label">Car Hire</label>
-                        <asp:TextBox ID="txtCarHireDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>               
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Car Hire</label>
+                        <asp:TextBox ID="txtCarHireDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label">Hotel Info</label>
-                        <asp:TextBox ID="txtHotelInfo" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>                 
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Hotel Info</label>
+                        <asp:TextBox ID="txtHotelInfo" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label">Itinerary</label>
-                        <asp:TextBox ID="txtItinerary" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>                    
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Itinerary</label>
+                        <asp:TextBox ID="txtItinerary" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label">Includes</label>
-                        <asp:TextBox ID="txtIncludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>               
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Includes</label>
+                        <asp:TextBox ID="txtIncludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label">Excludes</label>
-                        <asp:TextBox ID="txtExcludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>                    
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Excludes</label>
+                        <asp:TextBox ID="txtExcludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
 
                     <div class="vali-form">
-                        <label class="control-label">Travel Insurance</label>
+                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Travel Insurance</label>
                         <asp:TextBox ID="txtTravelInsur" TextMode="MultiLine" runat="server" class="form-control" placeholder="Travel Insurance Details" MaxLength="500" Columns="30"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTravelInsur" ForeColor="#d0582e"
                             ErrorMessage="Please Enter Travel Insurance Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -266,7 +275,7 @@
                     <div class="vali-form">
                         <div class="col-md-6" style="margin-bottom: 20px; margin-top: 10px;">
                             <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click" ValidationGroup="Quote" Height="35px" />
-                            <asp:ImageButton ID="btnTemplageName" runat="server" ValidationGroup="Quote" ImageUrl="~/images/save-as-template.png" OnClick="btnTemplageName_Click" Height="35px" />
+                            <asp:ImageButton ID="btnTemplageName" runat="server" ValidationGroup="Quote" ImageUrl="~/images/button_save-as-template.png" OnClick="btnTemplageName_Click" Height="35px" />
                             <asp:ImageButton ID="imgbtnClear" runat="server" ImageUrl="~/images/clear.png" OnClick="imgbtnClear_Click" Height="35px" />
                         </div>
                         <div class="clearfix"></div>

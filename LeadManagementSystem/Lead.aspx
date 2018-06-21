@@ -341,7 +341,7 @@
                             </div>
                             <div class="vali-form" id="status" runat="server">
                                 <div class="col-md-4">
-                                    <label class="control-label">Status</label>
+                                    <label class="control-label">Lead Status</label>
                                     <asp:DropDownList ID="ddlStatus" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
                                     </asp:DropDownList>
                                     <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus" ForeColor="#d0582e"
@@ -388,6 +388,14 @@
                                 <asp:RegularExpressionValidator ID="rgtxtEMobile" runat="server" ErrorMessage="Please enter 10 digits" ValidationExpression="[0-9]{10}" Display="Dynamic"
                                     ControlToValidate="txtEMobile" ForeColor="#d0582e" ValidationGroup="LeadEdit"></asp:RegularExpressionValidator>
                             </div>
+
+                            <div class="col-md-6"  id="dvClientFileId" runat="server">
+                                <label class="control-label">Client file Id: </label>
+                                <asp:TextBox ID="txtClientFileId" runat="server" class="form-control" placeholder="Client file Id" MaxLength="100"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="rfvClientFileID" runat="server" ControlToValidate="txtClientFileId" ForeColor="#d0582e"
+                                    ErrorMessage="Please Enter File ID" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                            </div>
+
                             <div class="col-md-12" style="margin-top: 15px;">
                                 <label class="control-label"><strong>Final Travel Dates</strong></label>
                             </div>
@@ -403,15 +411,7 @@
                             </div>
 
 
-                            <div class="col-md-12" style="margin: 15px 0px; padding: 0px;" id="dvClientFileId" runat="server">
-                                <div class="col-md-3">
-                                    <label class="control-label">Client file Id: </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <asp:TextBox ID="txtClientFileId" runat="server" class="form-control" placeholder="Client file Id" MaxLength="100"></asp:TextBox>
-                                </div>
-                                <div class="col-md-3"></div>
-                            </div>
+
                             <div class="col-md-12">
                                 <label class="control-label">Consultant Notes</label>
                                 <asp:TextBox ID="txtEConsultNotes" runat="server" class="form-control" placeholder="Notes" TextMode="MultiLine" MaxLength="200"></asp:TextBox>
@@ -513,15 +513,17 @@
                                     </tr>
                                 </table>
 
-                                <div class="col-md-6">
-                                    <label class="control-label">
-                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
-                                            <img src="images/send-more-info.png" /></button>
-                                    </label>
-                                </div>
+                              
 
                             </div>
-
+                            <div class="col-md-12" style="border: 1px black dashed; padding: 15px;margin-top:10px;">
+                                  <div class="col-md-6">
+                                    <label class="control-label">
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
+                                            <img src="images/button_send-more-info (1).png" style="height:35px;"/></button>
+                                    </label>
+                                </div>
+                            </div>
                             <div class="col-md-12" style="border: 1px black dashed; padding: 10px; margin-top: 15px;">
 
                                 <div class="col-md-2">
@@ -540,7 +542,7 @@
                                         ErrorMessage="Please select Template" ValidationGroup="TemplateName" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-4">
-                                    <asp:ImageButton ID="imgQuoteSubmit" runat="server" ImageUrl="~/images/GenerateQuote.png" Height="35px" ValidationGroup="TemplateName" OnClick="imgQuoteSubmit_Click" />
+                                    <asp:ImageButton ID="imgQuoteSubmit" runat="server" ImageUrl="~/images/button_generate-quote (1).png" Height="35px" ValidationGroup="TemplateName" OnClick="imgQuoteSubmit_Click" />
                                 </div>
 
 
@@ -1033,7 +1035,7 @@
                                                             <asp:Label runat="server" ID="lbllsCreatedOn" Text='<%#Eval("lsCreatedOn", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField HeaderText="ProductID" Visible="false">
+                                                    <asp:TemplateField HeaderText="ProductID" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblProductID" Text='<%#Eval("ProductID") %>'></asp:Label>
                                                         </ItemTemplate>

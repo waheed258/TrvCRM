@@ -149,7 +149,7 @@ public partial class ConsultantList : System.Web.UI.Page
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openEditModal();", true);
                     txtFirstName.Text = ((Label)row.FindControl("lblFirstName")).Text.ToString();
                     txtLastName.Text = ((Label)row.FindControl("lblLastName")).Text.ToString();
-                    txtMobile.Text = ((Label)row.FindControl("lblMobile")).Text.ToString();
+                   // txtMobile.Text = ((Label)row.FindControl("lblMobile")).Text.ToString();
                     txtEmail.Text = ((Label)row.FindControl("lblEmailID")).Text.ToString();
                     txtLoginId.Text = ((Label)row.FindControl("lblLoginID")).Text.ToString();
                     txtPassword.Text = encrypydecrypt.Decrypt(((Label)row.FindControl("lblPwd")).Text.ToString());
@@ -234,7 +234,7 @@ public partial class ConsultantList : System.Web.UI.Page
         {
             consultant.FirstName = txtFirstName.Text;
             consultant.LastName = txtLastName.Text;
-            consultant.Mobile = txtMobile.Text;
+            consultant.Mobile = "";
             consultant.Email = txtEmail.Text;
             consultant.LoginID = txtLoginId.Text;
             consultant.Password = encrypydecrypt.Encrypt(txtPassword.Text.Trim());
@@ -293,7 +293,7 @@ public partial class ConsultantList : System.Web.UI.Page
             consultant.UpdatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
             consultant.FirstName = txtFirstName.Text;
             consultant.LastName = txtLastName.Text;
-            consultant.Mobile = txtMobile.Text;
+            consultant.Mobile ="";
             consultant.Email = txtEmail.Text;
             consultant.LoginID = txtLoginId.Text;
             consultant.Password = encrypydecrypt.Encrypt(txtPassword.Text.Trim());
@@ -337,7 +337,7 @@ public partial class ConsultantList : System.Web.UI.Page
     {
         txtFirstName.Text = "";
         txtLastName.Text = "";
-        txtMobile.Text = "";
+       // txtMobile.Text = "";
         txtEmail.Text = "";
         ddlBranch.SelectedValue = "-1";
         ddlDesignation.SelectedValue = "-1";

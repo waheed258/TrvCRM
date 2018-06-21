@@ -721,6 +721,17 @@ public partial class Lead : System.Web.UI.Page
             txtDescription.Text = "";
             desc.Visible = true;
         }
+        if (ddlStatus.SelectedValue  == "6")
+        {
+            // Client File Id TextBox Show
+            dvClientFileId.Visible = true;
+            txtClientFileId.Text = "";
+        }
+        else
+        {
+            txtClientFileId.Text = "";
+            dvClientFileId.Visible = false;
+        }
     }
     protected void imgbtnAddLead_Click1(object sender, ImageClickEventArgs e)
     {
@@ -1216,6 +1227,7 @@ public partial class Lead : System.Web.UI.Page
     {
         if (ddlQuoteDetails.SelectedValue == "2")
         {
+            GetTemplateNames(ViewState["lsID"].ToString());
             dvTemplates.Visible = true;
             imgQuoteSubmit.Style.Add("margin-top", "15px;");
         }

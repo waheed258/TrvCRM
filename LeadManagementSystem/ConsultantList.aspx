@@ -107,7 +107,7 @@
                                             <asp:Label runat="server" ID="lblLastName" Text='<%#Eval("LastName") %>' Visible="false"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Mobile">
+                                    <asp:TemplateField HeaderText="Mobile" Visible="false">
                                         <ItemTemplate>
                                             <asp:Label runat="server" ID="lblMobile" Text='<%#Eval("Mobile") %>'></asp:Label>
                                         </ItemTemplate>
@@ -172,19 +172,19 @@
 
                     <div id="dvEdit" runat="server" visible="false">
                         <div class="vali-form">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label class="control-label" for="txtFirstName">First Name</label>
                                 <asp:TextBox ID="txtFirstName" runat="server" class="form-control" placeholder="Given Name"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtFirstName" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter First Name" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
-                            <div class="col-md-3 form-last">
+                            <div class="col-md-4 form-last">
                                 <label class="control-label" for="txtLastName">Last Name</label>
                                 <asp:TextBox ID="txtLastName" runat="server" class="form-control" placeholder="Surname"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvLastName" runat="server" ControlToValidate="txtLastName" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter Last Name" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
-                            <div class="col-md-3 form-last">
+                            <div class="col-md-4 form-last">
                                 <label class="control-label" for="txtEmail">Email</label>
                                 <asp:TextBox ID="txtEmail" runat="server" class="form-control" placeholder="Email"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvEmailId" runat="server" ControlToValidate="txtEmail" ForeColor="#d0582e"
@@ -193,32 +193,32 @@
                                     ControlToValidate="txtEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidationGroup="Consultant">
                                 </asp:RegularExpressionValidator>
                             </div>
-                            <div class="col-md-3 form-last">
+                           <%-- <div class="col-md-3 form-last">
                                 <label class="control-label" for="txtMobile">Mobile</label>
                                 <asp:TextBox ID="txtMobile" runat="server" class="form-control" placeholder="Mobile" MaxLength="10"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvMobileNum" runat="server" ControlToValidate="txtMobile" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter Mobile" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="revMobileNum" runat="server" ErrorMessage="Please enter 10 digits" ValidationExpression="[0-9]{10}" Display="Dynamic"
                                     ControlToValidate="txtMobile" ForeColor="#d0582e" ValidationGroup="Consultant"></asp:RegularExpressionValidator>
-                            </div>
+                            </div>--%>
                             <div class="clearfix"></div>
                         </div>
 
                         <div class="vali-form">
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-4">
                                 <label class="control-label">Login ID</label>
                                 <asp:TextBox ID="txtLoginId" class="form-control" runat="server" placeholder="Enter LoginId" MaxLength="50"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvLoginId" runat="server" ControlToValidate="txtLoginId" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter Login ID" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
 
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-4">
                                 <label class="control-label" runat="server">Password</label>
                                 <asp:TextBox ID="txtPassword" class="form-control" runat="server" placeholder="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvPassword" runat="server" ControlToValidate="txtPassword" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter Password" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
-                            <div class="form-group col-lg-3" id="dvRPwd" runat="server">
+                            <div class="form-group col-lg-4" id="dvRPwd" runat="server">
                                 <label class="control-label">Repeated password</label>
                                 <asp:TextBox ID="txtConfirmPassword" class="form-control" TextMode="Password" runat="server" placeholder="Confirm Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvConfirmPassword" runat="server" ControlToValidate="txtConfirmPassword" ForeColor="#d0582e"
@@ -232,21 +232,21 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="vali-form">
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-4">
                                 <label class="control-label">Branch</label>
                                 <asp:DropDownList ID="ddlBranch" class="form-control" runat="server" Style="padding: 0px">
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator ID="rfvBranch" runat="server" ControlToValidate="ddlBranch" ForeColor="#d0582e"
                                     ErrorMessage="Please Select Branch" ValidationGroup="Consultant" InitialValue="-1" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-4">
                                 <label class="control-label">Designation</label>
                                 <asp:DropDownList ID="ddlDesignation" class="form-control" runat="server" Style="padding: 0px">
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator ID="rfvDesignation" runat="server" ControlToValidate="ddlDesignation" ForeColor="#d0582e"
                                     ErrorMessage="Please Select Designation" ValidationGroup="Consultant" InitialValue="-1" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
-                            <div class="form-group col-lg-3">
+                            <div class="form-group col-lg-4">
                                 <label class="control-label">Status</label>
                                 <asp:DropDownList ID="ddlStatus" class="form-control" runat="server" Style="padding: 0px">
                                 </asp:DropDownList>
