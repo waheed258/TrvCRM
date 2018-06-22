@@ -339,19 +339,35 @@
                             <div class="col-md-12 text-center">
                                 <asp:Label ID="lblFollowup" runat="server"></asp:Label>
                             </div>
+                            <div class="vali-form">
+                                <div class="col-md-6">
+                                    <label class="control-label">Lead Source</label>
+                                    <asp:DropDownList ID="ddlESource" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlESource_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                    <asp:RequiredFieldValidator ID="rfvddlESource" runat="server" ControlToValidate="ddlESource" ForeColor="#d0582e"
+                                        ErrorMessage="Please Select Source" ValidationGroup="LeadEdit" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-md-6" id="dvEOthers" runat="server">
+                                    <label class="control-label">Others</label>
+                                    <asp:TextBox ID="txtEOthers" runat="server" class="form-control" placeholder="Description" MaxLength="50"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvtxtEOthers" runat="server" ControlToValidate="txtEOthers" ForeColor="#d0582e"
+                                        ErrorMessage="Please Enter Others Description" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
                             <div class="vali-form" id="status" runat="server">
                                 <div class="col-md-4">
                                     <label class="control-label">Lead Status</label>
                                     <asp:DropDownList ID="ddlStatus" runat="server" AutoPostBack="true" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
                                     </asp:DropDownList>
                                     <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus" ForeColor="#d0582e"
-                                        ErrorMessage="Please select status" ValidationGroup="Consultant" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
+                                        ErrorMessage="Please select status" ValidationGroup="LeadEdit" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-4" id="followupdate" runat="server">
                                     <label class="control-label">Follow up Date</label>
                                     <asp:TextBox ID="txtFollowUp" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="rfvFollowupdate" runat="server" ControlToValidate="txtFollowUp" ForeColor="#d0582e"
-                                        ErrorMessage="Please Enter Follow up Date" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        ErrorMessage="Please Enter Follow up Date" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-md-4" id="desc" runat="server">
                                     <label class="control-label">Description</label>
@@ -389,7 +405,7 @@
                                     ControlToValidate="txtEMobile" ForeColor="#d0582e" ValidationGroup="LeadEdit"></asp:RegularExpressionValidator>
                             </div>
 
-                            <div class="col-md-6"  id="dvClientFileId" runat="server">
+                            <div class="col-md-6" id="dvClientFileId" runat="server">
                                 <label class="control-label">Client file Id: </label>
                                 <asp:TextBox ID="txtClientFileId" runat="server" class="form-control" placeholder="Client file Id" MaxLength="100"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvClientFileID" runat="server" ControlToValidate="txtClientFileId" ForeColor="#d0582e"
@@ -513,14 +529,14 @@
                                     </tr>
                                 </table>
 
-                              
+
 
                             </div>
-                            <div class="col-md-12" style="border: 1px black dashed; padding: 15px;margin-top:10px;">
-                                  <div class="col-md-6">
+                            <div class="col-md-12" style="border: 1px black dashed; padding: 15px; margin-top: 10px;">
+                                <div class="col-md-6">
                                     <label class="control-label">
                                         <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
-                                            <img src="images/button_send-more-info (1).png" style="height:35px;"/></button>
+                                            <img src="images/button_send-more-info (1).png" style="height: 35px;" /></button>
                                     </label>
                                 </div>
                             </div>

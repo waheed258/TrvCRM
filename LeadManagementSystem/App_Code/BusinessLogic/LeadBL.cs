@@ -86,7 +86,7 @@ namespace BusinessLogic
             hashtable.Add("@lsDestinationName", leadEntity.DestinationName);
             hashtable.Add("@lsLeadDesc", leadEntity.LeadDescription);
 
-            if (leadEntity.DepartureDate != "")
+            if (leadEntity.DepartureDate != "") 
             {
                 hashtable.Add("@lsDepartureDate", DateTime.ParseExact(leadEntity.DepartureDate, "dd-MM-yyyy", null));
             }
@@ -125,6 +125,9 @@ namespace BusinessLogic
             hashtable.Add("@lsId", leadEntity.LeadID);            
             hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
 
+            hashtable.Add("@lsSource", leadEntity.SourceID);
+            hashtable.Add("@lsSourceRef", leadEntity.SourceRef);
+
 
             if (leadEntity.FollowupDate != "")
             {
@@ -136,7 +139,7 @@ namespace BusinessLogic
             }
             hashtable.Add("@FollowupDesc", leadEntity.FollowupDesc);           
             
-            hashtable.Add("@lsOthersInfo", ""); 
+            hashtable.Add("@lsOthersInfo", leadEntity.Others); 
             hashtable.Add("@lsFirstName", leadEntity.FirstName);
             hashtable.Add("@lsLastName", leadEntity.LastName);
             hashtable.Add("@lsMobile", leadEntity.Mobile);
@@ -165,7 +168,15 @@ namespace BusinessLogic
 
             hashtable.Add("@ClientFileId", leadEntity.ClientFileId);
             hashtable.Add("@lsConsultantNotes", leadEntity.ConsultantNotes);
-            hashtable.Add("@lsReminder", DateTime.ParseExact(leadEntity.Reminder, "dd-MM-yyyy", null));
+
+            if (!string.IsNullOrEmpty(leadEntity.Reminder))
+            {
+                hashtable.Add("@lsReminder", DateTime.ParseExact(leadEntity.Reminder, "dd-MM-yyyy", null));
+            }
+            else {
+                hashtable.Add("@lsReminder", DBNull.Value);
+            }
+            
             hashtable.Add("@lsReminderNotes", leadEntity.ReminderNotes);
 
             int result = dataUtilities.ExecuteNonQuery("usp_UpdtLeadInfo", hashtable);

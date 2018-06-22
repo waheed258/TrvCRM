@@ -32,6 +32,7 @@ public partial class Lead : System.Web.UI.Page
                 GetProducts();
                 GetSourceData("I");
                 others.Visible = false;
+                dvEOthers.Visible = false;
                 GetLeadsList();
                 GetAssinedLeadsList();
                 newlead.Visible = false;
@@ -772,9 +773,10 @@ public partial class Lead : System.Web.UI.Page
                 GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
                 int RowIndex = row.RowIndex;
                 ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
-                GetSourceData("U");
+                GetSourceDataEdit("U");
                 if (e.CommandName == "EditLead")
                 {
+                   
                     MailMessage.Text = "";
                     _objComman.GetStatus(ddlStatus);
                     //status.Visible = true;
@@ -795,7 +797,7 @@ public partial class Lead : System.Web.UI.Page
                     GetTemplateNames(ViewState["lsID"].ToString());
 
                     if (dtLead.Rows.Count > 0)
-                    {
+                    {                        
                         txtEFirstName.Text = dtLead.Rows[0]["lsFirstName"].ToString();
                         txtELastName.Text = dtLead.Rows[0]["lsLastName"].ToString();
                         txtEMobile.Text = dtLead.Rows[0]["lsPhone"].ToString();
@@ -819,6 +821,14 @@ public partial class Lead : System.Web.UI.Page
 
                         txtToEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
                         txtEmailSubject.Text = "Serendipity Tours >> More Info Required";
+
+                        ddlESource.SelectedValue = dtLead.Rows[0]["lsSource"].ToString();
+                        if (ddlESource.SelectedValue == "10")
+                        {
+                            dvEOthers.Visible = true;
+                        }
+
+                        txtEOthers.Text = dtLead.Rows[0]["lsOthersInfo"].ToString();                        
 
                         ddlStatus.SelectedValue = strStatusId;
 
@@ -1001,9 +1011,9 @@ public partial class Lead : System.Web.UI.Page
         try
         {
             leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
-            leadEntity.SourceID = 0;
-            leadEntity.SourceRef = "";
-            leadEntity.Others = "";
+            leadEntity.SourceID = Convert.ToInt32(ddlESource.SelectedValue);
+            leadEntity.SourceRef = ddlESource.SelectedItem.Text;
+            leadEntity.Others = txtEOthers.Text;
             leadEntity.AssignedTo = 0;
             leadEntity.AssignedBy = 0;
             leadEntity.FirstName = txtEFirstName.Text;
@@ -1056,7 +1066,7 @@ public partial class Lead : System.Web.UI.Page
                 GetLeadsList();
                 GetAssinedLeadsList();
                 EditClear();
-                //imgbtnAddLead.Visible = true;
+                imgbtnAddLead.Visible = true;
 
             }
             else
@@ -1087,7 +1097,9 @@ public partial class Lead : System.Web.UI.Page
         txtClientFileId.Text = "";
         txtEConsultNotes.Text = "";
         txtEReminder.Text = "";
-        txtERemindNotes.Text = "";        
+        txtERemindNotes.Text = "";
+        ddlESource.SelectedValue = "-1";
+        txtEOthers.Text = "";
     }
 
     protected void imgECancel_Click(object sender, ImageClickEventArgs e)
@@ -1258,4 +1270,36 @@ public partial class Lead : System.Web.UI.Page
         }
     }
 
+    protected void GetSourceDataEdit(string Opeartion)
+    {
+        try
+        {
+            dataset = leadBL.GetSourceData(Opeartion);
+            ddlESource.DataSource = dataset;
+            ddlESource.DataTextField = "SourceType";
+            ddlESource.DataValueField = "SourceTypeID";
+            ddlESource.DataBind();
+            ddlESource.Items.Insert(0, new ListItem("--Select Source --", "-1"));
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+   
+    protected void ddlESource_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlESource.SelectedValue == "10")
+        {
+            txtEOthers.Text = "";
+            dvEOthers.Visible = true;
+        }
+        else
+        {
+            txtEOthers.Text = "";
+            dvEOthers.Visible = false;
+        }
+    }
 }
