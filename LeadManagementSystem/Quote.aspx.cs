@@ -943,5 +943,7 @@ public partial class Quote : System.Web.UI.Page
     protected void btnSendMail_Click(object sender, EventArgs e)
     {
         GetPdf(ViewState["QuoteNumber"].ToString());
+
+        CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", ViewState["QuoteNumber"].ToString());
     }
 }

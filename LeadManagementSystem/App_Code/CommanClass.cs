@@ -256,7 +256,7 @@ namespace BusinessLogic
             return IsSucces;
         }
 
-        public static int MailStatusLog(int leadId, string strMailCode, string strMailStatus,string strMailError)
+        public static int MailStatusLog(int leadId, string strMailCode, string strMailStatus,string strMailError,string strQuoteNumber)
         {
             DataUtilities dtUtil = new DataUtilities();
             string strConnection = dtUtil.GetConnectionString();
@@ -266,6 +266,7 @@ namespace BusinessLogic
             hashtable.Add("@mlCode", strMailCode);
             hashtable.Add("@mlSent", strMailStatus);
             hashtable.Add("@mlError", strMailError);
+            hashtable.Add("@mQuoteNumber", strQuoteNumber);
 
             int result = dtUtil.ExecuteNonQuery("usp_MailLog", hashtable);
             return result;

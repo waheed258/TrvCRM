@@ -1153,7 +1153,7 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email sent successfully.";
                         MailMessage.ForeColor = System.Drawing.Color.Green;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "");
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "","");
 
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
@@ -1164,7 +1164,7 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email not sent.";
                         MailMessage.ForeColor = System.Drawing.Color.Red;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "");
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "","");
 
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
@@ -1177,7 +1177,7 @@ public partial class Lead : System.Web.UI.Page
                 {
                     MailMessage.Text = "Email not sent.";
                     MailMessage.ForeColor = System.Drawing.Color.Red;
-                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message);
+                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message,"");
 
                     DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                     DataTable dtLeadHistory = dsInfo.Tables[1];
