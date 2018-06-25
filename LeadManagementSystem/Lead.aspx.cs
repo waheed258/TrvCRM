@@ -810,8 +810,14 @@ public partial class Lead : System.Web.UI.Page
                         lblLDates.Text = string.Format("{0} / {1}", String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsDepartureDate"]), String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReturnDate"]));
                         lblLBudget.Text = dtLead.Rows[0]["lsBudget"].ToString();
                         lblLPhone.Text = dtLead.Rows[0]["lsPhone"].ToString();
-                        lnkUrl.Text = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
-                        lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
+                        if (dtLead.Rows[0]["lsProductId"].ToString() == "" || dtLead.Rows[0]["lsProductId"].ToString() == null)
+                        {
+                            lnkUrl.Text = "Lead not from Serendipity website";
+                        }
+                        else {
+                            lnkUrl.Text = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
+                            lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
+                        }
                         lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
 
                         txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
