@@ -1245,8 +1245,9 @@ public partial class Lead : System.Web.UI.Page
         string strTemp = ddlTemplateNames.SelectedValue;
 
         string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1";
-        //string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp;
-        Response.Write("<script>window.open ('" + url + "','_blank');</script>");
+       
+        string s = "window.open('" + url + "', '_blank');";
+        ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
 
     }
     protected void ddlQuoteDetails_SelectedIndexChanged(object sender, EventArgs e)
@@ -1343,11 +1344,10 @@ public partial class Lead : System.Web.UI.Page
                     string url =  hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
 
                     //string s = "window.open('" + url + "', '_blank');";
-                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                  
+                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                    
 
-                    Response.Write("<script>window.open ('" + url + "','_blank');</script>");
-
-              
+                    string s = "window.open('" + url + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                    
       
                 }              
