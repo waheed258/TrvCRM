@@ -1244,7 +1244,8 @@ public partial class Lead : System.Web.UI.Page
 
         string strTemp = ddlTemplateNames.SelectedValue;
 
-        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=''&flag=1";
+        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1";
+        //string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp;
         Response.Write("<script>window.open ('" + url + "','_blank');</script>");
 
     }
@@ -1336,17 +1337,19 @@ public partial class Lead : System.Web.UI.Page
                 }
                 else if (e.CommandName == "Edit")
                 {
-                    string path = "http://tcrm.askswg.co.za/";
+                    
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
 
-                    //string url = path + hdfQuoteUrl.Value + "&qtype=''&temp=''&QuoteID=" + strQuoteNumber + "&flag=2";
+                    string url =  hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
 
                     //string s = "window.open('" + url + "', '_blank');";
-                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                  
 
-                    string url = "www.google.com";
+                    Response.Write("<script>window.open ('" + url + "','_blank');</script>");
 
-                    Response.Write("<script>window.open ('" + url + "','_blank');</script>");                   
+              
+                   
+      
                 }              
             }
         }
