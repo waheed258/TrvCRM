@@ -136,7 +136,7 @@
                                 <div class="col-md-3" id="dvProdct" runat="server">
                                     <label class="control-label">Product</label>
                                     <%--<asp:Label ID="lblProduct" class="form-control" runat="server"></asp:Label>--%>
-                                    <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control">
+                                    <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlPackage_SelectedIndexChanged" AutoPostBack="true">
                                     </asp:DropDownList>
                                     <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
                                         ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
