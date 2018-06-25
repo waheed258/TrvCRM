@@ -127,17 +127,24 @@ public partial class Quote : System.Web.UI.Page
             ddlPackage.DataBind();
             ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
 
-            int prodid =Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["prodid"]));
-            var includesExcludes = (from products in dataset.Tables[0].AsEnumerable()
-                                    where products.Field<int>("package_id") == prodid
-                                    select new
-                                    {
-                                        Includes = products.Field<string>("package_includes"),
-                                        Excludse = products.Field<string>("package_excludes")
-                                    }).First();
+            if (encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == "" || encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == null) {
+                txtIncludes.Text = "";
+                txtExcludes.Text = "";
+            }
+            else
+            {
+                int prodid = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["prodid"]));
+                var includesExcludes = (from products in dataset.Tables[0].AsEnumerable()
+                                        where products.Field<int>("package_id") == prodid
+                                        select new
+                                        {
+                                            Includes = products.Field<string>("package_includes"),
+                                            Excludse = products.Field<string>("package_excludes")
+                                        }).First();
 
-            txtIncludes.Text = includesExcludes.Includes;
-            txtExcludes.Text = includesExcludes.Excludse;            
+                txtIncludes.Text = includesExcludes.Includes;
+                txtExcludes.Text = includesExcludes.Excludse;
+            }
         }
         catch
         {
@@ -964,11 +971,12 @@ public partial class Quote : System.Web.UI.Page
         DataSet ds = (DataSet)ViewState["products"];
         int prodid = Convert.ToInt32(ddlPackage.SelectedValue);
         var includesExcludes = (from products in ds.Tables[0].AsEnumerable()
-                       where products.Field<int>("package_id") == prodid
-                       select new{ 
-                         Includes =   products.Field<string>("package_includes"),
-                         Excludse = products.Field<string>("package_excludes")
-                       }).First();
+                                where products.Field<int>("package_id") == prodid
+                                select new
+                                {
+                                    Includes = products.Field<string>("package_includes"),
+                                    Excludse = products.Field<string>("package_excludes")
+                                }).First();
 
         txtIncludes.Text = includesExcludes.Includes;
         txtExcludes.Text = includesExcludes.Excludse;
