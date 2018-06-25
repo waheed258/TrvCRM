@@ -529,8 +529,6 @@
                                     </tr>
                                 </table>
 
-
-
                             </div>
                             <div class="col-md-12" style="border: 1px black dashed; padding: 15px; margin-top: 10px;">
                                 <div class="col-md-6">
@@ -572,7 +570,48 @@
                         </div>
 
                         <div class="col-md-12" id="dvHistory" style="margin-top: 15px;">
-                            <asp:PlaceHolder ID="HistoryPlaceholder" runat="server" />
+
+                            <%--<asp:PlaceHolder ID="HistoryPlaceholder" runat="server" />--%>
+
+                             <div class="tables">
+                                        <div class="table table-responsive">
+                                            <asp:GridView ID="gvHistory" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
+                                                EmptyDataText="There are no data records to display." 
+                                                PageSize="100" OnRowCommand="gvHistory_RowCommand" OnRowDataBound="gvHistory_RowDataBound" OnRowEditing="gvHistory_RowEditing"
+                                                Style="font-size: 110%;" ForeColor="Black">
+                                                <PagerStyle CssClass="pagination_grid" />
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Lead History" ItemStyle-Width="15%">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server"  Text='<%#Eval("HistoryDesc") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Date" ItemStyle-Width="15%">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server"  Text='<%#Eval("EventDate") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                      <asp:TemplateField HeaderText="QuoteNumber" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label runat="server" ID="lblHistoryQuote" Text='<%#Eval("ViewData") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="View" ItemStyle-Width="5%">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton CommandName="View" ID="btnViewHistory" runat="server" ToolTip="View" >View</asp:LinkButton>                                                           
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>   
+                                                     <asp:TemplateField HeaderText="Edit" ItemStyle-Width="5%">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton CommandName="Edit" ID="btnEditHistory" runat="server" ToolTip="Edit" >Edit</asp:LinkButton>                                                           
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
+                                    </div>
+
+
                         </div>
 
                         <style>

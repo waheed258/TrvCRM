@@ -35,7 +35,7 @@ public partial class Quote : System.Web.UI.Page
         {
             city = encryptdecrypt.Decrypt(Request.QueryString["city"]);
             LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
-            quoteno = encryptdecrypt.Decrypt(Request.QueryString["QuoteID"]);
+            quoteno = Request.QueryString["QuoteID"];
             flag = Request.QueryString["flag"];
             clEmail = encryptdecrypt.Decrypt(Request.QueryString["em"]);
             QuoteType = Request.QueryString["qtype"];
@@ -624,7 +624,7 @@ public partial class Quote : System.Web.UI.Page
         try
         {
             DataSet ds = new DataSet();
-            ds = qtBL.GetQuotePDFData(LeadID);
+            ds = qtBL.GetQuotePDFData(quoteno);
             StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
             string readFile = reader.ReadToEnd();
             reader.Close();

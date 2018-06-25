@@ -1191,7 +1191,7 @@ public partial class Lead : System.Web.UI.Page
         { }
     }
 
-    public void LeadHistory(DataTable dt)
+    public void LeadHistory_Old(DataTable dt)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -1201,6 +1201,8 @@ public partial class Lead : System.Web.UI.Page
             sb.Append("<tr>");
             sb.Append("<th>LEAD HISTORY</th>");
             sb.Append("<th>DATE</th>");
+            sb.Append("<th>VIEW</th>");
+            sb.Append("<th>EDIT</th>");
             sb.Append("</tr>");
             foreach (DataRow row in dt.Rows)
             {
@@ -1218,20 +1220,31 @@ public partial class Lead : System.Web.UI.Page
 
             //dvHistory.InnerText = sb.ToString();
             //Append the HTML string to Placeholder.
-            HistoryPlaceholder.Controls.Add(new Literal { Text = sb.ToString() });
+            //HistoryPlaceholder.Controls.Add(new Literal { Text = sb.ToString() });
         }
 
 
         
     }
 
+
+    public void LeadHistory(DataTable dt)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        if (dt.Rows.Count > 0)
+        {
+            gvHistory.DataSource = dt;
+            gvHistory.DataBind();
+        }
+    }
     protected void imgQuoteSubmit_Click(object sender, ImageClickEventArgs e)
     {
         string strValue = ddlQuoteDetails.SelectedValue;
 
         string strTemp = ddlTemplateNames.SelectedValue;
 
-        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp;
+        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=''&flag=1";
         Response.Write("<script>window.open ('" + url + "','_blank');</script>");
 
     }
@@ -1301,5 +1314,62 @@ public partial class Lead : System.Web.UI.Page
             txtEOthers.Text = "";
             dvEOthers.Visible = false;
         }
+    }
+    protected void gvHistory_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName != "Page")
+            {
+                GridViewRow row = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int RowIndex = row.RowIndex;
+
+                if (e.CommandName == "View")
+                {
+                    string path = "http://tcrm.askswg.co.za/QuotePDF/";
+                    string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
+
+                    
+                    string fileName = path + "\\" + strQuoteNumber + ".pdf";
+                    string s = "window.open('" + fileName + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                }
+                else if (e.CommandName == "Edit")
+                {
+                    string path = "http://tcrm.askswg.co.za/";
+                    string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
+
+                    string url = path + hdfQuoteUrl.Value + "&qtype=''&temp=''&QuoteID=" + strQuoteNumber + "&flag=2";
+
+                    //string s = "window.open('" + url + "', '_blank');";
+                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+
+                    Response.Write("<script>window.open ('" + url + "','_blank');</script>");                   
+                }              
+            }
+        }
+        catch
+        {
+            message.ForeColor = System.Drawing.Color.Red;
+            message.Text = "Something went wrong, please contact administrator";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+    protected void gvHistory_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            
+            Label lblQuote = (Label)e.Row.FindControl("lblHistoryQuote");
+            LinkButton lnkView = (LinkButton)e.Row.FindControl("btnViewHistory");
+            LinkButton lnkEdit = (LinkButton)e.Row.FindControl("btnEditHistory");
+
+            lnkView.Visible = lblQuote.Text == "" ? false : true;
+            lnkEdit.Visible = lblQuote.Text == "" ? false : true;
+        }
+    }
+    protected void gvHistory_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+
     }
 }

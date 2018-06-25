@@ -22,10 +22,10 @@ public class QuoteBL
         return ds;
     }
 
-    public DataSet GetQuotePDFData(int leadID)
+    public DataSet GetQuotePDFData(string QuoteID)
     {
         Hashtable hashtable = new Hashtable();
-        hashtable.Add("@leadID", leadID);
+        hashtable.Add("@QuoteID", QuoteID);
         DataSet ds = dataUtilities.ExecuteDataSet("usp_GenerateQuotePDF", hashtable);
         return ds;
     }
