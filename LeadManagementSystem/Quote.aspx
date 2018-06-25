@@ -2,7 +2,7 @@
 
 <%--<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src="ckeditor/ckeditor.js"></script>
@@ -42,10 +42,23 @@
                 });
             });
 
+            CKEDITOR.disableAutoInline = true;
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtMailTemp', {
+                toolbar:
+            [
+                { name: 'basicstyles', items: ['Bold', 'Italic'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+                { name: 'tools', items: ['Maximize', '-', 'About'] }
+            ],
+                height: '300px'
+            });
+
             $("#ContentPlaceHolder1_txtAdultPrice").blur(function () {
                 var value = $(this).val();
-                if (value != '')
+                if (value != '') {
                     $('#ContentPlaceHolder1_ddlAdultPersons').removeAttr("disabled");
+                    $('#ContentPlaceHolder1_lblGrandTotal').html($(this).val());
+                }
                 else {
                     alert("Enter Adult Price");
                     $('#ContentPlaceHolder1_ddlAdultPersons').attr("disabled", "disabled");
@@ -56,8 +69,9 @@
 
             $("#ContentPlaceHolder1_txtChildPrice").blur(function () {
                 var value = $(this).val();
-                if (value != '')
+                if (value != '') {
                     $('#ContentPlaceHolder1_ddlChildPersons').removeAttr("disabled");
+                }
                 else {
                     alert("Enter Child Sharing Price");
                     $('#ContentPlaceHolder1_ddlChildPersons').attr("disabled", "disabled");
@@ -87,6 +101,9 @@
         function TemplageModal() {
             $('#TemplateModal').modal('show');
         }
+        function EmailModal() {
+            $('#EmailModal').modal('show');
+        }
 
     </script>
 
@@ -109,7 +126,7 @@
                 <div class="validation-form">
                     <div class="vali-form">
                         <%--<h5>Lead Details</h5>--%>
-                          <label class="control-label" style="color: #58a2e6;font-size: 20px;">Lead Details</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Lead Details</label>
                         <div class="graph-form">
                             <div class="row">
                                 <div class="col-md-3">
@@ -231,10 +248,17 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="vali-form" style="margin-top:30px">
+                    <div class="vali-form">
+                        <div class="row text-right">
+                            <asp:Label ID="lblGrand" runat="server" CssClass="control-label" Text="Grand Total :" Style="font-weight: bold"></asp:Label>
+                            <asp:Label ID="lblGrandTotal" runat="server" CssClass="control-label" Style="font-weight: bold"></asp:Label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="vali-form" style="margin-top: 30px">
                         <div class="row">
                             <div class="col-lg-6">
-                                <label class="control-label" style="color: #58a2e6;font-size: 20px;">Flight Details</label>
+                                <label class="control-label" style="color: #58a2e6; font-size: 20px;">Flight Details</label>
                             </div>
                             <div class="col-lg-6 text-right">
                                 <asp:ImageButton ID="imgbtnGetDots" runat="server" ImageUrl="~/images/button_get-from-dots.png" Height="35px" />
@@ -243,28 +267,28 @@
                         <asp:TextBox ID="txtFlightDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Car Hire</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Car Hire</label>
                         <asp:TextBox ID="txtCarHireDetails" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Hotel Info</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Hotel Info</label>
                         <asp:TextBox ID="txtHotelInfo" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Itinerary</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Itinerary</label>
                         <asp:TextBox ID="txtItinerary" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Includes</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Includes</label>
                         <asp:TextBox ID="txtIncludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Excludes</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Excludes</label>
                         <asp:TextBox ID="txtExcludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
 
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6;font-size: 20px;">Travel Insurance</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Travel Insurance</label>
                         <asp:TextBox ID="txtTravelInsur" TextMode="MultiLine" runat="server" class="form-control" placeholder="Travel Insurance Details" MaxLength="500" Columns="30"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTravelInsur" ForeColor="#d0582e"
                             ErrorMessage="Please Enter Travel Insurance Details" ValidationGroup="Quote" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -317,17 +341,60 @@
                             <label class="control-label">Template Name</label>
                         </div>
                         <div class="col-md-6">
-                            <asp:TextBox ID="txtTemplateName" runat="server" CssClass="form-control" MaxLength="200" ></asp:TextBox>
+                            <asp:TextBox ID="txtTemplateName" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvtxtTemplateName" runat="server" ControlToValidate="txtTemplateName" ForeColor="#d0582e"
-                                    ErrorMessage="Please Enter Template Name" ValidationGroup="Template" Display="Dynamic"></asp:RequiredFieldValidator>
+                                ErrorMessage="Please Enter Template Name" ValidationGroup="Template" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-3">
-                            <asp:Button ID="btnSaveTemplate" runat="server" CssClass="btn btn-default" ValidationGroup="Template" OnClick="btnSaveTemplate_Click" Text="Save Template" style="margin:4px;" />
+                            <asp:Button ID="btnSaveTemplate" runat="server" CssClass="btn btn-default" ValidationGroup="Template" OnClick="btnSaveTemplate_Click" Text="Save Template" Style="margin: 4px;" />
                         </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
 
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+
+    <div class="modal fade" id="EmailModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title">Send Email</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-md-12">
+
+                        <div class="col-md-4">
+                            <label class="control-label">To</label>
+                            <asp:TextBox ID="txtToEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rqftxtToEmail" runat="server" ControlToValidate="txtToEmail" ForeColor="#d0582e"
+                                ErrorMessage="Please Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Client Name</label>
+                            <asp:TextBox ID="txtCLientName" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Subject</label>
+                            <asp:TextBox ID="txtEmailSubject" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rqftxtEmailSubject" runat="server" ControlToValidate="txtEmailSubject" ForeColor="#d0582e"
+                                ErrorMessage="Please Email Subject" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center" style="margin-top: 15px;">
+                        <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ValidationGroup="Email"></asp:TextBox>
+                        <asp:Button ID="btnSendMail" Text="Send Mail" runat="server" OnClick="btnSendMail_Click" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
             <!-- /.modal-content -->
         </div>

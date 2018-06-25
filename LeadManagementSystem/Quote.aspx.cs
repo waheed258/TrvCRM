@@ -38,11 +38,11 @@ public partial class Quote : System.Web.UI.Page
             TempId = Request.QueryString["temp"];
 
             if (!IsPostBack)
-            {               
+            {
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
                 //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
                 txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
-                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);                
+                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
                 GetProducts();
@@ -50,8 +50,8 @@ public partial class Quote : System.Web.UI.Page
 
                 if (QuoteType == "2")
                 {
-                    GetTemplateQuoteData(TempId);               
-                }                    
+                    GetTemplateQuoteData(TempId);
+                }
                 else
                 {
                     dvProdct.Visible = false;
@@ -61,9 +61,9 @@ public partial class Quote : System.Web.UI.Page
                     {
                         Clear();
                         GetIncludeExcludeData();
-                    } 
-                } 
-            }           
+                    }
+                }
+            }
             if (txtAdultPrice.Text != "")
             {
                 ddlAdultPersons.Enabled = true;
@@ -99,7 +99,7 @@ public partial class Quote : System.Web.UI.Page
             //} 
         }
         catch
-        {  }
+        { }
     }
     protected void GetProducts()
     {
@@ -220,7 +220,7 @@ public partial class Quote : System.Web.UI.Page
     protected void GetCostTypeDataAdult()
     {
         try
-        {            
+        {
             dataset = qtBL.GetTypeData("A");
             ddlAdultType.DataSource = dataset;
             ddlAdultType.DataTextField = "CostTypeDescription";
@@ -264,7 +264,7 @@ public partial class Quote : System.Web.UI.Page
 
             if (dataset.Tables.Count > 0)
             {
-               
+
                 if (dataset.Tables[0].Rows.Count > 0)
                 {
                     strResult = "1";
@@ -288,7 +288,7 @@ public partial class Quote : System.Web.UI.Page
                     txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
                     txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
 
-                    
+
 
                     if (ddlAdultType.SelectedValue == "1")
                     {
@@ -316,7 +316,7 @@ public partial class Quote : System.Web.UI.Page
                         dvCustomProduct.Visible = false;
                         ddlPackage.SelectedValue = string.IsNullOrEmpty(dataset.Tables[0].Rows[0]["PackageId"].ToString()) ? "-1" : dataset.Tables[0].Rows[0]["PackageId"].ToString();
                     }
-                    
+
 
                 }
                 else
@@ -325,16 +325,16 @@ public partial class Quote : System.Web.UI.Page
                     if (QuoteType == "3")
                     {
                         dvProdct.Visible = false;
-                        dvCustomProduct.Visible = true;                       
+                        dvCustomProduct.Visible = true;
                     }
                     else
                     {
                         dvProdct.Visible = true;
-                        dvCustomProduct.Visible = false;                       
+                        dvCustomProduct.Visible = false;
                     }
                 }
             }
-            
+
 
         }
         catch
@@ -390,7 +390,7 @@ public partial class Quote : System.Web.UI.Page
                         dvCustomProduct.Visible = false;
                         ddlPackage.SelectedValue = dataset.Tables[0].Rows[0]["PackageId"].ToString();
                     }
-                   
+
 
                     if (ddlAdultType.SelectedValue == "1")
                     {
@@ -427,8 +427,8 @@ public partial class Quote : System.Web.UI.Page
         {
             dataset = qtBL.GetIncudeExcludes();
 
-           txtIncludes.Text = dataset.Tables[0].Rows[0]["IncludesDescription"].ToString();
-           txtExcludes.Text = dataset.Tables[1].Rows[0]["ExcludesDescription"].ToString();
+            txtIncludes.Text = dataset.Tables[0].Rows[0]["IncludesDescription"].ToString();
+            txtExcludes.Text = dataset.Tables[1].Rows[0]["ExcludesDescription"].ToString();
 
         }
         catch
@@ -476,9 +476,10 @@ public partial class Quote : System.Web.UI.Page
     }
     protected void ddlChildPersons_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (txtChildPrice.Text != "" && ddlChildPersons.SelectedValue != "0") 
+        if (txtChildPrice.Text != "" && ddlChildPersons.SelectedValue != "0")
         {
             lblChildTotPrice.Text = Convert.ToString(Convert.ToInt32(txtChildPrice.Text) * Convert.ToInt32(ddlChildPersons.SelectedValue));
+            lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
         }
     }
     protected void ddlAdultPersons_SelectedIndexChanged(object sender, EventArgs e)
@@ -486,6 +487,7 @@ public partial class Quote : System.Web.UI.Page
         if (txtAdultPrice.Text != "" && ddlAdultPersons.SelectedValue != "0")
         {
             lblAdultTotPrice.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) * Convert.ToInt32(ddlAdultPersons.SelectedValue));
+            lblGrandTotal.Text = lblAdultTotPrice.Text;
         }
     }
     protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
@@ -521,23 +523,41 @@ public partial class Quote : System.Web.UI.Page
             {
                 qtEntity.PackageId = txtProduct.Text;
             }
-            else {
+            else
+            {
                 qtEntity.PackageId = ddlPackage.SelectedValue;
             }
 
-            
+
 
 
             //string result = qtBL.CUDQuote(qtEntity);
 
             string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
+            ViewState["QuoteNumber"] = QuoteNumber;
 
             if (QuoteNumber != "")
             {
-                message.Text = "Quote Details saved Successfully!";
-                message.ForeColor = System.Drawing.Color.Green;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                GetPdf(QuoteNumber);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                txtToEmail.Text = clEmail;
+                txtCLientName.Text = lblClientName.Text;
+                txtEmailSubject.Text = "Serendipity Tours quote";
+
+                // Email Template                    
+                StringBuilder sb = new StringBuilder();
+                string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
+                sb.Append(strHeading);
+                sb.Append("<p>Thank you for the opportunity to quote for your holiday to"+ ddlPackage.SelectedItem.Text +". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
+                
+                sb.Append("<p><strong>Kind regards</strong></p>");
+                sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+
+                txtMailTemp.Text = sb.ToString();
+
+                //message.Text = "Quote Details saved Successfully!";
+                //message.ForeColor = System.Drawing.Color.Green;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                //GetPdf(QuoteNumber);
                 Clear();
             }
             else
@@ -553,7 +573,7 @@ public partial class Quote : System.Web.UI.Page
             throw;
         }
     }
-  
+
 
     private void Clear()
     {
@@ -639,10 +659,10 @@ public partial class Quote : System.Web.UI.Page
                         readFile = readFile.Replace("{QuoteNumber}", dtlRow["QuoteNumber"].ToString());
                         readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
                         readFile = readFile.Replace("{DestinationCity}", dtlRow["DestinationCity"].ToString());
-                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());                       
+                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
                         readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
                         readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
-                       
+
 
                         if (dtlRow["CostForAdultType"].ToString() == "1")
                         {
@@ -669,12 +689,12 @@ public partial class Quote : System.Web.UI.Page
                 string filepath = Server.MapPath("~/QuotePDF");
 
 
-              bool pdf =  GenerateHTML_TO_PDF(StrContent, true, filepath, false, QuoteNumber);
-              if (pdf)
-              {
-                  string consultName = Session["Name"].ToString();
-                  SendMail(lblClientName.Text, clEmail, txtDestination.Text, consultName, QuoteNumber);
-              }              
+                bool pdf = GenerateHTML_TO_PDF(StrContent, true, filepath, false, QuoteNumber);
+                if (pdf)
+                {
+                    string consultName = Session["Name"].ToString();
+                    SendMail(lblClientName.Text, clEmail, txtDestination.Text, consultName, QuoteNumber);
+                }
 
             }
         }
@@ -734,8 +754,8 @@ public partial class Quote : System.Web.UI.Page
 
             doc.Save(FileName);
 
-            doc.Close();  
-         
+            doc.Close();
+
             return true;
 
         }
@@ -752,9 +772,9 @@ public partial class Quote : System.Web.UI.Page
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
                 int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();              
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
-                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();               
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
                 string MailTo = clEmail;
                 //string MailTo = "karen@serendipitytours.co.za";
                 string DisplayNameTo = string.Empty;
@@ -782,19 +802,19 @@ public partial class Quote : System.Web.UI.Page
                     MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
                     MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
                     MailText += "Kind regards, <br/>";
-                    MailText += "(" + consultName + ")";                    
+                    MailText += "(" + consultName + ")";
 
-                  bool mailSent =   CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                    bool mailSent = CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
-                  if (mailSent)
-                  {
-                      MailSentSatatus(QuoteNumber);
-                  }
+                    if (mailSent)
+                    {
+                        MailSentSatatus(QuoteNumber);
+                    }
 
                 }
                 catch
                 { }
-               
+
             }
         }
         catch
@@ -820,7 +840,7 @@ public partial class Quote : System.Web.UI.Page
             qtEntity.ItineraryDetails = "";
             qtEntity.LeadID = 0;
             qtEntity.NoOfAdults = 0;
-            qtEntity.NoOfChildren =0;
+            qtEntity.NoOfChildren = 0;
             qtEntity.QuoteDate = "";
             qtEntity.ToCity = "";
             qtEntity.TravelInsurance = "";
@@ -828,15 +848,15 @@ public partial class Quote : System.Web.UI.Page
             qtEntity.ChildTotal = "";
             qtEntity.IsMailSent = "Y";
             qtEntity.QuoteNumber = QuoteNumber;
-            qtEntity.Operation = "U";            
+            qtEntity.Operation = "U";
 
             string strQuoteNumber = qtBL.CUOperationQuote(qtEntity);
         }
         catch
-        {   }
+        { }
     }
 
-   
+
     protected void btnTemplageName_Click(object sender, ImageClickEventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "TemplageModal();", true);
@@ -880,8 +900,8 @@ public partial class Quote : System.Web.UI.Page
                 qtEntity.IsCustomTemplate = "N";
             }
 
-            qtEntity.TemplateName = txtTemplateName.Text;  
-            
+            qtEntity.TemplateName = txtTemplateName.Text;
+
 
             int result = qtBL.CreateQuoteTemplate(qtEntity);
 
@@ -905,5 +925,9 @@ public partial class Quote : System.Web.UI.Page
 
             throw;
         }
+    }
+    protected void btnSendMail_Click(object sender, EventArgs e)
+    {
+        GetPdf(ViewState["QuoteNumber"].ToString());
     }
 }
