@@ -1110,8 +1110,8 @@
                                                                 CommandName="Action" ToolTip="Actions" />--%>
                                                             <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                                                 CommandName="Quote" ToolTip="Generate Quote" Visible="false" />
-                                                            <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
-                                                                CommandName="PDF" ToolTip="Download Quote" Visible="false" />
+                                                         <%--   <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
+                                                                CommandName="PDF" ToolTip="Download Quote" Visible="false" />--%>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
