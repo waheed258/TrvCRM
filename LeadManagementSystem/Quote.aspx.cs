@@ -25,6 +25,8 @@ public partial class Quote : System.Web.UI.Page
     string clEmail = string.Empty;
     string QuoteType = string.Empty;
     string TempId = string.Empty;
+    string flag = string.Empty;
+    string quoteno = string.Empty;
     LeadBL leadBL = new LeadBL();
     ProductBL productBL = new ProductBL();
     protected void Page_Load(object sender, EventArgs e)
@@ -33,6 +35,8 @@ public partial class Quote : System.Web.UI.Page
         {
             city = encryptdecrypt.Decrypt(Request.QueryString["city"]);
             LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
+            quoteno = encryptdecrypt.Decrypt(Request.QueryString["QuoteID"]);
+            flag = Request.QueryString["flag"];
             clEmail = encryptdecrypt.Decrypt(Request.QueryString["em"]);
             QuoteType = Request.QueryString["qtype"];
             TempId = Request.QueryString["temp"];
@@ -48,20 +52,30 @@ public partial class Quote : System.Web.UI.Page
                 GetProducts();
                 ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
 
-                if (QuoteType == "2")
+                if (flag == "1")
                 {
-                    GetTemplateQuoteData(TempId);
+                    if (QuoteType == "2")
+                    {
+                        GetTemplateQuoteData(TempId);
+                    }
+                    else if (QuoteType == "3")
+                    {
+                        Clear();
+                        dvProdct.Visible = false;
+                        dvCustomProduct.Visible = true;
+                        //txtProduct.Text = dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
+                    else if (QuoteType == "1")
+                    {
+                        Clear();
+                        dvProdct.Visible = true;
+                        dvCustomProduct.Visible = false;
+                        //ddlPackage.SelectedValue = string.IsNullOrEmpty(dataset.Tables[0].Rows[0]["PackageId"].ToString()) ? "-1" : dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                    }
                 }
                 else
                 {
-                    dvProdct.Visible = false;
-                    dvCustomProduct.Visible = true;
-                    string result = GetQuoteData();
-                    if (result == "0")
-                    {
-                        Clear();
-                        GetIncludeExcludeData();
-                    }
+                    GetQuoteData();
                 }
             }
             if (txtAdultPrice.Text != "")
@@ -260,7 +274,7 @@ public partial class Quote : System.Web.UI.Page
         string strResult = string.Empty;
         try
         {
-            dataset = qtBL.GetQuotePDFData(LeadID);
+            dataset = qtBL.GetQuotePDFData(quoteno);
 
             if (dataset.Tables.Count > 0)
             {
@@ -547,8 +561,8 @@ public partial class Quote : System.Web.UI.Page
                 StringBuilder sb = new StringBuilder();
                 string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
                 sb.Append(strHeading);
-                sb.Append("<p>Thank you for the opportunity to quote for your holiday to"+ ddlPackage.SelectedItem.Text +". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
-                
+                sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
+
                 sb.Append("<p><strong>Kind regards</strong></p>");
                 sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
 
@@ -590,8 +604,8 @@ public partial class Quote : System.Web.UI.Page
         txtCarHireDetails.Text = "";
         txtHotelInfo.Text = "";
         txtItinerary.Text = "";
-        //txtIncludes.Text = "";
-        //txtExcludes.Text = "";
+        txtIncludes.Text = "";
+        txtExcludes.Text = "";
         txtTravelInsur.Text = "";
 
         dvAdultPersons.Visible = false;
