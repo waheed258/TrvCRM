@@ -995,7 +995,7 @@ public partial class Lead : System.Web.UI.Page
             if (quote != "0")
             {
                 ImageButton controlButton = e.Row.FindControl("imgbtnPDF") as ImageButton;
-                controlButton.Visible = true;
+                controlButton.Visible = false;
             }
 
             e.Row.BackColor = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? System.Drawing.Color.LightBlue : System.Drawing.Color.White;
@@ -1339,10 +1339,12 @@ public partial class Lead : System.Web.UI.Page
                     string path = "http://tcrm.askswg.co.za/";
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
 
-                    string url = path + hdfQuoteUrl.Value + "&qtype=''&temp=''&QuoteID=" + strQuoteNumber + "&flag=2";
+                    //string url = path + hdfQuoteUrl.Value + "&qtype=''&temp=''&QuoteID=" + strQuoteNumber + "&flag=2";
 
                     //string s = "window.open('" + url + "', '_blank');";
                     //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+
+                    string url = "www.google.com";
 
                     Response.Write("<script>window.open ('" + url + "','_blank');</script>");                   
                 }              
