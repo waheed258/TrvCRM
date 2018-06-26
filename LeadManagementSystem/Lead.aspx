@@ -248,13 +248,13 @@
                         </div>
                         <div class="col-md-3">
                             <label class="control-label">Depart</label>
-                            <asp:TextBox ID="txtDepart" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                            <asp:TextBox ID="txtDepart" class="form-control" runat="server" placeholder="dd-mm-yyyy" autocomplete="off"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvDepart" runat="server" ControlToValidate="txtDepart" ForeColor="#d0582e"
                                 ErrorMessage="Please Enter Depart Date" ValidationGroup="Consultant" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-3">
                             <label class="control-label">Return</label>
-                            <asp:TextBox ID="txtReturnDate" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                            <asp:TextBox ID="txtReturnDate" class="form-control" runat="server" placeholder="dd-mm-yyyy" autocomplete="off"></asp:TextBox>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -417,13 +417,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="control-label">Depart</label>
-                                <asp:TextBox ID="txtEDepart" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                                <asp:TextBox ID="txtEDepart" class="form-control" runat="server" placeholder="dd-mm-yyyy" autocomplete="off"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rfvtxtEDepart" runat="server" ControlToValidate="txtEDepart" ForeColor="#d0582e"
                                     ErrorMessage="Please Enter Depart Date" ValidationGroup="LeadEdit" Display="Dynamic"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-md-6">
                                 <label class="control-label">Return</label>
-                                <asp:TextBox ID="txtEReturn" class="form-control" runat="server" placeholder="dd-mm-yyyy"></asp:TextBox>
+                                <asp:TextBox ID="txtEReturn" class="form-control" runat="server" placeholder="dd-mm-yyyy" autocomplete="off"></asp:TextBox>
                             </div>
 
 
@@ -437,7 +437,7 @@
                             <div class="col-md-12" style="margin-top: 15px;">
                                 <label class="control-label" style="float: left;">Set Reminder</label>
                                 <div class="col-md-6">
-                                    <asp:TextBox ID="txtEReminder" runat="server" class="form-control" placeholder="dd-mm-yyyy" MaxLength="10"></asp:TextBox>
+                                    <asp:TextBox ID="txtEReminder" runat="server" class="form-control" placeholder="dd-mm-yyyy" MaxLength="10" autocomplete="off"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -1023,7 +1023,7 @@
                                                             <asp:Label runat="server" ID="lblDepartDate" Text='<%#Eval("lsDepartureDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Return Date">
+                                                    <asp:TemplateField HeaderText="Return Date" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="lblReturnDate" Text='<%#Eval("lsReturnDate", "{0:dd-MM-yyyy}").ToString() == ""? "NA": Eval("lsReturnDate", "{0:dd-MM-yyyy}") %>'></asp:Label>
                                                         </ItemTemplate>

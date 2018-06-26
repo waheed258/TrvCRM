@@ -142,8 +142,8 @@ public partial class Quote : System.Web.UI.Page
                                             Excludse = products.Field<string>("package_excludes")
                                         }).First();
 
-                txtIncludes.Text = includesExcludes.Includes;
-                txtExcludes.Text = includesExcludes.Excludse;
+                txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
+                txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
             }
         }
         catch
@@ -513,6 +513,9 @@ public partial class Quote : System.Web.UI.Page
         if (txtChildPrice.Text != "" && ddlChildPersons.SelectedValue != "0")
         {
             lblChildTotPrice.Text = Convert.ToString(Convert.ToInt32(txtChildPrice.Text) * Convert.ToInt32(ddlChildPersons.SelectedValue));
+            if (lblAdultTotPrice.Text == "") {
+                lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));            
+            }else
             lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
         }
     }
@@ -644,7 +647,7 @@ public partial class Quote : System.Web.UI.Page
         try
         {
             DataSet ds = new DataSet();
-            ds = qtBL.GetQuotePDFData(quoteno);
+            ds = qtBL.GetQuotePDFData(QuoteNumber);
             StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
             string readFile = reader.ReadToEnd();
             reader.Close();
@@ -978,7 +981,7 @@ public partial class Quote : System.Web.UI.Page
                                     Excludse = products.Field<string>("package_excludes")
                                 }).First();
 
-        txtIncludes.Text = includesExcludes.Includes;
-        txtExcludes.Text = includesExcludes.Excludse;
+        txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
+        txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
     }
 }
