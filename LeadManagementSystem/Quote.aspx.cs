@@ -730,7 +730,7 @@ public partial class Quote : System.Web.UI.Page
                 if (pdf)
                 {
                     string consultName = Session["Name"].ToString();
-                    SendMail(lblClientName.Text, clEmail, txtDestination.Text, consultName, QuoteNumber);
+                    SendMail(lblClientName.Text, txtToEmail.Text, txtDestination.Text, consultName, QuoteNumber);
                 }
 
             }
