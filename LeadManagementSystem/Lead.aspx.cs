@@ -18,13 +18,12 @@ public partial class Lead : System.Web.UI.Page
     ConsultantBL consultantBL = new ConsultantBL();
     FollowupEntity followupEntity = new FollowupEntity();
     EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
-   
+
     int j = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {           
-
+        {
             if (!IsPostBack)
             {
                 _objComman.getRecordsPerPage(DropPage);
@@ -40,14 +39,11 @@ public partial class Lead : System.Web.UI.Page
                 _objComman.GetAssigLeadOptions(ddlAssignLead);
                 consultant.Visible = false;
                 actions.Visible = false;
-                //status.Visible = false;
                 followupdate.Visible = false;
                 desc.Visible = false;
-
                 dvEdit.Visible = false;
+                consultantAction.Visible = false;
                 
-                
-
             }
         }
         catch { }
@@ -77,7 +73,7 @@ public partial class Lead : System.Web.UI.Page
         }
     }
 
-    
+
 
     protected void GetAssinedLeadsList()
     {
@@ -131,6 +127,13 @@ public partial class Lead : System.Web.UI.Page
             ddlConsultants.DataValueField = "ConsultantID";
             ddlConsultants.DataBind();
             ddlConsultants.Items.Insert(0, new ListItem("--Select Consultant --", "-1"));
+
+            ddlConsultantsAction.DataSource = dataset;
+            ddlConsultantsAction.DataTextField = "Name";
+            ddlConsultantsAction.DataValueField = "ConsultantID";
+            ddlConsultantsAction.DataBind();
+            ddlConsultantsAction.Items.Insert(0, new ListItem("--Select Consultant --", "-1"));
+
             ViewState["consultData"] = dataset;
         }
         catch
@@ -170,18 +173,13 @@ public partial class Lead : System.Web.UI.Page
                 GetSourceData("U");
                 if (e.CommandName == "EditLead")
                 {
-
                     _objComman.GetStatus(ddlStatus);
-                    
-                    //status.Visible = true;
                     newlead.Visible = true;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
                     btnUpdate.Visible = true;
                     ImageButton1.Visible = false;
                     GetProducts();
-                    //DataSet ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
-
                     ddlSource.SelectedValue = ((Label)row.FindControl("lbllsSource")).Text.ToString();
                     if (ddlSource.SelectedValue == "10")
                     {
@@ -204,37 +202,6 @@ public partial class Lead : System.Web.UI.Page
                     txtNotes.Text = ((Label)row.FindControl("lblNotes")).Text.ToString();
                     ddlStatus.SelectedValue = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
                     txtDescription.Text = ((Label)row.FindControl("lblDescription")).Text.ToString();
-                    //if (ddlStatus.SelectedValue == "4")
-                    //{
-                    //    if (ds.Tables[0].Rows.Count == 3)
-                    //    {
-                    //        message.Text = "Maximum follow ups reached!";
-                    //        message.ForeColor = System.Drawing.Color.Red;
-                    //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                    //    }
-                    //    else
-                    //    {
-                    //        lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
-                    //        followupdate.Visible = true;
-                    //    }
-
-                    //    followupdate.Visible = true;
-                    //    lblFollowup.ForeColor = System.Drawing.Color.Red;
-                    //    lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(ds.Tables[0].Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
-                    //}
-                    //else
-                    //{
-                    //    lblFollowup.Text = "";
-                    //    followupdate.Visible = false;
-                    //}
-                    //if (ddlStatus.SelectedValue == "2")
-                    //{
-                    //    desc.Visible = false;
-                    //}
-                    //else
-                    //{
-                    //    desc.Visible = true;
-                    //}
                 }
                 else if (e.CommandName == "DeleteLead")
                 {
@@ -248,29 +215,6 @@ public partial class Lead : System.Web.UI.Page
                     newlead.Visible = false;
                     imgbtnAddLead.Visible = false;
                 }
-                //else if (e.CommandName == "Quote")
-                //{
-                //    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
-                //    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
-                //    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
-                //    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
-                //    string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
-                //    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
-                //    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
-                //    string s = "window.open('" + url + "', '_blank');";
-                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                //}
-                //else if (e.CommandName == "PDF")
-                //{
-                //    string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
-                //    //string path = Server.MapPath("~/QuotePDF");
-                //    //Process.Start(fileName);
-                //    string path = "http://tcrm.askswg.co.za/QuotePDF/";
-                //    string fileName = path + "\\" + quoteNumber + ".pdf";
-                //    string s = "window.open('" + fileName + "', '_blank');";
-                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-
-                //}
             }
         }
         catch
@@ -316,10 +260,8 @@ public partial class Lead : System.Web.UI.Page
                 ImageButton deleteButton = e.Row.FindControl("btnDelete") as ImageButton;
                 deleteButton.Visible = true;
             }
-
             e.Row.BackColor = ((Label)e.Row.FindControl("lblDuplicateLeadList")).Text.ToString() == "Y" ? System.Drawing.Color.LightBlue : System.Drawing.Color.White;
             e.Row.ForeColor = ((Label)e.Row.FindControl("lblDuplicateLeadList")).Text.ToString() == "Y" ? System.Drawing.Color.White : System.Drawing.Color.Black;
-
         }
     }
     protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
@@ -360,14 +302,10 @@ public partial class Lead : System.Web.UI.Page
                     MailCc = "";
                     MailTo = Email;
                     //MailTo = "karen@serendipitytours.co.za";
-
                     MailText = "Hi " + Name + ", <br/><br/><br/>";
                     MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
                     MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
-
-
                     CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
-
                 }
                 catch
                 { }
@@ -397,7 +335,6 @@ public partial class Lead : System.Web.UI.Page
             imgbtnAddLead.Visible = true;
             GetLeadsList();
             GetAssinedLeadsList();
-
         }
         else
         {
@@ -429,7 +366,6 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            //status.Visible = false;
             int a = Convert.ToInt32(ddlAdults.SelectedValue);
             int c = Convert.ToInt32(ddlChild.SelectedValue);
             int i = Convert.ToInt32(ddlInfant.SelectedValue);
@@ -488,12 +424,12 @@ public partial class Lead : System.Web.UI.Page
                             message.Text = "Lead Details saved Successfully!";
                             message.ForeColor = System.Drawing.Color.Green;
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                            //SendMail(clName, txtEmail.Text, txtMobile.Text, ddlPackage.SelectedItem.Text);
                             Clear();
                             LeadList.Visible = true;
                             newlead.Visible = false;
                             imgbtnAddLead.Visible = true;
                             GetLeadsList();
-
                         }
                         else
                         {
@@ -583,7 +519,6 @@ public partial class Lead : System.Web.UI.Page
                             leadEntity.FollowupDate = "";
                             leadEntity.FollowupDesc = "";
                         }
-
                         int result = leadBL.CUDLead(leadEntity, 'U');
                         if (result == 2)
                         {
@@ -625,7 +560,6 @@ public partial class Lead : System.Web.UI.Page
         newlead.Visible = false;
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
-        //status.Visible = false;
     }
     protected void btnSure_Click(object sender, EventArgs e)
     {
@@ -703,7 +637,8 @@ public partial class Lead : System.Web.UI.Page
                 lblFollowup.Text = ds.Tables[0].Rows[0]["FollowupDate"].ToString();
                 followupdate.Visible = true;
             }
-            else {
+            else
+            {
                 followupdate.Visible = true;
             }
         }
@@ -722,7 +657,7 @@ public partial class Lead : System.Web.UI.Page
             txtDescription.Text = "";
             desc.Visible = true;
         }
-        if (ddlStatus.SelectedValue  == "6")
+        if (ddlStatus.SelectedValue == "6")
         {
             // Client File Id TextBox Show
             dvClientFileId.Visible = true;
@@ -776,28 +711,21 @@ public partial class Lead : System.Web.UI.Page
                 GetSourceDataEdit("U");
                 if (e.CommandName == "EditLead")
                 {
-                   
+
                     MailMessage.Text = "";
                     _objComman.GetStatus(ddlStatus);
-                    //status.Visible = true;
                     newlead.Visible = false;
                     LeadList.Visible = false;
                     imgbtnAddLead.Visible = false;
-                    //btnUpdate.Visible = true;
-                    //ImageButton1.Visible = false;
-
                     dvEdit.Visible = true;
-
                     //GetProducts();
                     string strStatusId = ((Label)row.FindControl("lsLeadActionsID")).Text.ToString();
                     DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                     DataTable dtLead = ds.Tables[0];
                     DataTable dtLeadHistory = ds.Tables[1];
-
                     GetTemplateNames(ViewState["lsID"].ToString());
-
                     if (dtLead.Rows.Count > 0)
-                    {                        
+                    {
                         txtEFirstName.Text = dtLead.Rows[0]["lsFirstName"].ToString();
                         txtELastName.Text = dtLead.Rows[0]["lsLastName"].ToString();
                         txtEMobile.Text = dtLead.Rows[0]["lsPhone"].ToString();
@@ -814,7 +742,8 @@ public partial class Lead : System.Web.UI.Page
                         {
                             lnkUrl.Text = "Lead not from Serendipity website";
                         }
-                        else {
+                        else
+                        {
                             lnkUrl.Text = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
                             lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
                         }
@@ -834,7 +763,7 @@ public partial class Lead : System.Web.UI.Page
                             dvEOthers.Visible = true;
                         }
 
-                        txtEOthers.Text = dtLead.Rows[0]["lsOthersInfo"].ToString();                        
+                        txtEOthers.Text = dtLead.Rows[0]["lsOthersInfo"].ToString();
 
                         ddlStatus.SelectedValue = strStatusId;
 
@@ -863,7 +792,6 @@ public partial class Lead : System.Web.UI.Page
                                 lblFollowup.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["FollowupDate"]);
                                 followupdate.Visible = true;
                             }
-
                             followupdate.Visible = true;
                             lblFollowup.ForeColor = System.Drawing.Color.Red;
                             lblFollowup.Text = "The last follow up date was : " + Convert.ToDateTime(dtLead.Rows[0]["FollowupDate"].ToString()).Date.ToString("dd-MM-yyyy"); ;
@@ -874,8 +802,8 @@ public partial class Lead : System.Web.UI.Page
                             followupdate.Visible = false;
                         }
 
-                    }                   
-                    
+                    }
+
                     if (ddlStatus.SelectedValue == "2")
                     {
                         desc.Visible = false;
@@ -884,10 +812,8 @@ public partial class Lead : System.Web.UI.Page
                     {
                         desc.Visible = true;
                     }
-
                     // Lead Hostory
                     LeadHistory(dtLeadHistory);
-
                     // Email Template                    
                     StringBuilder sb = new StringBuilder();
                     string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblLName.Text);
@@ -901,12 +827,10 @@ public partial class Lead : System.Web.UI.Page
                     sb.Append("<p>6.&nbsp;Are you travelling for a special occation ie. birthday, anniversary, honeymoon etc.</p>");
                     sb.Append("<p>As soon as I receive the above information, I can work on some options for you.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
-                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");                
+                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
 
                     txtMailTemp.Text = sb.ToString();
 
-
-                   
                     // Generate Quote URL
                     string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
                     string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
@@ -925,30 +849,6 @@ public partial class Lead : System.Web.UI.Page
                     lbldeletemessage.Text = "Are you sure, you want to delete Consultant Details?";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
                 }
-
-                //else if (e.CommandName == "Quote")
-                //{
-                //    string ClientName = encryptdecrypt.Encrypt(((Label)row.FindControl("lblFirstName")).Text.ToString() + " " + ((Label)row.FindControl("lblLastName")).Text.ToString());
-                //    string product = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProdType")).Text.ToString());
-                //    string source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
-                //    string toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
-                //    string Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
-                //    string encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
-                //    string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email);
-                //    string s = "window.open('" + url + "', '_blank');";
-                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                //}
-                //else if (e.CommandName == "PDF")
-                //{
-                //    string quoteNumber = ((Label)row.FindControl("lblQuoteNumber")).Text.ToString();
-                //    //string path = Server.MapPath("~/QuotePDF");
-                //    //Process.Start(fileName);
-                //    string path = "http://tcrm.askswg.co.za/QuotePDF/";
-                //    string fileName = path + "\\" + quoteNumber + ".pdf";
-                //    string s = "window.open('" + fileName + "', '_blank');";
-                //    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-
-                //}
             }
         }
         catch
@@ -1003,13 +903,8 @@ public partial class Lead : System.Web.UI.Page
                 ImageButton controlButton = e.Row.FindControl("imgbtnPDF") as ImageButton;
                 controlButton.Visible = false;
             }
-
             e.Row.BackColor = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? System.Drawing.Color.LightBlue : System.Drawing.Color.White;
             e.Row.ForeColor = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? System.Drawing.Color.White : System.Drawing.Color.Black;
-
-           
-            //e.Row.Attributes.CssStyle.Value = ((Label)e.Row.FindControl("lblDuplicateLead")).Text.ToString() == "Y" ? "color: Red" : "color: White";
-
         }
     }
     protected void imgEUpdate_Click(object sender, ImageClickEventArgs e)
@@ -1054,7 +949,6 @@ public partial class Lead : System.Web.UI.Page
                 leadEntity.FollowupDate = "";
                 leadEntity.FollowupDesc = "";
             }
-
             leadEntity.ClientFileId = txtClientFileId.Text;
             leadEntity.ConsultantNotes = txtEConsultNotes.Text;
             leadEntity.Reminder = txtEReminder.Text;
@@ -1066,14 +960,18 @@ public partial class Lead : System.Web.UI.Page
                 message.Text = "Lead Details updated Successfully!";
                 message.ForeColor = System.Drawing.Color.Green;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                LeadList.Visible = true;
+                //LeadList.Visible = true;
+                //newlead.Visible = false;
+                //dvEdit.Visible = false;
                 newlead.Visible = false;
-                dvEdit.Visible = false;
+                LeadList.Visible = false;
+                imgbtnAddLead.Visible = false;
+                dvEdit.Visible = true;
+
                 GetLeadsList();
                 GetAssinedLeadsList();
                 EditClear();
                 imgbtnAddLead.Visible = true;
-
             }
             else
             {
@@ -1120,10 +1018,10 @@ public partial class Lead : System.Web.UI.Page
         string strCC = txtCCEmail.Text;
         string strSubject = txtEmailSubject.Text;
         string strBody = txtMailTemp.Text;
-        SendMail(strEmail,strCC,strSubject, strBody);
+        SendMail(strEmail, strCC, strSubject, strBody);
     }
 
-    public void SendMail(string clEmail,string strCC, string srtSubject, string strText)
+    public void SendMail(string clEmail, string strCC, string srtSubject, string strText)
     {
         try
         {
@@ -1145,7 +1043,6 @@ public partial class Lead : System.Web.UI.Page
                 string MailText = string.Empty;
                 string Attachment = string.Empty;
 
-
                 try
                 {
                     Subject = srtSubject;
@@ -1159,22 +1056,20 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email sent successfully.";
                         MailMessage.ForeColor = System.Drawing.Color.Green;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "","");
-
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "", "");
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
-                        // Lead Hostory
+                        // Lead History
                         LeadHistory(dtLeadHistory);
                     }
                     else
                     {
                         MailMessage.Text = "Email not sent.";
                         MailMessage.ForeColor = System.Drawing.Color.Red;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "","");
-
+                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "", "");
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
-                        // Lead Hostory
+                        // Lead History
                         LeadHistory(dtLeadHistory);
                     }
 
@@ -1183,7 +1078,7 @@ public partial class Lead : System.Web.UI.Page
                 {
                     MailMessage.Text = "Email not sent.";
                     MailMessage.ForeColor = System.Drawing.Color.Red;
-                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message,"");
+                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message, "");
 
                     DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
                     DataTable dtLeadHistory = dsInfo.Tables[1];
@@ -1221,18 +1116,9 @@ public partial class Lead : System.Web.UI.Page
                 }
                 sb.Append("</tr>");
             }
-
             sb.Append("</table>");
-
-            //dvHistory.InnerText = sb.ToString();
-            //Append the HTML string to Placeholder.
-            //HistoryPlaceholder.Controls.Add(new Literal { Text = sb.ToString() });
         }
-
-
-        
     }
-
 
     public void LeadHistory(DataTable dt)
     {
@@ -1251,9 +1137,9 @@ public partial class Lead : System.Web.UI.Page
         string strTemp = ddlTemplateNames.SelectedValue;
 
         string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1";
-       
-        string s = "window.open('" + url + "', '_blank');";
-        ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+        Response.Redirect(url);
+        //string s = "window.open('" + url + "', '_blank');";
+        //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
 
     }
     protected void ddlQuoteDetails_SelectedIndexChanged(object sender, EventArgs e)
@@ -1276,8 +1162,8 @@ public partial class Lead : System.Web.UI.Page
         ddlTemplateNames.Items.Clear();
         try
         {
-           DataSet ds = leadBL.GetTemplateNames(Convert.ToInt32(strLeadId));
-           ddlTemplateNames.DataSource = ds;
+            DataSet ds = leadBL.GetTemplateNames(Convert.ToInt32(strLeadId));
+            ddlTemplateNames.DataSource = ds;
             ddlTemplateNames.DataTextField = "TemplateName";
             ddlTemplateNames.DataValueField = "ID";
             ddlTemplateNames.DataBind();
@@ -1309,7 +1195,7 @@ public partial class Lead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-   
+
     protected void ddlESource_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (ddlESource.SelectedValue == "10")
@@ -1337,26 +1223,18 @@ public partial class Lead : System.Web.UI.Page
                     string path = "http://tcrm.askswg.co.za/QuotePDF/";
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
 
-                    
+
                     string fileName = path + "\\" + strQuoteNumber + ".pdf";
                     string s = "window.open('" + fileName + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
                 else if (e.CommandName == "Edit")
                 {
-                    
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-
-                    string url =  hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
-
-                    //string s = "window.open('" + url + "', '_blank');";
-                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);                    
-
+                    string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
                     string s = "window.open('" + url + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
-                   
-      
-                }              
+                }
             }
         }
         catch
@@ -1370,7 +1248,7 @@ public partial class Lead : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            
+
             Label lblQuote = (Label)e.Row.FindControl("lblHistoryQuote");
             LinkButton lnkView = (LinkButton)e.Row.FindControl("btnViewHistory");
             LinkButton lnkEdit = (LinkButton)e.Row.FindControl("btnEditHistory");
@@ -1382,5 +1260,99 @@ public partial class Lead : System.Web.UI.Page
     protected void gvHistory_RowEditing(object sender, GridViewEditEventArgs e)
     {
 
+    }
+    protected void ddlSendEmail_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlSendEmail.SelectedValue == "3")
+        {
+            consultantAction.Visible = true;
+            GetConsultants();
+
+            string Email = string.Empty;
+            leadEntity.AssignedTo = Convert.ToInt32(ddlConsultantsAction.SelectedValue);
+            DataSet data = (DataSet)ViewState["consultData"];
+
+            DataTable selectedTable = data.Tables[0].AsEnumerable()
+                            .Where(r => r.Field<int>("ConsultantID") == Convert.ToInt32(ddlConsultants.SelectedValue))
+                            .CopyToDataTable();
+            Email = selectedTable.Rows[0]["Email"].ToString();
+            string Name = selectedTable.Rows[0]["Name"].ToString();
+
+            DataSet ds = leadBL.GetMailInfo();
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                string MailTo = string.Empty;
+                string DisplayNameTo = string.Empty;
+                string MailCc = string.Empty;
+                string DisplayNameCc = string.Empty;
+                string MailBcc = string.Empty;
+                string Subject = string.Empty;
+                string MailText = string.Empty;
+                string Attachment = string.Empty;
+
+                try
+                {
+                    Subject = "New Lead Assigned to you.";
+                    MailCc = "";
+                    MailTo = Email;
+                    //MailTo = "karen@serendipitytours.co.za";
+                    MailText = "Hi " + Name + ", <br/><br/><br/>";
+                    MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
+                    MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
+                    CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                }
+                catch
+                { }
+            }
+        }
+        if (ddlSendEmail.SelectedValue == "1")
+        {
+            DataSet ds = leadBL.GetMailInfo();
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                string MailTo = string.Empty;
+                string DisplayNameTo = string.Empty;
+                string MailCc = string.Empty;
+                string DisplayNameCc = string.Empty;
+                string MailBcc = string.Empty;
+                string Subject = string.Empty;
+                string MailText = string.Empty;
+                string Attachment = string.Empty;
+
+                try
+                {
+                    Subject = "New Lead has come.";
+                    MailCc = "";
+                    MailTo = "consultants@serendipitytours.co.za";
+                    //MailTo = "karen@serendipitytours.co.za";
+                    MailText = "Hi " + "Team" + ", <br/><br/><br/>";
+                    MailText += "A new lead has come, needs to be actioned. <br/><br/>";
+                    MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
+                    CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                }
+                catch
+                { }
+            }
+        }
+        else
+        {
+            consultantAction.Visible = false;
+        }
+    }
+    protected void backToLead_Click(object sender, ImageClickEventArgs e)
+    {
+        LeadList.Visible = true;
+        newlead.Visible = false;
+        dvEdit.Visible = false;
     }
 }
