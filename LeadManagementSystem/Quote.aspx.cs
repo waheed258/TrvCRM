@@ -42,7 +42,7 @@ public partial class Quote : System.Web.UI.Page
             TempId = Request.QueryString["temp"];
 
             if (!IsPostBack)
-            {
+            {                
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
                 //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
                 txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
@@ -312,7 +312,7 @@ public partial class Quote : System.Web.UI.Page
                     ddlChildType.SelectedValue = dataset.Tables[0].Rows[0]["CostForChildType"].ToString();
                     txtChildPrice.Text = dataset.Tables[0].Rows[0]["CostForChild"].ToString();
                     ddlChildPersons.SelectedValue = dataset.Tables[0].Rows[0]["NoOfChildren"].ToString();
-                    lblChildTotPrice.Text = dataset.Tables[0].Rows[0]["ChildTotal"].ToString();
+                    lblChildTotPrice.Text = dataset.Tables[0].Rows[0]["ChildTotal"].ToString().TrimEnd();
 
                     txtFlightDetails.Text = dataset.Tables[0].Rows[0]["FlightDetails"].ToString();
                     txtCarHireDetails.Text = dataset.Tables[0].Rows[0]["CarHireDetails"].ToString();
@@ -322,7 +322,7 @@ public partial class Quote : System.Web.UI.Page
                     txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
                     txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
 
-
+                    lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text)); 
 
                     if (ddlAdultType.SelectedValue == "1")
                     {

@@ -595,7 +595,7 @@
                             </div>
 
                         </div>
-
+                        <asp:HiddenField ID="hdfSMS" runat="server" />
                         <div class="col-md-12" id="dvHistory" style="margin-top: 15px;">
 
                             <%--<asp:PlaceHolder ID="HistoryPlaceholder" runat="server" />--%>
@@ -631,6 +631,16 @@
                                             <asp:TemplateField HeaderText="Edit" ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <asp:LinkButton CommandName="Edit" ID="btnEditHistory" runat="server" ToolTip="Edit">Edit</asp:LinkButton>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Send SMS" ItemStyle-Width="5%">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton CommandName="SendSMS" ID="btnSendSMS"  runat="server" ToolTip="Send SMS">Send SMS</asp:LinkButton>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Status" ItemStyle-Width="5%">
+                                                <ItemTemplate>
+                                                   <asp:Label runat="server" Text='<%#Eval("SmsStatus").ToString() == "Y" ? "Delivered" : "" %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -701,13 +711,13 @@
                     <div class="graph" style="padding: 0em 0em">
                         <nav style="text-align: left;">
                             <ul>
-                                 
+
                                 <li id="assigned"><a href="#section-2" class="icon-cup"><span>Assigned Leads</span></a></li>
-                               <li id="unassigned"><a href="#section-1" class="icon-shop"><span>Un-Assigned Leads</span></a></li>
+                                <li id="unassigned"><a href="#section-1" class="icon-shop"><span>Un-Assigned Leads</span></a></li>
                             </ul>
                         </nav>
                         <div class="content tab">
-                           
+
                             <section id="section-2">
                                 <div class="graph">
                                     <div class="row" id="assignedLeadList" runat="server">
@@ -931,7 +941,7 @@
                                     </div>
                                 </div>
                             </section>
-                             <section id="section-1">
+                            <section id="section-1">
                                 <div class="graph">
                                     <div class="row" id="search" runat="server">
                                         <div class="col-lg-12">
@@ -1181,7 +1191,7 @@
                             <label class="control-label">To</label>
                             <asp:TextBox ID="txtToEmail" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rqftxtToEmail" runat="server" ControlToValidate="txtToEmail" ForeColor="#d0582e"
-                                ErrorMessage="Please Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
+                                ErrorMessage="Please enter Email Id" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label">CC</label>
@@ -1223,6 +1233,43 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="smsModal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 class="modal-title">Send SMS</h2>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <label class="control-label">Phone no</label>
+                            <asp:TextBox ID="txtSendSMS" class="form-control" runat="server" MaxLength="10" ReadOnly="true"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvSendSMS" runat="server" ControlToValidate="txtSendSMS" ForeColor="#d0582e"
+                                ErrorMessage="Please enter Phone no" ValidationGroup="SMS" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="control-label">Message</label>
+                            <asp:TextBox ID="txtResp" class="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvMessage" runat="server" ControlToValidate="txtResp" ForeColor="#d0582e"
+                                ErrorMessage="Please enter message" ValidationGroup="SMS" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center" style="margin-top: 15px; margin-bottom: 15px;">
+                        <asp:Button ID="btnSMS" Text="Send SMS" runat="server" OnClick="btnSMS_Click" ValidationGroup="SMS" />
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <div class="modal fade" id="delete" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content" style="height: 150px;">
@@ -1276,6 +1323,9 @@
     <script type="text/javascript">
         function openModal() {
             $('#myModal').modal('show');
+        }
+        function openSMSModal() {
+            $('#smsModal').modal('show');
         }
     </script>
     <script type="text/javascript">

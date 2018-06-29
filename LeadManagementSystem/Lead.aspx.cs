@@ -9,6 +9,9 @@ using BusinessLogic;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
+using System.Net;
+using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 public partial class Lead : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -43,7 +46,7 @@ public partial class Lead : System.Web.UI.Page
                 desc.Visible = false;
                 dvEdit.Visible = false;
                 consultantAction.Visible = false;
-                
+
             }
         }
         catch { }
@@ -1229,11 +1232,18 @@ public partial class Lead : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
                 else if (e.CommandName == "Edit")
-                {
+                {                    
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
                     string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
-                    string s = "window.open('" + url + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    //string s = "window.open('" + url + "', '_blank');";
+                    //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    Response.Redirect(url);
+                }
+                else if (e.CommandName == "SendSMS")
+                {                    
+                    hdfSMS.Value = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
+                    txtSendSMS.Text = txtEMobile.Text;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
                 }
             }
         }
@@ -1252,9 +1262,11 @@ public partial class Lead : System.Web.UI.Page
             Label lblQuote = (Label)e.Row.FindControl("lblHistoryQuote");
             LinkButton lnkView = (LinkButton)e.Row.FindControl("btnViewHistory");
             LinkButton lnkEdit = (LinkButton)e.Row.FindControl("btnEditHistory");
+            LinkButton lnkSMS = (LinkButton)e.Row.FindControl("btnSendSMS");
 
             lnkView.Visible = lblQuote.Text == "" ? false : true;
             lnkEdit.Visible = lblQuote.Text == "" ? false : true;
+            lnkSMS.Visible = lblQuote.Text == "" ? false : true;
         }
     }
     protected void gvHistory_RowEditing(object sender, GridViewEditEventArgs e)
@@ -1355,4 +1367,150 @@ public partial class Lead : System.Web.UI.Page
         newlead.Visible = false;
         dvEdit.Visible = false;
     }
+    protected void btnSMS_Click(object sender, EventArgs e)
+    {
+        ISmsMessageBuilder messageBuilder;
+        Guid productToken = new Guid("2DA19A96-5885-40CB-9098-F7A58B1C298E");
+        //string phoneNo = "0027724766939"; 
+        string phoneNo = "0027" + txtSendSMS.Text;
+        //Use XML or JSON per your own preference
+        //messageBuilder = new JsonSmsMessageBuilder();
+        messageBuilder = new XmlSmsMessageBuilder();
+        var request = messageBuilder.CreateMessage(productToken,
+                "Serendipity",
+                phoneNo,
+                txtResp.Text
+               );
+
+        var response = doHttpPost(messageBuilder.GetTargetUrl(),
+                                  messageBuilder.GetContentType(),
+                                  request);
+
+        txtResp.Text = response.ToString();
+        //    Console.WriteLine($"Response: {response}");
+        //    Console.ReadKey();
+        leadBL.SetSMSStatus(hdfSMS.Value);
+        DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+        DataTable dtLeadHistory = ds.Tables[1];
+        LeadHistory(dtLeadHistory);
+    }
+    /// <summary>
+    /// Sends a string via HTTP POST to a url
+    /// </summary>
+    /// <param name="url">The target url to send the string to</param>
+    /// <param name="requestString">The string to send</param>
+    /// <returns>The response of the url or the error text in case of an error</returns>
+    private static string doHttpPost(string url, string contentType, string requestString)
+    {
+        try
+        {
+            //Console.WriteLine($"Sending request to: {url}");
+            var webClient = new WebClient();
+            webClient.Headers["Content-Type"] = contentType;
+            webClient.Encoding = System.Text.Encoding.UTF8;
+            return webClient.UploadString(url, requestString);
+        }
+        catch (WebException wex)
+        {
+            return string.Format("{0} - {1}", wex.Status, wex.Message);
+        }
+    }
 }
+
+/// <summary>
+/// The gateway accepts both the XML amd JSON formats
+/// </summary>
+public interface ISmsMessageBuilder
+{
+
+    /// <summary>
+    /// Creates a string according to the technical requirements
+    /// of the CM MT gateway for sending a simple SMS text message
+    /// </summary>
+    /// <param name="productToken">Your product token</param>
+    /// <param name="sender">A sendername/shortcode the SMS message</param>
+    /// <param name="message">The text to be sent</param>
+    /// <param name="recipient">The recipient's MSISDN</param>
+    /// <returns>A string according to the technical requirements of the CM MT gateway,
+    /// based on the provided parameters</returns>
+    string CreateMessage(Guid productToken,
+        string sender,
+        string recipient,
+        string message);
+
+    /// <summary>
+    /// The XML and JSON gateways use different URLs
+    /// </summary>
+    /// <returns>The target URL of either the XML or JSON gateway</returns>
+    string GetTargetUrl();
+
+    /// <summary>
+    /// The JSON gateway requires you to set the content type to "application/json"
+    /// </summary>
+    /// <returns>The string of the content type to be used in the HTTP header </returns>
+    string GetContentType();
+}
+
+public class XmlSmsMessageBuilder : ISmsMessageBuilder
+{
+    public string CreateMessage(Guid productToken,
+                                string sender,
+                                string recipient,
+                                string message)
+    {
+        return
+           new XElement("MESSAGES",
+               new XElement("AUTHENTICATION",
+                   new XElement("PRODUCTTOKEN", productToken)
+           ),
+           new XElement("MSG",
+               new XElement("FROM", sender),
+               new XElement("TO", recipient),
+               new XElement("BODY", message)
+           )
+        ).ToString();
+    }
+
+    public string GetContentType()
+    { return "application/xml"; }
+
+    public string GetTargetUrl()
+    { return "https://sgw01.cm.nl/gateway.ashx"; }
+}
+
+/// <summary>
+/// For JSON string building we recommend the Newtonsoft JSON NuGet package
+/// Feel free to substitute with your own preference in .net JSON library
+/// </summary>
+//public class JsonSmsMessageBuilder : ISmsMessageBuilder
+//{
+//    public string CreateMessage(Guid productToken,
+//                        string sender,
+//                        string recipient,
+//                        string message) {
+//        return new JObject {
+//                            ["Messages"] = new JObject {
+//                                                        ["Authentication"] = new JObject {
+//                                                                                            ["ProductToken"] = productToken
+//                                                                                          },
+//                                                        ["Msg"] = new JArray {
+//                                                                                new JObject { 
+//                                                                                                ["From"] = sender,
+//                                                                                                 ["To"] = new JArray {
+//                                                                                 new JObject { ["Number"] = recipient }
+//                                                           },
+//                                        ["Body"] = new JObject {
+//                                            ["Content"] = message
+//                                        }    
+//                    }
+//                }
+//            }
+//        }.ToString();
+//    }
+
+//    public string GetContentType()
+//    { return "application/json"; }
+
+//    public string GetTargetUrl()
+//    { return "https://gw.cmtelecom.com/v1.0/message"; }
+//}
