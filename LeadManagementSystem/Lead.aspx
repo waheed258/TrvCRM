@@ -640,7 +640,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Status" ItemStyle-Width="5%">
                                                 <ItemTemplate>
-                                                   <asp:Label runat="server" Text='<%#Eval("SmsStatus").ToString() == "Y" ? "Delivered" : "" %>'></asp:Label>
+                                                   <asp:Label runat="server" Text='<%#Eval("SmsStatus").ToString() == "Y" ? "Sent" : "" %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
