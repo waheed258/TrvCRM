@@ -236,7 +236,14 @@ namespace BusinessLogic
             hashtable.Add("@leadId", LeadID);
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetTemplateNames", hashtable);
             return ds;
-        } 
-       
+        }
+
+        public int SetSMSStatus(string QuoteNo)
+        {
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("@QuoteNo", QuoteNo);
+            int result = dataUtilities.ExecuteNonQuery("usp_SetSMSStatus", hashtable);
+            return result;
+        }       
     }
 }
