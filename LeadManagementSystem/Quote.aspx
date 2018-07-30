@@ -298,7 +298,7 @@
 
                     <div class="vali-form">
                         <div class="col-md-6" style="margin-bottom: 20px; margin-top: 10px;">
-                            <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click" ValidationGroup="Quote" Height="35px" />
+                            <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click1" ValidationGroup="Quote" Height="35px" />
                             <asp:ImageButton ID="btnTemplageName" runat="server" ValidationGroup="Quote" ImageUrl="~/images/button_save-as-template.png" OnClick="btnTemplageName_Click" Height="35px" />
                             <asp:ImageButton ID="imgbtnClear" runat="server" ImageUrl="~/images/clear.png" OnClick="imgbtnClear_Click" Height="35px" />
                         </div>

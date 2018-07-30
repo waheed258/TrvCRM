@@ -42,7 +42,7 @@ public partial class Quote : System.Web.UI.Page
             TempId = Request.QueryString["temp"];
 
             if (!IsPostBack)
-            {                
+            {
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
                 //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
                 txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
@@ -127,7 +127,8 @@ public partial class Quote : System.Web.UI.Page
             ddlPackage.DataBind();
             ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
 
-            if (encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == "" || encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == null) {
+            if (encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == "" || encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == null)
+            {
                 txtIncludes.Text = "";
                 txtExcludes.Text = "";
             }
@@ -322,7 +323,7 @@ public partial class Quote : System.Web.UI.Page
                     txtExcludes.Text = dataset.Tables[0].Rows[0]["Excludes"].ToString();
                     txtTravelInsur.Text = dataset.Tables[0].Rows[0]["TravelInsurance"].ToString();
 
-                    lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text)); 
+                    lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
 
                     if (ddlAdultType.SelectedValue == "1")
                     {
@@ -513,10 +514,12 @@ public partial class Quote : System.Web.UI.Page
         if (txtChildPrice.Text != "" && ddlChildPersons.SelectedValue != "0")
         {
             lblChildTotPrice.Text = Convert.ToString(Convert.ToInt32(txtChildPrice.Text) * Convert.ToInt32(ddlChildPersons.SelectedValue));
-            if (lblAdultTotPrice.Text == "") {
-                lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));            
-            }else
-            lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
+            if (lblAdultTotPrice.Text == "")
+            {
+                lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
+            }
+            else
+                lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
         }
     }
     protected void ddlAdultPersons_SelectedIndexChanged(object sender, EventArgs e)
@@ -527,90 +530,7 @@ public partial class Quote : System.Web.UI.Page
             lblGrandTotal.Text = lblAdultTotPrice.Text;
         }
     }
-    protected void imgbtnSubmitAssign_Click(object sender, ImageClickEventArgs e)
-    {
-        try
-        {
-            QuoteEntity qtEntity = new QuoteEntity();
-
-            qtEntity.CarHireDetails = txtCarHireDetails.Text;
-            qtEntity.ConsultantName = Session["Name"].ToString();
-            qtEntity.CostForAdult = txtAdultPrice.Text;
-            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
-            qtEntity.CostForChild = txtChildPrice.Text;
-            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
-            qtEntity.Excludes = txtExcludes.Text;
-            qtEntity.FlightDetails = txtFlightDetails.Text;
-            qtEntity.HotelInfo = txtHotelInfo.Text;
-            qtEntity.Includes = txtIncludes.Text;
-            qtEntity.ItineraryDetails = txtItinerary.Text;
-            qtEntity.LeadID = LeadID;
-            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
-            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
-            qtEntity.QuoteDate = txtDate.Text;
-            qtEntity.ToCity = city;
-            qtEntity.TravelInsurance = txtTravelInsur.Text;
-            qtEntity.AdultTotal = lblAdultTotPrice.Text;
-            qtEntity.ChildTotal = lblChildTotPrice.Text;
-            qtEntity.IsMailSent = "N";
-            qtEntity.QuoteNumber = "";
-            qtEntity.Operation = "I";
-
-            if (QuoteType == "3")
-            {
-                qtEntity.PackageId = txtProduct.Text;
-            }
-            else
-            {
-                qtEntity.PackageId = ddlPackage.SelectedValue;
-            }
-
-
-
-
-            //string result = qtBL.CUDQuote(qtEntity);
-
-            string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
-            ViewState["QuoteNumber"] = QuoteNumber;
-
-            if (QuoteNumber != "")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
-                txtToEmail.Text = clEmail;
-                txtCLientName.Text = lblClientName.Text;
-                txtEmailSubject.Text = "Serendipity Tours quote";
-
-                // Email Template                    
-                StringBuilder sb = new StringBuilder();
-                string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
-                sb.Append(strHeading);
-                sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
-
-                sb.Append("<p><strong>Kind regards</strong></p>");
-                sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-
-                txtMailTemp.Text = sb.ToString();
-
-                //message.Text = "Quote Details saved Successfully!";
-                //message.ForeColor = System.Drawing.Color.Green;
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                //GetPdf(QuoteNumber);
-                Clear();
-            }
-            else
-            {
-                message.Text = "Please try again!";
-                message.ForeColor = System.Drawing.Color.Red;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-            }
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
+   
 
     private void Clear()
     {
@@ -983,5 +903,88 @@ public partial class Quote : System.Web.UI.Page
 
         txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
         txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
+    }
+    protected void imgbtnSubmitAssign_Click1(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            QuoteEntity qtEntity = new QuoteEntity();
+
+            qtEntity.CarHireDetails = txtCarHireDetails.Text;
+            qtEntity.ConsultantName = Session["Name"].ToString();
+            qtEntity.CostForAdult = txtAdultPrice.Text;
+            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+            qtEntity.CostForChild = txtChildPrice.Text;
+            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+            qtEntity.Excludes = txtExcludes.Text;
+            qtEntity.FlightDetails = txtFlightDetails.Text;
+            qtEntity.HotelInfo = txtHotelInfo.Text;
+            qtEntity.Includes = txtIncludes.Text;
+            qtEntity.ItineraryDetails = txtItinerary.Text;
+            qtEntity.LeadID = LeadID;
+            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+            qtEntity.QuoteDate = txtDate.Text;
+            qtEntity.ToCity = city;
+            qtEntity.TravelInsurance = txtTravelInsur.Text;
+            qtEntity.AdultTotal = lblAdultTotPrice.Text;
+            qtEntity.ChildTotal = lblChildTotPrice.Text;
+            qtEntity.IsMailSent = "N";
+            qtEntity.QuoteNumber = "";
+            qtEntity.Operation = "I";
+
+            if (QuoteType == "3")
+            {
+                qtEntity.PackageId = txtProduct.Text;
+            }
+            else
+            {
+                qtEntity.PackageId = ddlPackage.SelectedValue;
+            }
+
+
+
+
+            //string result = qtBL.CUDQuote(qtEntity);
+
+            string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
+            ViewState["QuoteNumber"] = QuoteNumber;
+
+            if (QuoteNumber != "")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                txtToEmail.Text = clEmail;
+                txtCLientName.Text = lblClientName.Text;
+                txtEmailSubject.Text = "Serendipity Tours quote";
+
+                // Email Template                    
+                StringBuilder sb = new StringBuilder();
+                string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
+                sb.Append(strHeading);
+                sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
+
+                sb.Append("<p><strong>Kind regards</strong></p>");
+                sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+
+                txtMailTemp.Text = sb.ToString();
+
+                //message.Text = "Quote Details saved Successfully!";
+                //message.ForeColor = System.Drawing.Color.Green;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                //GetPdf(QuoteNumber);
+                Clear();
+            }
+            else
+            {
+                message.Text = "Please try again!";
+                message.ForeColor = System.Drawing.Color.Red;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

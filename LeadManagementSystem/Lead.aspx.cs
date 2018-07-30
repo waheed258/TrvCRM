@@ -29,8 +29,8 @@ public partial class Lead : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                _objComman.getRecordsPerPage(DropPage);
-                _objComman.getRecordsPerPage(ddlAssignedList);
+                //_objComman.getRecordsPerPage(DropPage);
+               // _objComman.getRecordsPerPage(ddlAssignedList);
                 GetProducts();
                 GetSourceData("I");
                 others.Visible = false;
@@ -55,18 +55,16 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            //gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = leadBL.GetLeadsList(0);
             if (dataset.Tables[0].Rows.Count > 0)
             {
-                search.Visible = true;
+                gvLeadList.DataSource = dataset;
+                gvLeadList.DataBind();
+                gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
-            else
-            {
-                search.Visible = false;
-            }
-            gvLeadList.DataSource = dataset;
-            gvLeadList.DataBind();
+            
+            
         }
         catch (Exception ex)
         {
@@ -82,18 +80,15 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            gvAssignedList.PageSize = Convert.ToInt32(ddlAssignedList.SelectedValue);
+            //gvAssignedList.PageSize = Convert.ToInt32(ddlAssignedList.SelectedValue);
             dataset = leadBL.GetAssignedLeadsList(0);
             if (dataset.Tables[0].Rows.Count > 0)
             {
-                assignedLeadList.Visible = true;
+                gvAssignedList.DataSource = dataset;
+                gvAssignedList.DataBind();
+                gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
-            else
-            {
-                assignedLeadList.Visible = false;
-            }
-            gvAssignedList.DataSource = dataset;
-            gvAssignedList.DataBind();
+           
         }
         catch (Exception ex)
         {
@@ -844,6 +839,7 @@ public partial class Lead : System.Web.UI.Page
                     string encryptedparamlblProductID = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProductID")).Text.ToString());
 
                     string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email) + "&prodid=" + Server.UrlEncode(encryptedparamlblProductID);
+                   
                     hdfQuoteUrl.Value = url;
 
                 }
@@ -866,16 +862,16 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            //gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = leadBL.GetLeadsList(0);
-            if (dataset.Tables[0].Rows.Count > 0)
-            {
-                search.Visible = true;
-            }
-            else
-            {
-                search.Visible = false;
-            }
+            //if (dataset.Tables[0].Rows.Count > 0)
+            //{
+            //    search.Visible = true;
+            //}
+            //else
+            //{
+            //    search.Visible = false;
+            //}
             gvLeadList.DataSource = dataset;
             gvLeadList.DataBind();
         }
@@ -1406,8 +1402,9 @@ public partial class Lead : System.Web.UI.Page
         {
             //Console.WriteLine($"Sending request to: {url}");
             var webClient = new WebClient();
-            webClient.Headers["Content-Type"] = contentType;
+            webClient.Headers["Content-Type"] = contentType;            
             webClient.Encoding = System.Text.Encoding.UTF8;
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             return webClient.UploadString(url, requestString);
         }
         catch (WebException wex)

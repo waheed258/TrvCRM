@@ -1,8 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.master" AutoEventWireup="true" CodeFile="Lead.aspx.cs" Inherits="Lead" ValidateRequest="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-    <script src="js/jquery-2.1.4.min.js"></script>
+
     <script src="ckeditor/ckeditor.js"></script>
     <style>
         .LeadColor {
@@ -31,6 +30,7 @@
                     $("#ContentPlaceHolder1_txtReturnDate").datepicker("option", "minDate", date)
                 }
             });
+
             $("#ContentPlaceHolder1_txtReturnDate").datepicker({
                 startDate: 'today',
                 numberOfMonths: 1,
@@ -44,86 +44,6 @@
                 dateFormat: 'dd-mm-yy',
                 autoclose: true
             });
-            $("#target").keyup(function () {
-                if ($("[id *=target]").val() != "") {
-                    $("[id *=ContentPlaceHolder1_gvLeadList]").children
-                    ('tbody').children('tr').each(function () {
-                        $(this).show();
-                    });
-                    $("[id *=ContentPlaceHolder1_gvLeadList]").children
-                    ('tbody').children('tr').each(function () {
-                        var match = false;
-                        $(this).children('td').each(function () {
-                            if ($(this).text().toUpperCase().indexOf($("[id *=target]").val().toUpperCase()) > -1) {
-                                match = true;
-                                return false;
-                            }
-                        });
-                        if (match) {
-                            $(this).show();
-                            $(this).children('th').show();
-                        }
-                        else {
-                            $(this).hide();
-                            $(this).children('th').show();
-                        }
-                    });
-
-
-                    $("[id *=ContentPlaceHolder1_gvLeadList]").children('tbody').
-                            children('tr').each(function (index) {
-                                if (index == 0)
-                                    $(this).show();
-                            });
-                }
-                else {
-                    $("[id *=ContentPlaceHolder1_gvLeadList]").children('tbody').
-                            children('tr').each(function () {
-                                $(this).show();
-                            });
-                }
-            });
-            $("#targetAssigned").keyup(function () {
-                if ($("[id *=targetAssigned]").val() != "") {
-                    $("[id *=ContentPlaceHolder1_gvAssignedList]").children
-                    ('tbody').children('tr').each(function () {
-                        $(this).show();
-                    });
-                    $("[id *=ContentPlaceHolder1_gvAssignedList]").children
-                    ('tbody').children('tr').each(function () {
-                        var match = false;
-                        $(this).children('td').each(function () {
-                            if ($(this).text().toUpperCase().indexOf($("[id *=targetAssigned]").val().toUpperCase()) > -1) {
-                                match = true;
-                                return false;
-                            }
-                        });
-                        if (match) {
-                            $(this).show();
-                            $(this).children('th').show();
-                        }
-                        else {
-                            $(this).hide();
-                            $(this).children('th').show();
-                        }
-                    });
-
-
-                    $("[id *=ContentPlaceHolder1_gvAssignedList]").children('tbody').
-                            children('tr').each(function (index) {
-                                if (index == 0)
-                                    $(this).show();
-                            });
-                }
-                else {
-                    $("[id *=ContentPlaceHolder1_gvAssignedList]").children('tbody').
-                            children('tr').each(function () {
-                                $(this).show();
-                            });
-                }
-            });
-
-
             $("#ContentPlaceHolder1_txtEReturn").prop('disabled', true);
             $('#ContentPlaceHolder1_txtEDepart').datepicker({
                 startDate: 'today',
@@ -166,11 +86,8 @@
             ],
                 height: '300px'
             });
-
-            //$("#unassigned").removeClass("tab-current");
-            //$("#assigned").addClass("tab-current");
-            //$("#section-1").removeClass("content-current");
-            //$("#section-2").addClass("content-current");
+            $('#ContentPlaceHolder1_gvAssignedList').DataTable();
+            $('#ContentPlaceHolder1_gvLeadList').DataTable();
         });
     </script>
 </asp:Content>
@@ -635,12 +552,12 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Send SMS" ItemStyle-Width="5%">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton CommandName="SendSMS" ID="btnSendSMS"  runat="server" ToolTip="Send SMS">Send SMS</asp:LinkButton>
+                                                    <asp:LinkButton CommandName="SendSMS" ID="btnSendSMS" runat="server" ToolTip="Send SMS">Send SMS</asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Status" ItemStyle-Width="5%">
                                                 <ItemTemplate>
-                                                   <asp:Label runat="server" Text='<%#Eval("SmsStatus").ToString() == "Y" ? "Sent" : "" %>'></asp:Label>
+                                                    <asp:Label runat="server" Text='<%#Eval("SmsStatus").ToString() == "Y" ? "Sent" : "" %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -719,8 +636,8 @@
                         <div class="content tab">
 
                             <section id="section-2">
-                                <div class="graph">
-                                    <div class="row" id="assignedLeadList" runat="server">
+                               
+                                    <%--<div class="row" id="assignedLeadList" runat="server">
                                         <div class="col-lg-12">
                                             <div class="col-lg-1 form-group">
                                                 <asp:DropDownList CssClass="form-control" ID="ddlAssignedList" runat="server" Style="padding: 0px" OnSelectedIndexChanged="ddlAssignedList_SelectedIndexChanged"
@@ -738,14 +655,14 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div>--%>
                                     <div class="tables">
                                         <div class="table table-responsive">
                                             <asp:GridView ID="gvAssignedList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
                                                 EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
                                                 PageSize="100" OnRowCommand="gvAssignedList_RowCommand" OnPageIndexChanging="gvAssignedList_PageIndexChanging" OnRowDataBound="gvAssignedList_RowDataBound"
                                                 Style="font-size: 110%;" ForeColor="Black">
-                                                <PagerStyle CssClass="pagination_grid" />
+                                                <%--                                                <PagerStyle CssClass="pagination_grid" />--%>
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Quote" Visible="false">
                                                         <ItemTemplate>
@@ -939,11 +856,11 @@
                                             </asp:GridView>
                                         </div>
                                     </div>
-                                </div>
+                               
                             </section>
                             <section id="section-1">
-                                <div class="graph">
-                                    <div class="row" id="search" runat="server">
+                                
+                                 <%--   <div class="row" id="search" runat="server">
                                         <div class="col-lg-12">
                                             <div class="col-lg-1 form-group">
                                                 <asp:DropDownList CssClass="form-control" ID="DropPage" runat="server" Style="padding: 0px" OnSelectedIndexChanged="DropPage_SelectedIndexChanged"
@@ -961,7 +878,7 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div>--%>
                                     <div class="tables">
                                         <div class="table table-responsive">
                                             <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
@@ -1158,7 +1075,7 @@
                                             </asp:GridView>
                                         </div>
                                     </div>
-                                </div>
+                                
                             </section>
                         </div>
                         <!-- /content -->
@@ -1333,5 +1250,12 @@
             $('#delete').modal('show');
         }
     </script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.jqueryui.min.css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.jqueryui.min.js"></script>
 </asp:Content>
 
