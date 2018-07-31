@@ -30,7 +30,7 @@ public partial class Lead : System.Web.UI.Page
             if (!IsPostBack)
             {
                 //_objComman.getRecordsPerPage(DropPage);
-               // _objComman.getRecordsPerPage(ddlAssignedList);
+                // _objComman.getRecordsPerPage(ddlAssignedList);
                 GetProducts();
                 GetSourceData("I");
                 others.Visible = false;
@@ -63,10 +63,10 @@ public partial class Lead : System.Web.UI.Page
                 gvLeadList.DataBind();
                 gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
-            
-            
+
+
         }
-        catch (Exception ex)
+        catch
         {
             message.Text = "Something went wrong. Please contact administrator!";
             message.ForeColor = System.Drawing.Color.Red;
@@ -88,9 +88,9 @@ public partial class Lead : System.Web.UI.Page
                 gvAssignedList.DataBind();
                 gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
-           
+
         }
-        catch (Exception ex)
+        catch
         {
             message.Text = "Something went wrong. Please contact administrator!";
             message.ForeColor = System.Drawing.Color.Red;
@@ -839,7 +839,7 @@ public partial class Lead : System.Web.UI.Page
                     string encryptedparamlblProductID = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProductID")).Text.ToString());
 
                     string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email) + "&prodid=" + Server.UrlEncode(encryptedparamlblProductID);
-                   
+
                     hdfQuoteUrl.Value = url;
 
                 }
@@ -1228,7 +1228,7 @@ public partial class Lead : System.Web.UI.Page
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
                 else if (e.CommandName == "Edit")
-                {                    
+                {
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
                     string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
                     //string s = "window.open('" + url + "', '_blank');";
@@ -1236,7 +1236,7 @@ public partial class Lead : System.Web.UI.Page
                     Response.Redirect(url);
                 }
                 else if (e.CommandName == "SendSMS")
-                {                    
+                {
                     hdfSMS.Value = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
                     txtSendSMS.Text = txtEMobile.Text;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
@@ -1402,7 +1402,7 @@ public partial class Lead : System.Web.UI.Page
         {
             //Console.WriteLine($"Sending request to: {url}");
             var webClient = new WebClient();
-            webClient.Headers["Content-Type"] = contentType;            
+            webClient.Headers["Content-Type"] = contentType;
             webClient.Encoding = System.Text.Encoding.UTF8;
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             return webClient.UploadString(url, requestString);
