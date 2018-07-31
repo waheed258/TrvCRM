@@ -987,4 +987,8 @@ public partial class Quote : System.Web.UI.Page
             throw;
         }
     }
+    protected void backToLead_Click(object sender, ImageClickEventArgs e)
+    {
+        Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
+    }
 }

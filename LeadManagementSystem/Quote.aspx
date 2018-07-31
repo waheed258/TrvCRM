@@ -2,7 +2,7 @@
 
 <%--<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
     <script src="js/jquery-2.2.3.min.js"></script>
     <script src="ckeditor/ckeditor.js"></script>
@@ -121,6 +121,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="outter-wp">
+        <div>
+            <asp:ImageButton ID="backToLead" runat="server" OnClick="backToLead_Click" ImageUrl="~/images/Back.png" Height="35px" />
+        </div>
         <div class="forms-main" runat="server">
             <div class="graph-form">
                 <div class="validation-form">
