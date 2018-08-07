@@ -31,6 +31,11 @@ namespace BusinessLogic
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetAllLeads", hashtable);
             return ds;
         }
+        public DataSet GetReminders()
+        {
+            DataSet ds = dataUtilities.ExecuteDataSet("usp_GetReminders");
+            return ds;
+        }
         public DataSet GetAssignedLeadsList(int ID)
         {
             Hashtable hashtable = new Hashtable();
