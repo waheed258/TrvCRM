@@ -31,14 +31,13 @@ public partial class Lead : System.Web.UI.Page
             {
                 if (Request.QueryString["t"] == null)
                 {
-                    //_objComman.getRecordsPerPage(DropPage);
-                    // _objComman.getRecordsPerPage(ddlAssignedList);
                     GetProducts();
                     GetSourceData("I");
                     others.Visible = false;
                     dvEOthers.Visible = false;
                     GetLeadsList();
                     GetAssinedLeadsList();
+                    GetReminders();
                     newlead.Visible = false;
                     btnUpdate.Visible = false;
                     _objComman.GetAssigLeadOptions(ddlAssignLead);
@@ -53,6 +52,7 @@ public partial class Lead : System.Web.UI.Page
                 {
                     GetLeadsList();
                     GetAssinedLeadsList();
+                    GetReminders();
                     actions.Visible = false;
                     GetSourceDataEdit("U");
                     MailMessage.Text = "";
@@ -65,6 +65,7 @@ public partial class Lead : System.Web.UI.Page
                     DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(Request.QueryString["idq"].ToString()));
                     DataTable dtLead = ds.Tables[0];
                     DataTable dtLeadHistory = ds.Tables[1];
+                    LeadHistory(dtLeadHistory);
                     GetTemplateNames(Request.QueryString["idq"].ToString());
                     if (dtLead.Rows.Count > 0)
                     {
@@ -171,6 +172,28 @@ public partial class Lead : System.Web.UI.Page
                 gvLeadList.DataSource = dataset;
                 gvLeadList.DataBind();
                 gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
+
+
+        }
+        catch
+        {
+            message.Text = "Something went wrong. Please contact administrator!";
+            message.ForeColor = System.Drawing.Color.Red;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+        }
+    }
+    protected void GetReminders()
+    {
+        try
+        {
+            //gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
+            dataset = leadBL.GetReminders();
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                gvReminders.DataSource = dataset;
+                gvReminders.DataBind();
+                gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
             }
 
 
@@ -1321,6 +1344,14 @@ public partial class Lead : System.Web.UI.Page
                     txtSendSMS.Text = txtEMobile.Text;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
                 }
+                else if (e.CommandName == "Convert")
+                {
+                    string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
+                    string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
+                    string s = "window.open('" + url + "', '_blank');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                }
+
             }
         }
         catch
