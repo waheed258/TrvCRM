@@ -1244,7 +1244,17 @@ public partial class Lead : System.Web.UI.Page
     {
         string strValue = ddlQuoteDetails.SelectedValue;
         string strTemp = ddlTemplateNames.SelectedValue;
-        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1";
+        string LeadStatus = string.Empty;
+        if (ddlStatus.SelectedValue == "6")
+        {
+            LeadStatus = txtClientFileId.Text;
+        }
+        else
+        {
+            LeadStatus = "";
+        }
+
+        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1" + "&status=" + LeadStatus;
         Response.Redirect(url);
     }
     protected void ddlQuoteDetails_SelectedIndexChanged(object sender, EventArgs e)

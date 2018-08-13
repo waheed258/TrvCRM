@@ -27,6 +27,7 @@ public partial class Quote : System.Web.UI.Page
     string TempId = string.Empty;
     string flag = string.Empty;
     string quoteno = string.Empty;
+    string lStatus = string.Empty;
     LeadBL leadBL = new LeadBL();
     ProductBL productBL = new ProductBL();
     protected void Page_Load(object sender, EventArgs e)
@@ -40,6 +41,7 @@ public partial class Quote : System.Web.UI.Page
             clEmail = encryptdecrypt.Decrypt(Request.QueryString["em"]);
             QuoteType = Request.QueryString["qtype"];
             TempId = Request.QueryString["temp"];
+            lStatus = Request.QueryString["status"];
 
             if (!IsPostBack)
             {
@@ -619,6 +621,15 @@ public partial class Quote : System.Web.UI.Page
                         readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
                         readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
                         readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
+                        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
+                        readFile = readFile.Replace("{AdultTotal}", dtlRow["AdultTotal"].ToString());
+                        readFile = readFile.Replace("{ChildTotal}", dtlRow["ChildTotal"].ToString());
+                        readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
+                        readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
+                        readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
+                        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
+                        readFile = readFile.Replace("{LeadStatus}", lStatus);
+                        
 
 
                         if (dtlRow["CostForAdultType"].ToString() == "1")
