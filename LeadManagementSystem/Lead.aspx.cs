@@ -967,6 +967,7 @@ public partial class Lead : System.Web.UI.Page
                     string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email) + "&prodid=" + Server.UrlEncode(encryptedparamlblProductID);
 
                     hdfQuoteUrl.Value = url;
+                    Session["QuoteUrl"] = hdfQuoteUrl.Value;
 
                 }
                 else if (e.CommandName == "DeleteLead")
@@ -1254,7 +1255,7 @@ public partial class Lead : System.Web.UI.Page
             LeadStatus = "";
         }
 
-        string url = hdfQuoteUrl.Value + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1" + "&status=" + LeadStatus;
+        string url = Session["QuoteUrl"].ToString() + "&qtype=" + strValue + "&temp=" + strTemp + "&QuoteID=&flag=1" + "&status=" + LeadStatus;
         Response.Redirect(url);
     }
     protected void ddlQuoteDetails_SelectedIndexChanged(object sender, EventArgs e)
@@ -1343,7 +1344,7 @@ public partial class Lead : System.Web.UI.Page
                 else if (e.CommandName == "Edit")
                 {
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-                    string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
+                    string url = Session["QuoteUrl"].ToString() + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
                     //string s = "window.open('" + url + "', '_blank');";
                     //ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                     Response.Redirect(url);
@@ -1357,7 +1358,7 @@ public partial class Lead : System.Web.UI.Page
                 else if (e.CommandName == "Convert")
                 {
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-                    string url = hdfQuoteUrl.Value + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
+                    string url = Session["QuoteUrl"].ToString() + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
                     string s = "window.open('" + url + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
                 }
