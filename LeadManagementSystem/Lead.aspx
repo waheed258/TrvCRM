@@ -86,13 +86,9 @@
             ],
                 height: '300px'
             });
-            $('#ContentPlaceHolder1_gvAssignedList').DataTable({
-                "order": [[0, "desc"]]               
-            });
-            $('#ContentPlaceHolder1_gvLeadList').DataTable({
-                "order": [[0, "desc"]]
-            });
-            $('#ContentPlaceHolder1_gvReminders').DataTable();            
+            $('#ContentPlaceHolder1_gvAssignedList').DataTable();
+            $('#ContentPlaceHolder1_gvLeadList').DataTable();
+            $('#ContentPlaceHolder1_gvReminders').DataTable();
         });
     </script>
 </asp:Content>
@@ -669,10 +665,15 @@
                                 <div class="tables">
                                     <div class="table table-responsive">
                                         <asp:GridView ID="gvAssignedList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display. Please Add Lead."  OnRowCommand="gvAssignedList_RowCommand"  OnRowDataBound="gvAssignedList_RowDataBound"
+                                            EmptyDataText="There are no data records to display. Please Add Lead." OnRowCommand="gvAssignedList_RowCommand" OnRowDataBound="gvAssignedList_RowDataBound"
                                             Style="font-size: 110%;" ForeColor="Black">
                                             <%--                                                <PagerStyle CssClass="pagination_grid" />--%>
                                             <Columns>
+                                                <asp:TemplateField HeaderText="S No.">
+                                                    <ItemTemplate>
+                                                        <%#Container.DataItemIndex+1%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Quote" Visible="false">
                                                     <ItemTemplate>
                                                         <asp:Label runat="server" ID="lblQuote" Text='<%#Eval("Quote") %>'></asp:Label>
@@ -871,10 +872,15 @@
                                 <div class="tables">
                                     <div class="table table-responsive">
                                         <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display. Please Add Lead."  OnRowCommand="gvLeadList_RowCommand"  OnRowDataBound="gvLeadList_RowDataBound"
+                                            EmptyDataText="There are no data records to display. Please Add Lead." OnRowCommand="gvLeadList_RowCommand" OnRowDataBound="gvLeadList_RowDataBound"
                                             Style="font-size: 110%;" ForeColor="Black">
                                             <%--<PagerStyle CssClass="pagination_grid" />--%>
                                             <Columns>
+                                                <asp:TemplateField HeaderText="S No.">
+                                                    <ItemTemplate>
+                                                        <%#Container.DataItemIndex+1%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Quote" Visible="false">
                                                     <ItemTemplate>
                                                         <asp:Label runat="server" ID="lblQuote" Text='<%#Eval("Quote") %>'></asp:Label>
@@ -1068,10 +1074,15 @@
                             <section id="section-3">
                                 <div class="tables">
                                     <div class="table table-responsive">
-                                         <asp:GridView ID="gvReminders" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display."  
+                                        <asp:GridView ID="gvReminders" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
+                                            EmptyDataText="There are no data records to display."
                                             Style="font-size: 110%;" ForeColor="Black">
                                             <Columns>
+                                                <asp:TemplateField HeaderText="S No.">
+                                                    <ItemTemplate>
+                                                        <%#Container.DataItemIndex+1%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Client Name">
                                                     <ItemTemplate>
                                                         <asp:Label runat="server" ID="lblClientName" Text='<%#Eval("ClientName") %>'></asp:Label>
@@ -1096,7 +1107,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label runat="server" ID="lblLeadStatusAction" Text='<%#Eval("LeadStatusAction") %>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>                                               
+                                                </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
                                     </div>
