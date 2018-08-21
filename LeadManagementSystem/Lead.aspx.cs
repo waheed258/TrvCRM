@@ -1484,9 +1484,18 @@ public partial class Lead : System.Web.UI.Page
         LeadList.Visible = true;
         newlead.Visible = false;
         dvEdit.Visible = false;
-        gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
-        gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
-        gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+        if (gvAssignedList.Rows.Count > 0)
+        {
+            gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvLeadList.Rows.Count > 0)
+        {
+            gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvReminders.Rows.Count > 0)
+        {
+            gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
     }
     protected void btnSMS_Click(object sender, EventArgs e)
     {
