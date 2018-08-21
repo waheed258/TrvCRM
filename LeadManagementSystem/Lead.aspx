@@ -87,7 +87,10 @@
                 height: '300px'
             });
             $('#ContentPlaceHolder1_gvAssignedList').DataTable({
-                "order": [[0, "desc"]]
+                "order": [[0, "desc"]],
+                columnDefs: [{
+                    targets: [8]
+                }]
             });
             $('#ContentPlaceHolder1_gvLeadList').DataTable({
                 "order": [[0, "desc"]]
@@ -669,8 +672,7 @@
                                 <div class="tables">
                                     <div class="table table-responsive">
                                         <asp:GridView ID="gvAssignedList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
-                                            PageSize="100" OnRowCommand="gvAssignedList_RowCommand" OnPageIndexChanging="gvAssignedList_PageIndexChanging" OnRowDataBound="gvAssignedList_RowDataBound"
+                                            EmptyDataText="There are no data records to display. Please Add Lead."  OnRowCommand="gvAssignedList_RowCommand"  OnRowDataBound="gvAssignedList_RowDataBound"
                                             Style="font-size: 110%;" ForeColor="Black">
                                             <%--                                                <PagerStyle CssClass="pagination_grid" />--%>
                                             <Columns>
@@ -872,10 +874,9 @@
                                 <div class="tables">
                                     <div class="table table-responsive">
                                         <asp:GridView ID="gvLeadList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display. Please Add Lead." AllowPaging="true"
-                                            PageSize="100" OnRowCommand="gvLeadList_RowCommand" OnPageIndexChanging="gvLeadList_PageIndexChanging" OnRowDataBound="gvLeadList_RowDataBound"
+                                            EmptyDataText="There are no data records to display. Please Add Lead."  OnRowCommand="gvLeadList_RowCommand"  OnRowDataBound="gvLeadList_RowDataBound"
                                             Style="font-size: 110%;" ForeColor="Black">
-                                            <PagerStyle CssClass="pagination_grid" />
+                                            <%--<PagerStyle CssClass="pagination_grid" />--%>
                                             <Columns>
                                                 <asp:TemplateField HeaderText="Quote" Visible="false">
                                                     <ItemTemplate>
@@ -1071,8 +1072,7 @@
                                 <div class="tables">
                                     <div class="table table-responsive">
                                          <asp:GridView ID="gvReminders" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
-                                            EmptyDataText="There are no data records to display." AllowPaging="true"
-                                            PageSize="100" 
+                                            EmptyDataText="There are no data records to display."  
                                             Style="font-size: 110%;" ForeColor="Black">
                                             <Columns>
                                                 <asp:TemplateField HeaderText="Client Name">

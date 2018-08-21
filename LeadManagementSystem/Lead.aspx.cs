@@ -371,11 +371,11 @@ public partial class Lead : System.Web.UI.Page
         txtDescription.Text = "";
         txtFollowUp.Text = "";
     }
-    protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
-    {
-        gvLeadList.PageIndex = e.NewPageIndex;
-        GetLeadsList();
-    }
+    //protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    //{
+    //    gvLeadList.PageIndex = e.NewPageIndex;
+    //    GetLeadsList();
+    //}
     protected void gvLeadList_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -999,11 +999,11 @@ public partial class Lead : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-    protected void gvAssignedList_PageIndexChanging(object sender, GridViewPageEventArgs e)
-    {
-        gvAssignedList.PageIndex = e.NewPageIndex;
-        GetAssinedLeadsList();
-    }
+    //protected void gvAssignedList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    //{
+    //    gvAssignedList.PageIndex = e.NewPageIndex;
+    //    GetAssinedLeadsList();
+    //}
     protected void gvAssignedList_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
