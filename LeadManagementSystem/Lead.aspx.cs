@@ -1484,6 +1484,9 @@ public partial class Lead : System.Web.UI.Page
         LeadList.Visible = true;
         newlead.Visible = false;
         dvEdit.Visible = false;
+        gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
     }
     protected void btnSMS_Click(object sender, EventArgs e)
     {
