@@ -87,10 +87,7 @@
                 height: '300px'
             });
             $('#ContentPlaceHolder1_gvAssignedList').DataTable({
-                "order": [[0, "desc"]],
-                columnDefs: [{
-                    targets: [8]
-                }]
+                "order": [[0, "desc"]]               
             });
             $('#ContentPlaceHolder1_gvLeadList').DataTable({
                 "order": [[0, "desc"]]
