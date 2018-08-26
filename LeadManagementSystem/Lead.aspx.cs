@@ -493,7 +493,7 @@ public partial class Lead : System.Web.UI.Page
         if (gvReminders.Rows.Count > 0)
         {
             gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
-        }       
+        }
     }
     protected void ddlAssignLead_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -1003,7 +1003,7 @@ public partial class Lead : System.Web.UI.Page
         txtMailTemp.Text = sb.ToString();
 
         // Generate Quote URL
-       
+
 
         string url = "Quote.aspx?id=" + Server.UrlEncode(encryptedparamleadid) + "&city=" + Server.UrlEncode(toCity) + "&client=" + Server.UrlEncode(ClientName) + "&source=" + Server.UrlEncode(source) + "&prod=" + Server.UrlEncode(product) + "&em=" + Server.UrlEncode(Email) + "&prodid=" + Server.UrlEncode(encryptedparamlblProductID);
 
@@ -1143,6 +1143,18 @@ public partial class Lead : System.Web.UI.Page
         dvEdit.Visible = false;
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
+        if (gvAssignedList.Rows.Count > 0)
+        {
+            gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvLeadList.Rows.Count > 0)
+        {
+            gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvReminders.Rows.Count > 0)
+        {
+            gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
     }
     protected void btnSendMail_Click(object sender, EventArgs e)
     {
@@ -1353,8 +1365,6 @@ public partial class Lead : System.Web.UI.Page
                 {
                     string path = "http://tcrm.askswg.co.za/QuotePDF/";
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-
-
                     string fileName = path + "\\" + strQuoteNumber + ".pdf";
                     string s = "window.open('" + fileName + "', '_blank');";
                     ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
@@ -1514,7 +1524,7 @@ public partial class Lead : System.Web.UI.Page
         if (gvReminders.Rows.Count > 0)
         {
             gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
-        }       
+        }
     }
     protected void btnSMS_Click(object sender, EventArgs e)
     {
