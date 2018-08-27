@@ -16,23 +16,31 @@ public partial class Dashboard : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GetConsultants();
-            GetLeadsCount();
-            if (Session["ConsultantID"].ToString() == "1")
+            if (Session["ConsultantID"] != null)
             {
-                GetLeadsCountByConsultant(0);
-                ddlConsultantsAction.SelectedValue = "0";
+                GetConsultants();
+                GetLeadsCount();
+                if (Session["ConsultantID"].ToString() == "1")
+                {
+                    GetLeadsCountByConsultant(0);
+                    ddlConsultantsAction.SelectedValue = "0";
+                }
+                else
+                {
+                    GetLeadsCountByConsultant(Convert.ToInt32(Session["ConsultantID"].ToString()));
+                    ddlConsultantsAction.SelectedValue = Session["ConsultantID"].ToString();
+                }
+
+                GetLeadsCountQuoteToBooking();
+                GetSourceData();
+                GetLeadsCountBySource("0");
+                GetOpenLeadsCount();
+                
             }
             else
             {
-                GetLeadsCountByConsultant(Convert.ToInt32(Session["ConsultantID"].ToString()));
-                ddlConsultantsAction.SelectedValue = Session["ConsultantID"].ToString();
+                Response.Redirect("Login.aspx");
             }
-
-            GetLeadsCountQuoteToBooking();
-            GetSourceData();
-            GetLeadsCountBySource("0");
-            GetOpenLeadsCount();
         }
     }
     private void GetLeadsCount()
