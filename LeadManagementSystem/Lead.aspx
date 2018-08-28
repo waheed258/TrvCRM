@@ -854,8 +854,8 @@
                                                             CommandName="EditLead" ToolTip="Edit" />
                                                         <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
                                                             CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
-                                                        <%--<asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
-                                                                CommandName="Action" ToolTip="Actions" />--%>
+                                                        <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
+                                                                CommandName="Action" ToolTip="Actions" />
                                                         <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                                             CommandName="Quote" ToolTip="Generate Quote" Visible="false" />
                                                         <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"

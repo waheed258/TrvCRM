@@ -871,6 +871,13 @@ public partial class Lead : System.Web.UI.Page
                     lbldeletemessage.Text = "Are you sure, you want to delete Consultant Details?";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openDeleteModal();", true);
                 }
+                else if (e.CommandName == "Action")
+                {
+                    actions.Visible = true;
+                    LeadList.Visible = false;
+                    newlead.Visible = false;
+                    imgbtnAddLead.Visible = false;
+                }
             }
         }
         catch
