@@ -24,13 +24,13 @@
             $("#ContentPlaceHolder1_txtDate").datepicker("setDate", new Date());
 
             CKEDITOR.disableAutoInline = true;
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtFlightDetails');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtCarHireDetails');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtHotelInfo');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtItinerary');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtIncludes');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtExcludes');
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtTravelInsur', { height: '100px' });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtFlightDetails', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtCarHireDetails', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtHotelInfo', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtItinerary', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtIncludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtExcludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtTravelInsur', { height: '100px', contentsCss: "p { margin:0px 0px 0px 0px; }" });
 
             CKEDITOR.on('instanceReady', function () {
                 $.each(CKEDITOR.instances, function (instance) {
