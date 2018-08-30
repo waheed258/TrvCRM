@@ -391,7 +391,10 @@
                                 ErrorMessage="Please Email Subject" ValidationGroup="Email" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-
+                    <div class="col-md-12">
+                        <label class="control-label">Subject</label>
+                        <asp:FileUpload ID="customAttachment" runat="server" AllowMultiple="true" />
+                    </div>
                     <div class="col-md-12 text-center" style="margin-top: 15px;">
                         <asp:TextBox ID="txtMailTemp" runat="server" TextMode="MultiLine" ValidationGroup="Email"></asp:TextBox>
                         <asp:Button ID="btnSendMail" Text="Send Mail" runat="server" OnClick="btnSendMail_Click" />

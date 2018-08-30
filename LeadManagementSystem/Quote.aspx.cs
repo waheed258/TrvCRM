@@ -15,6 +15,7 @@ using MySql.Web;
 using MySql.Data.MySqlClient;
 using System.Collections;
 using System.Configuration;
+using System.Net.Mail;
 public partial class Quote : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -532,7 +533,7 @@ public partial class Quote : System.Web.UI.Page
             lblGrandTotal.Text = lblAdultTotPrice.Text;
         }
     }
-   
+
 
     private void Clear()
     {
@@ -629,7 +630,7 @@ public partial class Quote : System.Web.UI.Page
                         readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
                         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
                         readFile = readFile.Replace("{LeadStatus}", lStatus);
-                        
+
 
 
                         if (dtlRow["CostForAdultType"].ToString() == "1")
@@ -752,6 +753,7 @@ public partial class Quote : System.Web.UI.Page
                 string Subject = string.Empty;
                 string MailText = string.Empty;
                 string Attachment = string.Empty;
+                string cusAttachment = string.Empty;
 
                 string filepath = Server.MapPath("~/QuotePDF");
                 string FileName = filepath + "\\" + QuoteNumber + ".pdf";
@@ -760,7 +762,7 @@ public partial class Quote : System.Web.UI.Page
                 {
                     Attachment = FileName;
                 }
-
+                
                 try
                 {
                     Subject = "Serendipity Tours quote to " + clDestinationCity;
@@ -772,7 +774,7 @@ public partial class Quote : System.Web.UI.Page
                     MailText += "Kind regards, <br/>";
                     MailText += "(" + consultName + ")";
 
-                    bool mailSent = CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                    bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
                     if (mailSent)
                     {
@@ -787,6 +789,69 @@ public partial class Quote : System.Web.UI.Page
         }
         catch
         { }
+    }
+
+    public  bool UpdateCustomMail(string SmtpHost, int SmtpPort, string MailFrom, string DisplayNameFrom, string FromPassword, string MailTo, string DisplayNameTo, string MailCc, string mailCc2, string mailCc3, string mailCc4, string DisplayNameCc, string MailBcc, string Subject, string MailText, string Attachment)
+    {
+        MailMessage myMessage = new MailMessage();
+        bool IsSucces = false;
+        try
+        {
+            myMessage.From = new MailAddress(MailFrom, DisplayNameFrom);
+            if (MailTo != "")
+                myMessage.To.Add(new MailAddress(MailTo, DisplayNameTo));
+            if (MailCc != "")
+                myMessage.CC.Add(new MailAddress(MailCc, DisplayNameCc));
+            if (mailCc2 != "")
+                myMessage.CC.Add(new MailAddress(mailCc2, DisplayNameCc));
+            if (mailCc3 != "")
+                myMessage.CC.Add(new MailAddress(mailCc3, DisplayNameCc));
+            if (mailCc4 != "")
+                myMessage.CC.Add(new MailAddress(mailCc4, DisplayNameCc));
+
+            if (MailBcc != "")
+                myMessage.Bcc.Add(MailBcc);
+
+            myMessage.Subject = Subject;
+            myMessage.IsBodyHtml = true;
+            myMessage.Body = MailText;
+
+            //create Alrternative HTML view
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(MailText, null, "text/html");
+
+
+
+            //Add view to the Email Message
+            myMessage.AlternateViews.Add(htmlView);
+
+            if (Attachment != "")
+            {
+                Attachment a = new Attachment(Attachment);
+                myMessage.Attachments.Add(a);
+            }
+
+            if (customAttachment.HasFiles)
+            {
+                foreach (HttpPostedFile uploadedFile in customAttachment.PostedFiles)
+                {
+                    myMessage.Attachments.Add(new Attachment(uploadedFile.InputStream, uploadedFile.FileName));
+                }
+            }
+            SmtpClient mySmtpClient = new SmtpClient(SmtpHost, SmtpPort);
+            mySmtpClient.Credentials = new System.Net.NetworkCredential(MailFrom, FromPassword);
+            mySmtpClient.EnableSsl = true;
+            mySmtpClient.Send(myMessage);
+            IsSucces = true;
+        }
+        catch
+        {
+            IsSucces = false;
+        }
+        finally
+        {
+            myMessage = null;
+        }
+        return IsSucces;
     }
 
     public void MailSentSatatus(string QuoteNumber)

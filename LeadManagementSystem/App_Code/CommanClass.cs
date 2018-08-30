@@ -256,6 +256,8 @@ namespace BusinessLogic
             return IsSucces;
         }
 
+        
+
         public static int MailStatusLog(int leadId, string strMailCode, string strMailStatus,string strMailError,string strQuoteNumber)
         {
             DataUtilities dtUtil = new DataUtilities();
