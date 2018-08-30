@@ -1187,6 +1187,23 @@
         <!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" id="myModalassign" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="refresh();" aria-hidden="true">×</button>
+                    <h2 class="modal-title">Alert!</h2>
+                </div>
+                <div class="modal-body">
+                    <asp:Label ID="messageassign" runat="server"></asp:Label>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <div class="modal fade" id="smsModal" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1277,8 +1294,16 @@
         function openModal() {
             $('#myModal').modal('show');
         }
+        function openModalassign() {
+            $('#myModalassign').modal('show');
+        }
+        
         function openSMSModal() {
             $('#smsModal').modal('show');
+        }
+
+        function refresh() {
+            window.location.replace("Lead.aspx");
         }
     </script>
     <script type="text/javascript">

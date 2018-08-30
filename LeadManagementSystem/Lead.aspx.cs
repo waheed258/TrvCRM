@@ -458,16 +458,23 @@ public partial class Lead : System.Web.UI.Page
         int result = leadBL.LeadAction(leadEntity);
         if (result == 1)
         {
-            message.Text = "Lead status changed Successfully!";
-            message.ForeColor = System.Drawing.Color.Green;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+
+            GetAssinedLeadsList();
+            GetLeadsList();
             Clear();
             LeadList.Visible = true;
             newlead.Visible = false;
             actions.Visible = false;
+            consultant.Visible = false;
             imgbtnAddLead.Visible = true;
-            GetLeadsList();
-            GetAssinedLeadsList();
+
+
+
+            messageassign.Text = "Lead status changed Successfully!";
+            messageassign.ForeColor = System.Drawing.Color.Green;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModalassign();", true);
+
+
         }
         else
         {
@@ -575,6 +582,18 @@ public partial class Lead : System.Web.UI.Page
                             newlead.Visible = false;
                             imgbtnAddLead.Visible = true;
                             GetLeadsList();
+                            if (gvAssignedList.Rows.Count > 0)
+                            {
+                                gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                            }
+                            if (gvLeadList.Rows.Count > 0)
+                            {
+                                gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                            }
+                            if (gvReminders.Rows.Count > 0)
+                            {
+                                gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+                            }
                         }
                         else
                         {
@@ -705,6 +724,18 @@ public partial class Lead : System.Web.UI.Page
         newlead.Visible = false;
         LeadList.Visible = true;
         imgbtnAddLead.Visible = true;
+        if (gvAssignedList.Rows.Count > 0)
+        {
+            gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvLeadList.Rows.Count > 0)
+        {
+            gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
+        if (gvReminders.Rows.Count > 0)
+        {
+            gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+        }
     }
     protected void btnSure_Click(object sender, EventArgs e)
     {
