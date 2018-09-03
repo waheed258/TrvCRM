@@ -1444,13 +1444,17 @@ public partial class Lead : System.Web.UI.Page
         {
 
             Label lblQuote = (Label)e.Row.FindControl("lblHistoryQuote");
+            Label lblClientFileId = (Label)e.Row.FindControl("lblClientFileId");
             LinkButton lnkView = (LinkButton)e.Row.FindControl("btnViewHistory");
             LinkButton lnkEdit = (LinkButton)e.Row.FindControl("btnEditHistory");
             LinkButton lnkSMS = (LinkButton)e.Row.FindControl("btnSendSMS");
+            LinkButton lnkConvert = (LinkButton)e.Row.FindControl("btnConvert");
 
             lnkView.Visible = lblQuote.Text == "" ? false : true;
             lnkEdit.Visible = lblQuote.Text == "" ? false : true;
             lnkSMS.Visible = lblQuote.Text == "" ? false : true;
+
+            lnkConvert.Visible = lblClientFileId.Text == "" ? false : true;
         }
     }
     protected void gvHistory_RowEditing(object sender, GridViewEditEventArgs e)

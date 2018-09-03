@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Invoice</title>
+</head>
+<body style="font-family:Arial, Helvetica, sans-serif; font-size:2.54mm; color:#000;">
+    <div class="wrapper" style="width:210mm; height:275mm; background-color:#fff; margin:0 auto;">
+        <div style="width:100%; display:inline-block; margin-bottom:2mm; clear:both;"><img style="max-width:100%; display:block;" src="http://tcrm.askswg.co.za/Images/ticket_head.jpg" alt="ticket-head" /></div>
+        <div class="body_cnt" style="width:185mm; margin:auto;">
+            <table style="width:100%; text-align:center; margin:0 0 2mm;">
+                <tr>
+                    <td><h3 style="font-size:5mm; color:#25377b; margin:0 0 1mm; font-weight:800; text-transform:uppercase;">INVOICE / BOOKING CONFIRMATION</h3></td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%; text-transform:uppercase;">FROM</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{ClientName}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;color:#00aeef;  width:100%; text-transform:uppercase;">DATE</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{QuoteDate}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;color:#00aeef;  width:100%; text-transform:uppercase;">BOOKING REF</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{QuoteDate}</p></td>
+                </tr>               
+            </table>
+
+            <p>Dearxxxxx,</p>
+            <p>Please find below confirmation invoice for your holiday to xxxxxxx.</p>
+
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td colspan="4" width="100%" style="font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Flight Quotation </td>
+                </tr>
+                <tr>
+                    <td width="100%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {FlightDetails}
+                    </td>
+                </tr>                
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td colspan="4" width="100%" style="font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">SERVICE</td>
+                </tr>
+                <tr>
+                    <td width="100%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {FlightDetails}
+                    </td>
+                </tr>
+            </table>
+            
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">COST PER ADULT</h5></td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{AdultPrice}</p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{AdultTotal}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;">
+                        <h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">
+                            COST PER CHILD
+                        </h5>
+                    </td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{ChildPrice}</p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{ChildTotal}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">TOTAL</h5></td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:3.05mm; margin:0; width:50%;"></p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{GrandTotal}</p></td>
+                </tr>               
+            </table>
+            
+            <p style="font-size:2.5mm; margin-bottom:1mm;">Should full payment not be received within 24 hours of receiving this invoice, the cost will be subject to a recalculation due to the volatile rate of exchange. Airtickets have to be issued either same day or within 24 hours of receiving the invoice.</p>            
+
+            <p style=" font-size:2.5mm; color:#ff0000; margin-bottom:1mm; width:100%; font-weight:bold;">Due to the volatility of the Rand (ZAR), please call us prior to making full payment on any bookings.</p>
+            <p style="font-size:2.5mm; margin-bottom:1mm;">Cancellation fees apply should booking be cancelled or for no show.</p>
+
+            <h6 style=" font-size:3mm; color:#00aeef; margin-bottom:1mm; margin-top:4mm; width:100%;text-align:center;">THANK YOU FOR BOOKING WITH SERENDIPITY TOURS</h6>
+                    
+            <h6 style=" font-size:3mm; color:#00aeef; margin-bottom:1mm; margin-top:4mm; width:100%;"> BANKING DETAILS</h6>
+            <p style="margin: 0 0 2mm;"><b> NEDBANK</b>  Serendipity Tours, Branch code; 13 05 26 00Smith Street (Durban), Account: 1305 716 582; Swift code: NEDSZAJJ</p>
+            <p style="margin: 0 0 2mm;"><b>FNB</b> Serendipity Tours cc, Branch code: 221 426– Durban; Account: 6209 525 1329</p>
+            <p style="margin: 0 0 2mm;"><b>STANDARD BANK</b> Serendipity Tours cc; Branc Code: 042626– Musgrave Road (Durban); Account: 05 122 708 8</p>
+            <p style="margin: 0 0 2mm;">PLEASE USE YOUR BOOKING REF AND FIRST NAME AS REFERENCE</p>
+        </div>
+        <div style="width:100%; display:inline-block; margin-top:3mm;"><img style="max-width:100%; display:block;" src="http://tcrm.askswg.co.za/Images/ticket_foot.jpg" alt="ticket-head" /></div>
+    </div>
+</body>
+</html>

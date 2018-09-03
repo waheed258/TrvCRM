@@ -541,6 +541,11 @@
                                                     <asp:Label runat="server" ID="lblHistoryQuote" Text='<%#Eval("ViewData") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                             <asp:TemplateField HeaderText="ClientFileId" Visible="false">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" ID="lblClientFileId" Text='<%#Eval("ClientFileId") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                             <asp:TemplateField HeaderText="View" ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <asp:LinkButton CommandName="View" ID="btnViewHistory" runat="server" ToolTip="View">View</asp:LinkButton>
