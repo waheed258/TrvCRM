@@ -188,7 +188,7 @@ public partial class Reports : System.Web.UI.Page
 
     private void ExportGridToExcel()
     {
-        gvLeadList.AllowPaging = false;
+        gvExcel.AllowPaging = false;
         dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindExcel(dataset);
 
