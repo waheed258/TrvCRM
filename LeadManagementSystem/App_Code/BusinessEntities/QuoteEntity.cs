@@ -6,6 +6,7 @@ using System.Web;
 /// <summary>
 /// Summary description for QuoteEntity
 /// </summary>
+[Serializable()] 
 public class QuoteEntity
 {
     public string QuoteDate { get; set; }
