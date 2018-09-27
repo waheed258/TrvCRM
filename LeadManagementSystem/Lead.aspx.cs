@@ -1539,6 +1539,7 @@ public partial class Lead : System.Web.UI.Page
         }
         else if (ddlSendEmail.SelectedValue == "1")
         {
+            consultantAction.Visible = false;
             DataSet ds = leadBL.GetMailInfo();
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
