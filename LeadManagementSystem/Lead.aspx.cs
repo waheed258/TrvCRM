@@ -571,28 +571,97 @@ public partial class Lead : System.Web.UI.Page
                         leadEntity.PackageId = "";
                         leadEntity.ProductID = "";
                         int result = leadBL.CUDLead(leadEntity, 'I');
-                        if (result == 1)
+                        if (result > 0)
                         {
-                            message.Text = "Lead Details saved Successfully!";
-                            message.ForeColor = System.Drawing.Color.Green;
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                            //SendMail(clName, txtEmail.Text, txtMobile.Text, ddlPackage.SelectedItem.Text);
-                            Clear();
-                            LeadList.Visible = true;
-                            newlead.Visible = false;
-                            imgbtnAddLead.Visible = true;
-                            GetLeadsList();
-                            if (gvAssignedList.Rows.Count > 0)
+
+
+                            leadEntity.AssignedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
+                            if (ddlSendEmail.SelectedValue == "3")
                             {
-                                gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                string Email = string.Empty;
+                                leadEntity.AssignedTo = Convert.ToInt32(ddlConsultantsAction.SelectedValue);
+                                DataSet data = (DataSet)ViewState["consultData"];
+
+                                DataTable selectedTable = data.Tables[0].AsEnumerable()
+                                                .Where(r => r.Field<int>("ConsultantID") == Convert.ToInt32(ddlConsultantsAction.SelectedValue))
+                                                .CopyToDataTable();
+                                Email = selectedTable.Rows[0]["Email"].ToString();
+                                string Name = selectedTable.Rows[0]["Name"].ToString();
+
+                                DataSet ds = leadBL.GetMailInfo();
+                                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                                {
+                                    string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                                    int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                                    string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                                    string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                                    string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                                    string MailTo = string.Empty;
+                                    string DisplayNameTo = string.Empty;
+                                    string MailCc = string.Empty;
+                                    string DisplayNameCc = string.Empty;
+                                    string MailBcc = string.Empty;
+                                    string Subject = string.Empty;
+                                    string MailText = string.Empty;
+                                    string Attachment = string.Empty;
+
+                                    try
+                                    {
+                                        Subject = "New Lead Assigned to you.";
+                                        MailCc = "";
+                                        MailTo = Email;
+                                        MailText = "Hi " + Name + ", <br/><br/><br/>";
+                                        MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
+                                        MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
+                                        CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+                                    }
+                                    catch
+                                    { }
+                                }
+
                             }
-                            if (gvLeadList.Rows.Count > 0)
+                            else if (ddlAssignLead.SelectedValue == "2")
                             {
-                                gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                leadEntity.AssignedTo = Convert.ToInt32(Session["ConsultantID"].ToString());
                             }
-                            if (gvReminders.Rows.Count > 0)
+                            else
                             {
-                                gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                leadEntity.AssignedTo = 0;
+                            }
+                            leadEntity.LeadStatus = 10;
+                            leadEntity.LeadID = result;
+                            int resultAssigned = leadBL.LeadAction(leadEntity);
+                            if (resultAssigned == 1)
+                            {
+
+                                message.Text = "Lead Details saved Successfully!";
+                                message.ForeColor = System.Drawing.Color.Green;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                                //SendMail(clName, txtEmail.Text, txtMobile.Text, ddlPackage.SelectedItem.Text);
+                                Clear();
+                                LeadList.Visible = true;
+                                newlead.Visible = false;
+                                imgbtnAddLead.Visible = true;
+                                GetLeadsList();
+                                if (gvAssignedList.Rows.Count > 0)
+                                {
+                                    gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                }
+                                if (gvLeadList.Rows.Count > 0)
+                                {
+                                    gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                }
+                                if (gvReminders.Rows.Count > 0)
+                                {
+                                    gvReminders.HeaderRow.TableSection = TableRowSection.TableHeader;
+                                }
+                                GetAssinedLeadsList();
+                            }
+                            else
+                            {
+                                message.Text = "Please try again!";
+                                message.ForeColor = System.Drawing.Color.Red;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                             }
                         }
                         else
@@ -772,7 +841,7 @@ public partial class Lead : System.Web.UI.Page
             leadEntity.LeadDescription = "";
             leadEntity.ProductID = "";
             int result = leadBL.CUDLead(leadEntity, 'D');
-            if (result == 1)
+            if (result == 0)
             {
                 message.Text = "Lead Details deleted Successfully!";
                 message.ForeColor = System.Drawing.Color.Green;
@@ -1467,50 +1536,8 @@ public partial class Lead : System.Web.UI.Page
         {
             consultantAction.Visible = true;
             GetConsultants();
-
-            string Email = string.Empty;
-            leadEntity.AssignedTo = Convert.ToInt32(ddlConsultantsAction.SelectedValue);
-            DataSet data = (DataSet)ViewState["consultData"];
-
-            DataTable selectedTable = data.Tables[0].AsEnumerable()
-                            .Where(r => r.Field<int>("ConsultantID") == Convert.ToInt32(ddlConsultants.SelectedValue))
-                            .CopyToDataTable();
-            Email = selectedTable.Rows[0]["Email"].ToString();
-            string Name = selectedTable.Rows[0]["Name"].ToString();
-
-            DataSet ds = leadBL.GetMailInfo();
-            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-            {
-                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
-                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
-                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
-                string MailTo = string.Empty;
-                string DisplayNameTo = string.Empty;
-                string MailCc = string.Empty;
-                string DisplayNameCc = string.Empty;
-                string MailBcc = string.Empty;
-                string Subject = string.Empty;
-                string MailText = string.Empty;
-                string Attachment = string.Empty;
-
-                try
-                {
-                    Subject = "New Lead Assigned to you.";
-                    MailCc = "";
-                    MailTo = Email;
-                    //MailTo = "karen@serendipitytours.co.za";
-                    MailText = "Hi " + Name + ", <br/><br/><br/>";
-                    MailText += "A new lead assigned to you, needs to be actioned. <br/><br/>";
-                    MailText += "Assigned by : <strong>" + Session["Name"].ToString() + "</strong>";
-                    CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
-                }
-                catch
-                { }
-            }
         }
-        if (ddlSendEmail.SelectedValue == "1")
+        else if (ddlSendEmail.SelectedValue == "1")
         {
             DataSet ds = leadBL.GetMailInfo();
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
