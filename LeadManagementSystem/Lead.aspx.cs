@@ -1487,13 +1487,18 @@ public partial class Lead : System.Web.UI.Page
                 else if (e.CommandName == "SendSMS")
                 {
                     hdfSMS.Value = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-                    if (txtEMobile.Text.Substring(0, 1) == "0")
+                    if (txtEMobile.Text.Substring(0, 1) == "0" && txtEMobile.Text.Length == 10)
                     {
                         txtSendSMS.Text = txtEMobile.Text.Substring(1);
                     }
-                    else
+                    else if (txtEMobile.Text.Length == 9)
                     {
                         txtSendSMS.Text = txtEMobile.Text;
+                    }
+                    else {
+                        message.ForeColor = System.Drawing.Color.Red;
+                        message.Text = "Mobile number format is wrong";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                     }
 
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
