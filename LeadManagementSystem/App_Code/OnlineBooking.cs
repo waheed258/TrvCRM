@@ -73,7 +73,7 @@ public class OnlineBooking : System.Web.Services.WebService
             leadEntity.PackageId = leadObject.PackageId;
             leadEntity.ProductID = leadObject.ProductID;
             int result = leadBL.CUDLead(leadEntity, 'I');
-            if (result == 1)
+            if (result >1 )
             {
                 string clName = leadObject.FirstName + " " + leadObject.LastName;
                 SendMail(clName, leadObject.Email, leadObject.Mobile, leadObject.PackageId);
