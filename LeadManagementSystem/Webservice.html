@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <style>
+        html {
+            font-family: sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        * {
+            outline: 0;
+            box-sizing: border-box;
+            background-repeat: no-repeat;
+        }
+
+        body, div, span, table, tr, th, td, tbody, strong, thead, br, img, input, textarea, h1, h2, h3, h4, h5, h6, button, center, left, right, p, a, ul, li, ol, em, b, u, hr {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6, strong, b {
+            font-weight: normal;
+            font-family: 'MarkOT-Heavy';
+        }
+
+        ul, ol, li {
+            list-style: none;
+        }
+
+        img {
+            border: 0;
+            max-width: 100%;
+            height: auto;
+        }
+
+        a, a:hover, input[type="submit"], button {
+            outline: 0;
+        }
+
+            a, a:hover {
+                text-decoration: none;
+            }
+
+        body {
+            font-family: 'MarkOT-Light';
+            line-height: normal;
+            color: #07253f;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #002a59;
+        }
+
+            a:hover {
+                color: #a30f17;
+            }
+
+        .container {
+            margin: 0px auto;
+            width: 1170px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .inner-wrap {
+            padding: 30px 0;
+        }
+
+        .book-form {
+            width: 800px;
+            margin: 0 auto;
+            background-color: #1a354d;
+            padding: 20px;
+        }
+
+            .book-form ul li {
+                float: left;
+                width: 49%;
+                margin: 0 0 15px;
+                padding: 0;
+                background-image: inherit;
+                list-style-image: inherit;
+            }
+
+                .book-form ul li.bk-lname, .book-form ul li.bk-phone, .book-form ul li.bk-travelto, .book-form ul li.bk-returndt, .book-form ul li.bk-infant, .book-form ul li.bk-budget {
+                    float: right;
+                }
+
+                .book-form ul li.bk-adult, .book-form ul li.bk-children, .book-form ul li.bk-infant {
+                    width: 32%;
+                }
+
+                .book-form ul li.bk-intrest, .book-form ul li.bk-budget {
+                    width: 24%;
+                }
+
+                .book-form ul li.bk-pkg-title {
+                    width: 48%;
+                    margin-left: 2%;
+                }
+
+                .book-form ul li.bk-children {
+                    margin: 0 2% 15px;
+                }
+
+                .book-form ul li.bk-msg {
+                    width: 100%;
+                }
+
+                .book-form ul li label {
+                    font-size: 16px;
+                    color: #fff;
+                    font-family: 'MarkOT-Medium';
+                    margin: 0 0 5px;
+                }
+
+                .book-form ul li input, .book-form ul li select, .book-form ul li textarea {
+                    width: 100%;
+                    font-family: 'MarkOT-Light';
+                    padding: 10px;
+                    font-size: 14px;
+                    color: #373737;
+                }
+
+                .book-form ul li.bk-sbt {
+                    width: auto;
+                    float: right;
+                }
+
+                    .book-form ul li.bk-sbt input {
+                        width: auto;
+                        padding: 10px 20px;
+                        background-color: #00adef;
+                        color: #ffffff;
+                        border: 0px;
+                        font-size: 22px;
+                        line-height: 28px;
+                        font-family: 'MarkOT-Medium';
+                        text-transform: uppercase;
+                        cursor: pointer;
+                    }
+
+                .book-form ul li textarea {
+                    height: 100px;
+                }
+
+            .book-form .ajax-loader {
+                display: none !important;
+            }
+    </style>
+</head>
+<body>
+    <div class="inner-wrap">
+        <div class="container">
+
+            <div class="book-form">
+
+
+                <form action="<?php echo home_url();?>/thank-you/">
+                    <ul>
+                        <li class="bk-fname">
+                            <input type="text" name="FirstName" id="FirstName" value="" size="40" aria-required="true" aria-invalid="false" placeholder="First Name" required>
+                        </li>
+                        <li class="bk-lname">
+                            <input type="text" name="LastName" id="LastName" value="" size="40" aria-required="true" aria-invalid="false" placeholder="Last Name" required>
+                        </li>
+                        <li class="bk-email">
+                            <input type="email" name="Email" id="Email" value="" size="40" aria-required="true" aria-invalid="false" placeholder="Email Address" required pattern="[^ @]*@[^ @]*">
+                        </li>
+                        <li class="bk-phone">
+                            <input type="tel" name="Phone" id="Phone" value="" size="40" aria-required="true" aria-invalid="false" placeholder="Phone Number" required pattern="[789][0-9]{9}">
+                        </li>
+                        <li class="bk-deptfrom">
+                            <input type="text" name="DepartingFrom" id="DepartingFrom" value="" size="40" aria-invalid="false" placeholder="Departing From">
+                        </li>
+                        <li class="bk-travelto">
+                            <input type="text" name="TravellingTo" id="TravellingTo" value="" size="40" aria-invalid="false" placeholder="Travelling To">
+                        </li>
+                        <li class="bk-deptdt">
+                            <label>Departing Date</label>
+                            <input type="date" name="DepartingDate" id="DepartingDate" value="" aria-invalid="false" placeholder="Departing Date">
+                        </li>
+                        <li class="bk-returndt">
+                            <label>Return Date</label>
+                            <input type="date" name="ReturnDate" id="ReturnDate" value="" aria-invalid="false" placeholder="Return Date">
+                        </li>
+                        <li class="bk-adult">
+                            <select name="Adults" id="Adults" aria-invalid="false">
+                                <option value="0">Adults 12+ Yrs</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </li>
+                        <li class="bk-children">
+                            <select name="Children" id="Children" aria-invalid="false">
+                                <option value="0">Children 2-11 Yrs</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </li>
+                        <li class="bk-infant">
+                            <select name="Infant" id="Infant" aria-invalid="false">
+                                <option value="0">Infant Under 2Yrs</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </li>
+                        <li class="bk-intrest">
+                            <label>I'm interested in</label>
+                            <select name="interestedIn" id="interestedIn" aria-invalid="false">
+                                <option value="1">Package</option>
+                                <option value="2">Flights</option>
+                                <option value="3">Hotels</option>
+                                <option value="4">Cars</option>
+                                <option value="5">Visas</option>
+                            </select>
+                        </li>
+                        <li class="bk-pkg-title">
+                            <label>Package Title</label>
+                            <input type="text" name="PackageTitle" id="PackageTitle" value="" size="40" aria-invalid="false" placeholder="Estimated Budget">
+                        </li>
+                        <li class="bk-budget">
+                            <label>Estimated Budget</label>
+                            <input type="text" name="EstimatedBudget" id="EstimatedBudget" value="" size="40" aria-invalid="false" placeholder="Estimated Budget">
+                        </li>
+                        <li class="bk-msg">
+                            <textarea name="Comment" id="Comment" cols="40" rows="10" aria-invalid="false" placeholder="Tell us more about your holiday"></textarea>
+                        </li>
+                        <li class="bk-sbt">
+                            <input type="button" id="Save" value="Save Data" />
+                        </li>
+                    </ul>
+                </form>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div><!-- #primary -->
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#Save').click(function () {
+                //$.urlParam = function (name) {
+                //    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                //    return results[1] || 0;
+                //}
+                //var ProductID = $.urlParam('pid');
+                var ProductID = 100;
+                dataArr = [];
+                dataArr.push(new Object());
+
+                var FirstName = $('#FirstName').val();
+                var LastName = $('#LastName').val();
+                var Email = $('#Email').val();
+                var Mobile = $('#Phone').val();
+                var OriginName = $('#DepartingFrom').val();
+                var DestinationName = $('#TravellingTo').val();
+                var DepartureDate = $('#DepartingDate').val();
+                var ReturnDate = $('#ReturnDate').val();
+                var Adult = $('#Adults').val();
+                var Child = $('#Children').val();
+                var Infant = $('#Infant').val();
+                var ProductType = $('#interestedIn').val();
+                var PackageId = $('#PackageTitle').val();
+                var Budget = $('#EstimatedBudget').val();
+                var Notes = $('#Comment').val();
+
+                dataArr[0]["FirstName"] = FirstName;
+                dataArr[0]["LastName"] = LastName;
+                dataArr[0]["Email"] = Email;
+                dataArr[0]["Mobile"] = Mobile;
+                dataArr[0]["OriginName"] = OriginName;
+                dataArr[0]["DestinationName"] = DestinationName;
+                dataArr[0]["DepartureDate"] = DepartureDate;
+                dataArr[0]["ReturnDate"] = ReturnDate;
+                dataArr[0]["Adult"] = Adult;
+                dataArr[0]["Child"] = Child;
+                dataArr[0]["Infant"] = Infant;
+                dataArr[0]["ProductType"] = ProductType;
+                dataArr[0]["PackageId"] = PackageId;
+                dataArr[0]["Budget"] = Budget;
+                dataArr[0]["Notes"] = Notes;
+                dataArr[0]["ProductID"] = ProductID;
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://tcrm.askswg.co.za/OnlineBooking.asmx/LeadInfoFromWebsite",
+                    data: "{'aray':" + JSON.stringify(dataArr) + "}",
+                    contentType: "application/json",
+                    datatype: "json",
+                    success: function (responseFromServer) {
+                        alert(responseFromServer.d)
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
