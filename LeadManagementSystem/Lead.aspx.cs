@@ -1487,7 +1487,15 @@ public partial class Lead : System.Web.UI.Page
                 else if (e.CommandName == "SendSMS")
                 {
                     hdfSMS.Value = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-                    txtSendSMS.Text = txtEMobile.Text;
+                    if (txtEMobile.Text.Substring(0, 1) == "0")
+                    {
+                        txtSendSMS.Text = txtEMobile.Text.Substring(1);
+                    }
+                    else
+                    {
+                        txtSendSMS.Text = txtEMobile.Text;
+                    }
+
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
                 }
                 else if (e.CommandName == "Convert")
