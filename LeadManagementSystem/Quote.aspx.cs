@@ -45,7 +45,6 @@ public partial class Quote : System.Web.UI.Page
             QuoteType = Request.QueryString["qtype"];
             TempId = Request.QueryString["temp"];
             lStatus = Request.QueryString["status"];
-
             if (!IsPostBack)
             {
                 lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
@@ -56,6 +55,10 @@ public partial class Quote : System.Web.UI.Page
                 GetCostTypeDataChild();
                 GetProducts();
                 ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
+                emailsection.Style.Add("display", "none");
+                quotesection.Style.Add("display", "unset");
+                backToLead.Visible = true;
+                imgbtnBackQuote.Visible = false;
 
                 if (flag == "1")
                 {
@@ -148,7 +151,6 @@ public partial class Quote : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-
     public class ProductBL
     {
         DataManager dataManager = new DataManager();
@@ -245,7 +247,6 @@ public partial class Quote : System.Web.UI.Page
 
         #endregion
     }
-
     protected void GetCostTypeDataAdult()
     {
         try
@@ -264,7 +265,6 @@ public partial class Quote : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-
     protected void GetCostTypeDataChild()
     {
         try
@@ -283,7 +283,6 @@ public partial class Quote : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-
     protected string GetQuoteData()
     {
         string strResult = string.Empty;
@@ -371,7 +370,6 @@ public partial class Quote : System.Web.UI.Page
 
         return strResult;
     }
-
     protected string GetTemplateQuoteData(string id)
     {
         string strResult = string.Empty;
@@ -449,7 +447,6 @@ public partial class Quote : System.Web.UI.Page
 
         return strResult;
     }
-
     protected void GetIncludeExcludeData()
     {
         try
@@ -467,7 +464,6 @@ public partial class Quote : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
         }
     }
-
     protected void ddlAdultType_SelectedIndexChanged(object sender, EventArgs e)
     {
         txtAdultPrice.Text = "";
@@ -524,8 +520,6 @@ public partial class Quote : System.Web.UI.Page
             lblGrandTotal.Text = lblAdultTotPrice.Text;
         }
     }
-
-
     private void Clear()
     {
         txtDate.Text = "";
@@ -554,7 +548,6 @@ public partial class Quote : System.Web.UI.Page
     {
         Clear();
     }
-
     private void GetPdfMultipleOptions(List<QuoteEntity> lstQuEnt)
     {
         try
@@ -654,7 +647,7 @@ public partial class Quote : System.Web.UI.Page
                     if (pdf)
                     {
                         string consultName = Session["Name"].ToString();
-                        SendMail(lblClientName.Text, txtToEmail.Text, txtDestination.Text, consultName, qt.QuoteNumber);
+                        SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, qt.QuoteNumber);
                         Session.Remove("lstQuoteEntity");
                     }
 
@@ -763,7 +756,7 @@ public partial class Quote : System.Web.UI.Page
                 if (pdf)
                 {
                     string consultName = Session["Name"].ToString();
-                    SendMail(lblClientName.Text, txtToEmail.Text, txtDestination.Text, consultName, QuoteNumber);
+                    SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumber);
                     Session.Remove("lstQuoteEntity");
                 }
 
@@ -773,7 +766,6 @@ public partial class Quote : System.Web.UI.Page
         { }
 
     }
-
     private bool GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
     {
         try
@@ -833,7 +825,6 @@ public partial class Quote : System.Web.UI.Page
         catch
         { return false; }
     }
-
     public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber)
     {
         try
@@ -882,6 +873,8 @@ public partial class Quote : System.Web.UI.Page
                     if (mailSent)
                     {
                         MailSentSatatus(QuoteNumber);
+                        emailsection.Style.Add("display", "none");
+                        quotesection.Style.Add("display", "unset");
                     }
 
                 }
@@ -893,7 +886,6 @@ public partial class Quote : System.Web.UI.Page
         catch
         { }
     }
-
     public bool UpdateCustomMail(string SmtpHost, int SmtpPort, string MailFrom, string DisplayNameFrom, string FromPassword, string MailTo, string DisplayNameTo, string MailCc, string mailCc2, string mailCc3, string mailCc4, string DisplayNameCc, string MailBcc, string Subject, string MailText, string Attachment)
     {
         MailMessage myMessage = new MailMessage();
@@ -933,11 +925,15 @@ public partial class Quote : System.Web.UI.Page
                 myMessage.Attachments.Add(a);
             }
 
-            if (customAttachment.HasFiles)
+            if (Request.Files.Count > 0)
             {
-                foreach (HttpPostedFile uploadedFile in customAttachment.PostedFiles)
+                for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    myMessage.Attachments.Add(new Attachment(uploadedFile.InputStream, uploadedFile.FileName));
+                    HttpPostedFile PostedFile = Request.Files[i];
+                    if (PostedFile.ContentLength > 0)
+                    {
+                        myMessage.Attachments.Add(new Attachment(PostedFile.InputStream, PostedFile.FileName));
+                    }
                 }
             }
             SmtpClient mySmtpClient = new SmtpClient(SmtpHost, SmtpPort);
@@ -991,8 +987,6 @@ public partial class Quote : System.Web.UI.Page
         catch
         { }
     }
-
-
     protected void btnTemplageName_Click(object sender, ImageClickEventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "TemplageModal();", true);
@@ -1095,6 +1089,10 @@ public partial class Quote : System.Web.UI.Page
     {
         try
         {
+            backToLead.Visible = false;
+            imgbtnBackQuote.Visible = true;
+            quotesection.Style.Add("display", "none");
+            emailsection.Style.Add("display", "unset");
             lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
             if (lstQuoteEntity == null)
             {
@@ -1134,10 +1132,10 @@ public partial class Quote : System.Web.UI.Page
                 ViewState["QuoteNumber"] = QuoteNumber;
                 if (QuoteNumber != "")
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
-                    txtToEmail.Text = clEmail;
-                    txtCLientName.Text = lblClientName.Text;
-                    txtEmailSubject.Text = "Serendipity Tours quote";
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                    txtToEmailNew.Text = clEmail;
+                    txtCLientNameNew.Text = lblClientName.Text;
+                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
 
                     // Email Template                    
                     StringBuilder sb = new StringBuilder();
@@ -1146,7 +1144,7 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
                     sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-                    txtMailTemp.Text = sb.ToString();
+                    txtMailTempNew.Text = sb.ToString();
 
                     Clear();
                 }
@@ -1196,10 +1194,10 @@ public partial class Quote : System.Web.UI.Page
                 lstQuoteEntity.Add(qtEntity);
                 if (QuoteNumber != "")
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
-                    txtToEmail.Text = clEmail;
-                    txtCLientName.Text = lblClientName.Text;
-                    txtEmailSubject.Text = "Serendipity Tours quote";
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                    txtToEmailNew.Text = clEmail;
+                    txtCLientNameNew.Text = lblClientName.Text;
+                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
 
                     // Email Template                    
                     StringBuilder sb = new StringBuilder();
@@ -1208,7 +1206,7 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
                     sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-                    txtMailTemp.Text = sb.ToString();
+                    txtMailTempNew.Text = sb.ToString();
 
                     Clear();
                 }
@@ -1286,5 +1284,26 @@ public partial class Quote : System.Web.UI.Page
 
             throw;
         }
+    }
+    protected void btnSendMailNew_Click(object sender, EventArgs e)
+    {
+        lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
+        if (lstQuoteEntity == null)
+        {
+            GetPdf(ViewState["QuoteNumber"].ToString());
+            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", ViewState["QuoteNumber"].ToString());
+        }
+        else
+        {
+            GetPdfMultipleOptions(lstQuoteEntity);
+            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteBuilder.ToString());
+        }
+    }
+    protected void imgbtnBackQuote_Click(object sender, ImageClickEventArgs e)
+    {
+        imgbtnBackQuote.Visible = false;
+        backToLead.Visible = true;
+        quotesection.Style.Add("display", "unset");
+        emailsection.Style.Add("display", "none");
     }
 }
