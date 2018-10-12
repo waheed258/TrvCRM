@@ -570,6 +570,7 @@ public partial class Lead : System.Web.UI.Page
                         leadEntity.CreatedBy = Convert.ToInt32(Session["ConsultantID"].ToString());
                         leadEntity.PackageId = "";
                         leadEntity.ProductID = "";
+                        leadEntity.WebsiteConsultantNotes = "";
                         int result = leadBL.CUDLead(leadEntity, 'I');
                         if (result > 0)
                         {
@@ -742,6 +743,7 @@ public partial class Lead : System.Web.UI.Page
                         leadEntity.LeadDescription = txtDescription.Text;
                         leadEntity.PackageId = "";
                         leadEntity.ProductID = "";
+                        leadEntity.WebsiteConsultantNotes = "";
                         if (ddlStatus.SelectedValue == "4")
                         {
                             leadEntity.FollowupDate = txtFollowUp.Text;
@@ -840,6 +842,7 @@ public partial class Lead : System.Web.UI.Page
             leadEntity.FollowupDesc = "";
             leadEntity.LeadDescription = "";
             leadEntity.ProductID = "";
+            leadEntity.WebsiteConsultantNotes = "";
             int result = leadBL.CUDLead(leadEntity, 'D');
             if (result == 0)
             {

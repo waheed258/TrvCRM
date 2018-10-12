@@ -54,6 +54,6 @@ namespace BusinessEntities
         public string Reminder { get; set; }
         public string ReminderNotes { get; set; }
         public string ProductID { get; set; }
-
+        public string WebsiteConsultantNotes { get; set; }
     }
 }

@@ -72,6 +72,7 @@ public class OnlineBooking : System.Web.Services.WebService
             leadEntity.LeadDescription = "";
             leadEntity.PackageId = leadObject.PackageId;
             leadEntity.ProductID = leadObject.ProductID;
+            leadEntity.WebsiteConsultantNotes = leadObject.WebsiteConsultantNotes;
             int result = leadBL.CUDLead(leadEntity, 'I');
             if (result >1 )
             {

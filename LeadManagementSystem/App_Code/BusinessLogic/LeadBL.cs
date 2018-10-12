@@ -60,6 +60,7 @@ namespace BusinessLogic
                 hashtable.Add("@lsId", 0);
                 hashtable.Add("@lsCreatedBy",leadEntity.CreatedBy);
                 hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
+                hashtable.Add("@WebsiteConsultantNotes", leadEntity.WebsiteConsultantNotes);
 
             }
             else
@@ -67,6 +68,7 @@ namespace BusinessLogic
                 hashtable.Add("@lsId", leadEntity.LeadID);
                 hashtable.Add("@lsCreatedBy", 0);
                 hashtable.Add("@lsUpdatedBy", leadEntity.UpdatedBy);
+                hashtable.Add("@WebsiteConsultantNotes", DBNull.Value);
                 
             }
             if (leadEntity.FollowupDate != "")
