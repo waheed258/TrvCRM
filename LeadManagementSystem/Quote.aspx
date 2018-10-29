@@ -192,11 +192,11 @@
                         <asp:TextBox ID="txtItinerary" TextMode="MultiLine" runat="server" class="form-control" placeholder="No Of Childrens"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Includes</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">INCLUDE'S'</label>
                         <asp:TextBox ID="txtIncludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">Excludes</label>
+                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">EXCLUDE'S'</label>
                         <asp:TextBox ID="txtExcludes" TextMode="MultiLine" runat="server" class="form-control"></asp:TextBox>
                     </div>
                     <div class="vali-form">

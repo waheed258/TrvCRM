@@ -472,6 +472,16 @@
                                                     <asp:Label ID="lblLNotes" runat="server"></asp:Label></strong></label>
                                         </td>
                                     </tr>
+                                      <tr>
+                                        <td>
+                                            <label class="control-label">Package Name:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblPackageName" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
                                 </table>
 
                             </div>
@@ -480,6 +490,12 @@
                                     <label class="control-label">
                                         <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
                                             <img src="images/button_send-more-info (1).png" style="height: 35px;" /></button>
+                                    </label>
+                                </div>
+                                  <div class="col-md-6">
+                                    <label class="control-label">
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
+                                            <img src="images/button_send-follow-up-email.png" style="height: 35px;" /></button>
                                     </label>
                                 </div>
                             </div>

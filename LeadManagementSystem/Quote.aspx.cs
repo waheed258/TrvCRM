@@ -59,7 +59,7 @@ public partial class Quote : System.Web.UI.Page
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
                 imgbtnBackQuote.Visible = false;
-
+                txtTravelInsur.Text = "We recommend: Travel Policy @ R 350.00pp,  R12 million medical cover, max 30 days.";
                 if (flag == "1")
                 {
                     if (QuoteType == "2")
@@ -722,6 +722,8 @@ public partial class Quote : System.Web.UI.Page
                         readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
                         readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
                         readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
+                        readFile = readFile.Replace("{HotelDetails}", dtlRow["HotelInfo"].ToString());
+                        readFile = readFile.Replace("{CarDetails}", dtlRow["CarHireDetails"].ToString());
                         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
                         readFile = readFile.Replace("{LeadStatus}", lStatus);
 
@@ -833,8 +835,8 @@ public partial class Quote : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -873,8 +875,9 @@ public partial class Quote : System.Web.UI.Page
                     if (mailSent)
                     {
                         MailSentSatatus(QuoteNumber);
-                        emailsection.Style.Add("display", "none");
-                        quotesection.Style.Add("display", "unset");
+                        //emailsection.Style.Add("display", "none");
+                        //quotesection.Style.Add("display", "unset");
+                        Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
                     }
 
                 }

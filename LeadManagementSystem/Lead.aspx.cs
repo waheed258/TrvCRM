@@ -100,7 +100,14 @@ public partial class Lead : System.Web.UI.Page
                             lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
                         }
                         lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
-
+                        if (dtLead.Rows[0]["lsPackageId"].ToString() == "" || dtLead.Rows[0]["lsPackageId"].ToString() == null)
+                        {
+                            lblPackageName.Text = "No Package name available";
+                        }
+                        else
+                        {
+                            lblPackageName.Text = dtLead.Rows[0]["lsPackageId"].ToString();
+                        }
                         txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
                         txtEConsultNotes.Text = dtLead.Rows[0]["lsConsultantNotes"].ToString();
                         txtEReminder.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReminder"]);
@@ -1029,6 +1036,14 @@ public partial class Lead : System.Web.UI.Page
                 lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
             }
             lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
+            if (dtLead.Rows[0]["lsPackageId"].ToString() == "" || dtLead.Rows[0]["lsPackageId"].ToString() == null)
+            {
+                lblPackageName.Text = "No Package name available";
+            }
+            else
+            {
+                lblPackageName.Text = dtLead.Rows[0]["lsPackageId"].ToString();
+            }
 
             txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
             txtEConsultNotes.Text = dtLead.Rows[0]["lsConsultantNotes"].ToString();
@@ -1498,7 +1513,8 @@ public partial class Lead : System.Web.UI.Page
                     {
                         txtSendSMS.Text = txtEMobile.Text;
                     }
-                    else {
+                    else
+                    {
                         message.ForeColor = System.Drawing.Color.Red;
                         message.Text = "Mobile number format is wrong";
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
