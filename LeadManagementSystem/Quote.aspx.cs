@@ -59,7 +59,7 @@ public partial class Quote : System.Web.UI.Page
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
                 imgbtnBackQuote.Visible = false;
-                txtTravelInsur.Text = "We recommend: Travel Policy @ R 350.00pp,  R12 million medical cover, max 30 days.";
+                
                 if (flag == "1")
                 {
                     if (QuoteType == "2")
@@ -71,14 +71,14 @@ public partial class Quote : System.Web.UI.Page
                         Clear();
                         dvProdct.Visible = false;
                         dvCustomProduct.Visible = true;
-                        //txtProduct.Text = dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                        txtTravelInsur.Text = "We recommend: Travel Policy @ R 350.00pp,  R12 million medical cover, max 30 days.";
                     }
                     else if (QuoteType == "1")
                     {
                         Clear();
                         dvProdct.Visible = true;
                         dvCustomProduct.Visible = false;
-                        //ddlPackage.SelectedValue = string.IsNullOrEmpty(dataset.Tables[0].Rows[0]["PackageId"].ToString()) ? "-1" : dataset.Tables[0].Rows[0]["PackageId"].ToString();
+                        txtTravelInsur.Text = "We recommend: Travel Policy @ R 350.00pp,  R12 million medical cover, max 30 days.";
                     }
                 }
                 else

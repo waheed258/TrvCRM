@@ -38,6 +38,20 @@ public partial class Lead : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
+                dataset = consultantBL.GetConsultants(0);
+                ddlConsultantsFilter.DataSource = dataset;
+                ddlConsultantsFilter.DataTextField = "Name";
+                ddlConsultantsFilter.DataValueField = "ConsultantID";
+                ddlConsultantsFilter.DataBind();
+                ddlConsultantsFilter.Items.Insert(0, new ListItem("All", "-1"));
+                if (Session["ConsultantID"].ToString() == "1")
+                {
+                    ddlConsultantsFilter.SelectedValue = "-1";
+                }
+                else
+                {
+                    ddlConsultantsFilter.SelectedValue = Session["ConsultantID"].ToString();
+                }
                 if (Request.QueryString["t"] == null)
                 {
                     GetProducts();
@@ -115,7 +129,7 @@ public partial class Lead : System.Web.UI.Page
 
                         txtToEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
                         txtEmailSubject.Text = "Serendipity Tours >> More Info Required";
-
+                        txtEmailSubjectFU.Text = "Serendipity Travel >> Follow up";
                         ddlESource.SelectedValue = dtLead.Rows[0]["lsSource"].ToString();
                         if (ddlESource.SelectedValue == "10")
                         {
@@ -172,7 +186,6 @@ public partial class Lead : System.Web.UI.Page
                         desc.Visible = true;
                     }
                 }
-
             }
         }
         catch { }
@@ -225,7 +238,14 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            dataset = leadBL.GetAssignedLeadsList(0);
+            if (ddlConsultantsFilter.SelectedValue == "-1")
+            {
+                dataset = leadBL.GetAssignedLeadsList(0);
+            }
+            else
+            {
+                dataset = leadBL.GetAssignedLeadsList(Convert.ToInt32(Session["ConsultantID"].ToString()));
+            }
             if (dataset.Tables[0].Rows.Count > 0)
             {
                 gvAssignedList.DataSource = dataset;
@@ -1051,8 +1071,9 @@ public partial class Lead : System.Web.UI.Page
             txtERemindNotes.Text = dtLead.Rows[0]["lsReminderNotes"].ToString();
 
             txtToEmail.Text = dtLead.Rows[0]["lsEmailId"].ToString();
+            txtToEmailFU.Text = dtLead.Rows[0]["lsEmailId"].ToString();
             txtEmailSubject.Text = "Serendipity Tours >> More Info Required";
-
+            txtEmailSubjectFU.Text = "Serendipity Travel >> Follow up";
             ddlESource.SelectedValue = dtLead.Rows[0]["lsSource"].ToString();
             if (ddlESource.SelectedValue == "10")
             {
@@ -1126,6 +1147,18 @@ public partial class Lead : System.Web.UI.Page
         sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
 
         txtMailTemp.Text = sb.ToString();
+
+        StringBuilder sbFU = new StringBuilder();
+        string strHeadingFU = string.Format("<p><strong>Dear Valued Client,</strong></p>");
+        sbFU.Append(strHeadingFU);
+        sbFU.Append("<p>Thanks for submitting a travel request through to Serendipity Travel.</p>");
+        sbFU.Append("<p>I trust that our consultant has reverted to you with a suitable quotation specifict to your travel needs. Should you not have received a response, please do let us know.</p>");
+        sbFU.Append("<p>Please advise if we can assist you further by tailor making a suitable package for you should the package sent through not be suitable enough.</p>");
+
+        sbFU.Append("<p><strong>Kind regards</strong></p>");
+        sbFU.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+
+        txtMailTempFU.Text = sbFU.ToString();
 
         // Generate Quote URL
 
@@ -1297,7 +1330,8 @@ public partial class Lead : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -1675,6 +1709,38 @@ public partial class Lead : System.Web.UI.Page
         catch (WebException wex)
         {
             return string.Format("{0} - {1}", wex.Status, wex.Message);
+        }
+    }
+    protected void btnSendMailFU_Click(object sender, EventArgs e)
+    {
+        string strEmail = txtToEmailFU.Text;
+        string strCC = txtCCEmailFU.Text;
+        string strSubject = txtEmailSubjectFU.Text;
+        string strBody = txtMailTempFU.Text;
+        SendMail(strEmail, strCC, strSubject, strBody);
+    }
+    protected void ddlConsultantsFilter_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            if (ddlConsultantsFilter.SelectedValue == "-1")
+            {
+                dataset = leadBL.GetAssignedLeadsList(0);
+            }
+            else
+            {
+                dataset = leadBL.GetAssignedLeadsList(Convert.ToInt32(ddlConsultantsFilter.SelectedValue));
+            }            
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                gvAssignedList.DataSource = dataset;
+                gvAssignedList.DataBind();
+                gvAssignedList.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
+        }
+        catch
+        {
+
         }
     }
 }

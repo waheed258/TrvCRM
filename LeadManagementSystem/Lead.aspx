@@ -86,6 +86,15 @@
             ],
                 height: '300px'
             });
+            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtMailTempFU', {
+                toolbar:
+            [
+                { name: 'basicstyles', items: ['Bold', 'Italic'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+                { name: 'tools', items: ['Maximize', '-', 'About'] }
+            ],
+                height: '300px'
+            });
             $('#ContentPlaceHolder1_gvAssignedList').DataTable();
             $('#ContentPlaceHolder1_gvLeadList').DataTable();
             $('#ContentPlaceHolder1_gvReminders').DataTable();
@@ -472,7 +481,7 @@
                                                     <asp:Label ID="lblLNotes" runat="server"></asp:Label></strong></label>
                                         </td>
                                     </tr>
-                                      <tr>
+                                    <tr>
                                         <td>
                                             <label class="control-label">Package Name:</label>
                                         </td>
@@ -492,10 +501,11 @@
                                             <img src="images/button_send-more-info (1).png" style="height: 35px;" /></button>
                                     </label>
                                 </div>
-                                  <div class="col-md-6">
+                                <div class="col-md-6">
                                     <label class="control-label">
-                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#EmailModal">
+                                        <button type="button" class="btn btn-info btn-sm" style="padding: 0px; margin: 0px;" data-toggle="modal" data-target="#FollowupModal">
                                             <img src="images/button_send-follow-up-email.png" style="height: 35px;" /></button>
+                                        <%--                                        <asp:ImageButton ID="imgbtnFollowupEmail" runat="server" ImageUrl="~/images/button_send-follow-up-email.png" CssClass="btn btn-info btn-sm" style="padding: 0px; margin: 0px;height: 35px;" OnClick="imgbtnFollowupEmail_Click" />--%>
                                     </label>
                                 </div>
                             </div>
@@ -557,11 +567,11 @@
                                                     <asp:Label runat="server" ID="lblHistoryQuote" Text='<%#Eval("ViewData") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                             <asp:TemplateField HeaderText="ClientFileId" Visible="false">
-                                                    <ItemTemplate>
-                                                        <asp:Label runat="server" ID="lblClientFileId" Text='<%#Eval("ClientFileId") %>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="ClientFileId" Visible="false">
+                                                <ItemTemplate>
+                                                    <asp:Label runat="server" ID="lblClientFileId" Text='<%#Eval("ClientFileId") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="View" ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <asp:LinkButton CommandName="View" ID="btnViewHistory" runat="server" ToolTip="View">View</asp:LinkButton>
@@ -685,6 +695,14 @@
                                     </div>--%>
                                 <div class="tables">
                                     <div class="table table-responsive">
+                                        <div class="row text-center">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-lg-4">
+                                                <asp:DropDownList ID="ddlConsultantsFilter" runat="server" Style="padding: 0px" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlConsultantsFilter_SelectedIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <br />
                                         <asp:GridView ID="gvAssignedList" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false"
                                             EmptyDataText="There are no data records to display. Please Add Lead." OnRowCommand="gvAssignedList_RowCommand" OnRowDataBound="gvAssignedList_RowDataBound"
                                             Style="font-size: 110%;" ForeColor="Black">
@@ -876,7 +894,7 @@
                                                         <asp:ImageButton ID="btnDelete" runat="server" Width="23px" Height="23px" ImageUrl="~/images/garbage.png"
                                                             CommandName="DeleteLead" ToolTip="Delete" Visible="false" />
                                                         <asp:ImageButton ID="imgbtnStaus" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Status1.png"
-                                                                CommandName="Action" ToolTip="Actions" />
+                                                            CommandName="Action" ToolTip="Actions" />
                                                         <asp:ImageButton ID="imgbtnQuote" runat="server" Width="23px" Height="23px" ImageUrl="~/images/Quote.png"
                                                             CommandName="Quote" ToolTip="Generate Quote" Visible="false" />
                                                         <asp:ImageButton ID="imgbtnPDF" runat="server" Width="23px" Height="23px" ImageUrl="~/images/PDFIcon.png"
@@ -1191,6 +1209,48 @@
         <!-- /.modal-dialog -->
     </div>
 
+
+    <div class="modal fade" id="FollowupModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title">Follow up Email Template</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-md-12">
+
+                        <div class="col-md-4">
+                            <label class="control-label">To</label>
+                            <asp:TextBox ID="txtToEmailFU" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtToEmailFU" ForeColor="#d0582e"
+                                ErrorMessage="Please enter Email Id" ValidationGroup="EmailFU" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">CC</label>
+                            <asp:TextBox ID="txtCCEmailFU" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Subject</label>
+                            <asp:TextBox ID="txtEmailSubjectFU" class="form-control" runat="server" MaxLength="100" Text="Serendipity Travel >> Follow up"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtEmailSubjectFU" ForeColor="#d0582e"
+                                ErrorMessage="Please Email Subject" ValidationGroup="EmailFU" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center" style="margin-top: 15px;">
+                        <asp:TextBox ID="txtMailTempFU" runat="server" TextMode="MultiLine" ValidationGroup="EmailFU"></asp:TextBox>
+                        <asp:Button ID="btnSendMailFU" Text="Send Mail" runat="server" OnClick="btnSendMailFU_Click" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1318,7 +1378,7 @@
         function openModalassign() {
             $('#myModalassign').modal('show');
         }
-        
+
         function openSMSModal() {
             $('#smsModal').modal('show');
         }
