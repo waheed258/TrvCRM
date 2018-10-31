@@ -1553,7 +1553,7 @@ public partial class Lead : System.Web.UI.Page
                         message.Text = "Mobile number format is wrong";
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
                     }
-                    txtResp.Text = "Hi " + lblLName.Text + ", I have sent you the quote for " + lblPackageName + ". Please check your spam folders incase you do not see the mail. Regards " + Session["Name"].ToString() + ".";
+                    txtResp.Text = "Hi " + lblLName.Text + ", I have sent you the quote for " + lblPackageName.Text + ". Please check your spam folders incase you do not see the mail. Regards " + Session["Name"].ToString() + ".";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openSMSModal();", true);
                 }
                 else if (e.CommandName == "Convert")
