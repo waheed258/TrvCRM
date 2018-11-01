@@ -1065,6 +1065,15 @@ public partial class Lead : System.Web.UI.Page
                 lblPackageName.Text = dtLead.Rows[0]["lsPackageId"].ToString();
             }
 
+            if (dtLead.Rows[0]["lsWebSiteConsultantNotes"].ToString() == "" || dtLead.Rows[0]["lsWebSiteConsultantNotes"].ToString() == null)
+            {
+                lblConsultantNotes.Text = "Not Available";
+            }
+            else
+            {
+                lblConsultantNotes.Text = dtLead.Rows[0]["lsWebSiteConsultantNotes"].ToString();
+            }
+
             txtClientFileId.Text = dtLead.Rows[0]["lsClientFileId"].ToString();
             txtEConsultNotes.Text = dtLead.Rows[0]["lsConsultantNotes"].ToString();
             txtEReminder.Text = String.Format("{0:dd-MM-yyyy}", dtLead.Rows[0]["lsReminder"]);

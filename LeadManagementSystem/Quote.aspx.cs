@@ -59,7 +59,7 @@ public partial class Quote : System.Web.UI.Page
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
                 imgbtnBackQuote.Visible = false;
-                
+
                 if (flag == "1")
                 {
                     if (QuoteType == "2")
@@ -552,110 +552,194 @@ public partial class Quote : System.Web.UI.Page
     {
         try
         {
+            int cnt = 1;
+            StringBuilder sbMainrow = new StringBuilder();
+            StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDFMultiple.html"));
+            string readFile = reader.ReadToEnd();
+            reader.Close();
             foreach (QuoteEntity qt in lstQuEnt)
             {
                 DataSet ds = new DataSet();
                 ds = qtBL.GetQuotePDFData(qt.QuoteNumber);
-                StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
-                string readFile = reader.ReadToEnd();
-                reader.Close();
-
-                StringBuilder sbMainrow = new StringBuilder();
 
                 if (ds.Tables.Count > 0)
                 {
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
+                        #region Quotation Info
+
+                        sbMainrow.Append("<table style='width:100%;margin-bottom:15px; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                        sbMainrow.Append("<tr>");
+                        sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>QUOTATION " + cnt + " </td>");
+                        sbMainrow.Append("</tr>");
+
                         foreach (DataRow dtlRow in ds.Tables[0].Rows)
                         {
+
                             if (!string.IsNullOrEmpty(dtlRow["FlightDetails"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + dtlRow["FlightDetails"].ToString() + "</div>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>FLIGHT QUOTATION</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["FlightDetails"].ToString() + "</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
                             }
 
                             if (!string.IsNullOrEmpty(dtlRow["HotelInfo"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + dtlRow["HotelInfo"].ToString() + "</div>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>HOTEL QUOTATION</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["HotelInfo"].ToString() + "</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
                             }
 
                             if (!string.IsNullOrEmpty(dtlRow["CarHireDetails"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + dtlRow["CarHireDetails"].ToString() + "</div>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>CAR QUOTATION</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["CarHireDetails"].ToString() + "</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
                             }
 
                             if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + dtlRow["ItineraryDetails"].ToString() + "</div>");
+
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>ITINERARY</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["ItineraryDetails"].ToString() + "</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
+
                             }
 
-                            if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()))
+                            if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()) && !string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + dtlRow["Includes"].ToString() + "</div>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='55%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Include</td>");
+                                sbMainrow.Append("<td width='45%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Exclude</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append(" <td width='55%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>" + dtlRow["Includes"].ToString() + "</td>");
+                                sbMainrow.Append(" <td width='55%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>" + dtlRow["Excludes"].ToString() + "</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
                             }
-
-                            if (!string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
+                            else if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()) || !string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
                             {
-                                sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + dtlRow["Excludes"].ToString() + "</div>");
+                                string strHeading = !string.IsNullOrEmpty(dtlRow["Includes"].ToString()) ? "Include" : "Exclude";
+                                string strData = !string.IsNullOrEmpty(dtlRow["Includes"].ToString()) ? dtlRow["Includes"].ToString() : dtlRow["Excludes"].ToString();
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>'" + strHeading + "'</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>'" + strData + "'</td>");
+                                sbMainrow.Append("</tr>");
+                                sbMainrow.Append("</table>");
+                                sbMainrow.Append("</tr>");
                             }
 
-                            readFile = readFile.Replace("{Details}", sbMainrow.ToString());
-
-                            readFile = readFile.Replace("{QuoteNumber}", dtlRow["QuoteNumber"].ToString());
-                            readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
-                            readFile = readFile.Replace("{DestinationCity}", dtlRow["DestinationCity"].ToString());
-                            readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
-                            readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
-                            readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
-                            readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
-                            readFile = readFile.Replace("{AdultTotal}", dtlRow["AdultTotal"].ToString());
-                            readFile = readFile.Replace("{ChildTotal}", dtlRow["ChildTotal"].ToString());
-                            readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
-                            readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
-                            readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
-                            readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
-                            readFile = readFile.Replace("{LeadStatus}", lStatus);
-
-
-
+                            string adultText = string.Empty;
                             if (dtlRow["CostForAdultType"].ToString() == "1")
                             {
-                                readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + dtlRow["CostForAdult"].ToString() + " x " + dtlRow["NoOfAdults"].ToString() + " adults");
+                                adultText = "COST PER PERSON SHARING R " + dtlRow["CostForAdult"].ToString() + " x " + dtlRow["NoOfAdults"].ToString() + " adults";
                             }
                             else if (dtlRow["CostForAdultType"].ToString() == "2")
                             {
-                                readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + dtlRow["CostForAdult"].ToString() + " x 1 adult");
+                                adultText = "COST PER PERSON INDIVIDUAL R " + dtlRow["CostForAdult"].ToString() + " x 1 adult";
                             }
 
-                            if (dtlRow["CostForChildType"].ToString() == "3")
+                            sbMainrow.Append("<tr>");
+                            sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                            sbMainrow.Append("<tr>");
+                            sbMainrow.Append("<td width='30%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;'><h5 style='font-size:3.05mm; margin:0;  color:#00aeef; width:100%;'>COST PER ADULT</h5></td>");
+                            sbMainrow.Append("<td width='55%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9;'><p style='font-size:2.5mm; margin:0; width:50%;'>" + adultText + "</p></td>");
+                            sbMainrow.Append("<td width='15%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;'><p style='font-size:2.5mm; margin:0; width:100%; font-weight:bold;'>" + dtlRow["AdultTotal"].ToString() + "</p></td>");
+                            sbMainrow.Append("</tr>");
+                            if (!string.IsNullOrEmpty(dtlRow["CostForChild"].ToString()))
                             {
-                                readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + dtlRow["CostForChild"].ToString() + " x " + dtlRow["NoOfChildren"].ToString() + " child");
+                                string childText = string.Empty;
+                                if (dtlRow["CostForChildType"].ToString() == "3")
+                                {
+                                    childText = "COST PER CHILD SHARING R " + dtlRow["CostForChild"].ToString() + " x " + dtlRow["NoOfChildren"].ToString() + " child";
+                                }
+                                else
+                                {
+                                    childText = "";
+                                }
+
+                                sbMainrow.Append("<tr>");
+                                sbMainrow.Append("<td width='30%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;'><h5 style='font-size:3.05mm; margin:0;  color:#00aeef; width:100%;'>COST PER CHILD</h5></td>");
+                                sbMainrow.Append("<td width='55%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9;'><p style='font-size:2.5mm; margin:0; width:50%;'>" + childText + "</p></td>");
+                                sbMainrow.Append("<td width='15%' style='padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;'><p style='font-size:2.5mm; margin:0; width:100%; font-weight:bold;'>" + dtlRow["ChildTotal"].ToString() + "</p></td>");
+                                sbMainrow.Append("</tr>");
                             }
-                            else
-                            {
-                                readFile = readFile.Replace("{ChildPrice}", "");
-                            }
+
+                            sbMainrow.Append("</table>");
+                            sbMainrow.Append("</tr>");
+                            readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
+                            readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
+                            readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
+                            readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
                         }
+                        sbMainrow.Append("</table>");
+
+                        #endregion
+
+                        cnt += 1;
                     }
-
-                    string StrContent = readFile;
-
-                    string filepath = Server.MapPath("~/QuotePDF");
-
-
-                    bool pdf = GenerateHTML_TO_PDF(StrContent, true, filepath, false, qt.QuoteNumber);
-                    if (pdf)
-                    {
-                        string consultName = Session["Name"].ToString();
-                        SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, qt.QuoteNumber);
-                        Session.Remove("lstQuoteEntity");
-                    }
-
                 }
+
+
+            }
+            readFile = readFile.Replace("{Details}", sbMainrow.ToString());
+
+            string StrContent = readFile;
+
+            string filepath = Server.MapPath("~/QuotePDF");
+
+            var quotes = lstQuEnt.Select(q => q.QuoteNumber).ToList();
+            string QuoteNumbers = string.Join("_", quotes);
+
+            bool pdf = GenerateHTML_TO_PDF(StrContent, true, filepath, false, QuoteNumbers);
+            if (pdf)
+            {
+                string consultName = Session["Name"].ToString();
+                SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumbers);
+                Session.Remove("lstQuoteEntity");
             }
 
+
+
         }
-        catch
+        catch (Exception ex)
         { }
 
     }

@@ -491,6 +491,16 @@
                                                     <asp:Label ID="lblPackageName" runat="server"></asp:Label></strong></label>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="control-label">Consultant Notes:</label>
+                                        </td>
+                                        <td>
+                                            <label class="control-label">
+                                                <strong>
+                                                    <asp:Label ID="lblConsultantNotes" runat="server"></asp:Label></strong></label>
+                                        </td>
+                                    </tr>
                                 </table>
 
                             </div>
