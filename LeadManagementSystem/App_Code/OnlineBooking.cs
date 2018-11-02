@@ -167,7 +167,7 @@ public class OnlineBooking : System.Web.Services.WebService
                     //MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;We can assist with Visa applications";
 
 
-                    MailText = "<div style='width:100%; display:inline-block; margin-bottom:20px; clear:both;'><img style='max-width:100%; display:block;' src='http://www.serendipitytravel.co.za/Images/head.png' alt='head' /></div>";
+                    MailText = "<div style='width:100%; display:inline-block; margin-bottom:20px; clear:both;'><img style='max-width:100%; display:block;' src='http://tcrm.askswg.co.za/images/head.png' alt='head' /></div>";
                     MailText += "<div class='body_cnt' style='width:100%; padding:0 25px;'>";
                     MailText += "<h1 style='font-size:14px; color:#00aeef; margin:0 0 10px;'>Dear " + clName + ",</h1>";
                     MailText += "<p style='margin:0 0 10px;'>Thank you for travel enquiry.</p>";
@@ -185,7 +185,7 @@ public class OnlineBooking : System.Web.Services.WebService
                     MailText += "<p style='margin:0 0 5px;'>Tel: <a style='color:#00aeef; text-decoration:none;' href='tel:27312010630'>+27 31 2010 630</a> </p>";
                     MailText += "<p style='margin:0 0 5px;'>Email: <a style='color:#00aeef; text-decoration:none;' href='mailto:media@serendipitytours.co.za'>media@serendipitytours.co.za</a>  </p>";
                     MailText += "<p style='margin:0 0 15px;'>Web: <a style='color:#00aeef; text-decoration:none;' href='http://www.serendipitytravel.co.za' target='_blank'>www.serendipitytravel.co.za</a></p>";
-                    MailText += "<p><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/facebook1.png' alt='facebook' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/google.png' alt='googleplus' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/twitter1.png' alt='twitter' /></a></p>";
+                    MailText += "<p><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/facebook1.png' alt='facebook' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/google.png' alt='googleplus' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/twitter1.png' alt='twitter' /></a></p>";
                     MailText += "</div>";
                     MailText += "<div style='width:100%; display:inline-block; margin-top:0;'><img style='max-width:100%; display:block;' src='foot.png' alt='foot' /></div>";
 
