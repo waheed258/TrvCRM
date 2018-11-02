@@ -537,7 +537,7 @@ public partial class Quote : System.Web.UI.Page
         txtItinerary.Text = "";
         //txtIncludes.Text = "";
         //txtExcludes.Text = "";
-        txtTravelInsur.Text = "";
+        //txtTravelInsur.Text = "";
 
         dvAdultPersons.Visible = false;
         dvChildPersons.Visible = false;
@@ -708,6 +708,7 @@ public partial class Quote : System.Web.UI.Page
                             readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
                             readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
                             readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
+                            readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
                         }
                         sbMainrow.Append("</table>");
 
@@ -830,6 +831,8 @@ public partial class Quote : System.Web.UI.Page
                         {
                             readFile = readFile.Replace("{ChildPrice}", "");
                         }
+
+                        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
                     }
                 }
 
@@ -919,8 +922,8 @@ public partial class Quote : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -951,9 +954,10 @@ public partial class Quote : System.Web.UI.Page
                     MailText = "Dear " + clName + ", <br/><br/>";
                     MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
                     MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
-                    MailText += "Kind regards, <br/>";
-                    MailText += "(" + consultName + ")";
+                    MailText += "Kind regards, <br/><br/>";
+                    //MailText += "(" + consultName + ")";
 
+                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"] .ToString()+ "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
                     bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
                     if (mailSent)

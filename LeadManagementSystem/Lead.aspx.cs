@@ -1154,6 +1154,7 @@ public partial class Lead : System.Web.UI.Page
         sb.Append("<p>As soon as I receive the above information, I can work on some options for you.</p>");
         sb.Append("<p><strong>Kind regards</strong></p>");
         sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+        //sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
 
         txtMailTemp.Text = sb.ToString();
 
@@ -1166,7 +1167,7 @@ public partial class Lead : System.Web.UI.Page
 
         sbFU.Append("<p><strong>Kind regards</strong></p>");
         sbFU.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-
+        //sbFU.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
         txtMailTempFU.Text = sbFU.ToString();
 
         // Generate Quote URL
@@ -1339,8 +1340,8 @@ public partial class Lead : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -1359,7 +1360,31 @@ public partial class Lead : System.Web.UI.Page
                     Subject = srtSubject;
                     MailCc = !string.IsNullOrEmpty(strCC) ? strCC : "";
 
-                    MailText = strText;
+                    //MailText = strText;
+
+
+                    MailText = "<p><strong>Dear Valued Client,</strong></p>";
+                    MailText += "<p>Thanks for submitting a travel request through to Serendipity Travel.</p>";
+                    MailText += "<p>I trust that our consultant has reverted to you with a suitable quotation specifict to your travel needs. Should you not have received a response, please do let us know.</p>";
+                    MailText += "<p>Please advise if we can assist you further by tailor making a suitable package for you should the package sent through not be suitable enough.</p>";
+
+                    MailText += "<p><strong>Kind regards</strong></p>";
+                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
+
+
+
+                    MailText = "<p><strong>Dear ,</strong></p>" + lblLName.Text;
+                    MailText += "<p>Thank you so much for your enquiry I received today. In order to quote you accurately, I require the following additional information.</p>";
+                    MailText += "<p>1.&nbsp;Dates of travel</p>";
+                    MailText += "<p>2.&nbsp;Destination</p>";
+                    MailText += "<p>3.&nbsp;Where will you be travelling from ie. Joburg, Durban or Cape Town</p>";
+                    MailText += "<p>4.&nbsp;Estimated budget</p>";
+                    MailText += "<p>5.&nbsp;How many people will be travelling incl. children (and their ages)</p>";
+                    MailText += "<p>6.&nbsp;Are you travelling for a special occation ie. birthday, anniversary, honeymoon etc.</p>";
+                    MailText += "<p>As soon as I receive the above information, I can work on some options for you.</p>";
+                    MailText += "<p><strong>Kind regards</strong></p>";                    
+                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";                    
+
 
                     bool mailSent = CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 

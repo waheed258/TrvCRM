@@ -74,7 +74,7 @@ public class OnlineBooking : System.Web.Services.WebService
             leadEntity.ProductID = leadObject.ProductID;
             leadEntity.WebsiteConsultantNotes = leadObject.WebsiteConsultantNotes;
             int result = leadBL.CUDLead(leadEntity, 'I');
-            if (result >1 )
+            if (result > 1)
             {
                 string clName = leadObject.FirstName + " " + leadObject.LastName;
                 SendMail(clName, leadObject.Email, leadObject.Mobile, leadObject.PackageId);
@@ -151,28 +151,43 @@ public class OnlineBooking : System.Web.Services.WebService
                     //MailTo = "saipramod.balatrapu@dinoosys.com";
                     MailCc = "";
 
-                    MailText = "<img src='http://www.serendipitytravel.co.za/Images/Signature.jpg' /> <br/>";
+                    //MailText = "<img src='http://www.serendipitytravel.co.za/Images/Signature.jpg' /> <br/>";
 
-                    MailText += "<b> Dear " + clName + ", </b><br/><br/>";
+                    //MailText += "<b> Dear " + clName + ", </b><br/><br/>";
 
-                    MailText += "Thank you for travel enquiry<br/><br/>";
-                    //if (hdfpid.Value != null && hdfpid.Value.ToString() != "")
-                    //{
-                    //    MailText += "Package : (" + clPackageName + " / http://serendipitytravel.co.za/tour-detail.aspx?pid=" + hdfpid.Value.ToString() + ")<br/><br/>";
-                    //}
-                    MailText += "A consultant will be in touch with you shortly. Please check your inbox (don’t forget to check your spam folder too) <br/><br/>";
+                    //MailText += "Thank you for travel enquiry<br/><br/>";
+                    //MailText += "A consultant will be in touch with you shortly. Please check your inbox (don’t forget to check your spam folder too) <br/><br/>";
 
-                    MailText += "Have a Serendipitous Day! <br/>";
-                    MailText += "The Serendipity Travel team <br/><br/>";
+                    //MailText += "Have a Serendipitous Day! <br/>";
+                    //MailText += "The Serendipity Travel team <br/><br/>";
 
-                    MailText += "<b>Did you know:</b><br/>";
-                    MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;We have a Corporate Travel division<br/>";
-                    MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Contact us for any incentive / group travel<br/>";
-                    MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;We can assist with Visa applications";
+                    //MailText += "<b>Did you know:</b><br/>";
+                    //MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;We have a Corporate Travel division<br/>";
+                    //MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Contact us for any incentive / group travel<br/>";
+                    //MailText += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;We can assist with Visa applications";
 
-                    //MailText += "<img src='http://tcrm.askswg.co.za/images/Regards.jpg' /> <br/>";
-                    //MailText += "<strong style='color:#0b5394;'> Serendipity​ Travel </strong>​ <br/>";
-                    //MailText += "<img src='http://tcrm.askswg.co.za/images/Footer.png' width='300' /> <br/>";
+
+                    MailText = "<div style='width:100%; display:inline-block; margin-bottom:20px; clear:both;'><img style='max-width:100%; display:block;' src='http://www.serendipitytravel.co.za/Images/head.png' alt='head' /></div>";
+                    MailText += "<div class='body_cnt' style='width:100%; padding:0 25px;'>";
+                    MailText += "<h1 style='font-size:14px; color:#00aeef; margin:0 0 10px;'>Dear " + clName + ",</h1>";
+                    MailText += "<p style='margin:0 0 10px;'>Thank you for travel enquiry.</p>";
+                    MailText += "<p style='margin:0 0 10px;'>A consultant will be in touch with you shortly. Please check your inbox <br />(Don’t forget to check your spam folder too)</p>";
+                    MailText += "<p style='margin:0 0 10px; color:#00aeef;'>Have a Serendipitous Day!</p>";
+                    MailText += "<h2 style='font-size:14px; color:#00aeef; margin:0 0 10px;'>Did you know :</h2>";
+                    MailText += "<ul style='padding:0; margin:0 0 10px;'>";
+                    MailText += "<li style='list-style-position:inside; margin:0 0 5px;'>We have a Corporate Travel division</li>";
+                    MailText += "<li style='list-style-position:inside; margin:0 0 5px;'>We can help you with incentive / group travel</li>";
+                    MailText += "<li style='list-style-position:inside; margin:0 0 5px;'>We can assist with Visa applications</li>";
+                    MailText += "</ul>";
+                    MailText += "<h3 style='font-size:18px; margin:0 0 10px;'>Regards,</h3>";
+                    MailText += "<p style='margin:0 0 10px; color:#00aeef;'>The Serendipity Travel team</p>";
+                    MailText += "<p style='margin:0 0 5px; line-height:16px;'>Physical Address Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, <br />Musgrave, Durban, South Africa, 4001</p>";
+                    MailText += "<p style='margin:0 0 5px;'>Tel: <a style='color:#00aeef; text-decoration:none;' href='tel:27312010630'>+27 31 2010 630</a> </p>";
+                    MailText += "<p style='margin:0 0 5px;'>Email: <a style='color:#00aeef; text-decoration:none;' href='mailto:media@serendipitytours.co.za'>media@serendipitytours.co.za</a>  </p>";
+                    MailText += "<p style='margin:0 0 15px;'>Web: <a style='color:#00aeef; text-decoration:none;' href='http://www.serendipitytravel.co.za' target='_blank'>www.serendipitytravel.co.za</a></p>";
+                    MailText += "<p><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/facebook1.png' alt='facebook' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/google.png' alt='googleplus' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://www.serendipitytravel.co.za/Images/twitter1.png' alt='twitter' /></a></p>";
+                    MailText += "</div>";
+                    MailText += "<div style='width:100%; display:inline-block; margin-top:0;'><img style='max-width:100%; display:block;' src='foot.png' alt='foot' /></div>";
 
                     CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
