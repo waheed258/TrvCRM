@@ -187,7 +187,7 @@ public class OnlineBooking : System.Web.Services.WebService
                     MailText += "<p style='margin:0 0 15px;'>Web: <a style='color:#00aeef; text-decoration:none;' href='http://www.serendipitytravel.co.za' target='_blank'>www.serendipitytravel.co.za</a></p>";
                     MailText += "<p><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/facebook1.png' alt='facebook' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/google.png' alt='googleplus' /></a><a style='margin-right:20px;' href='#' target='_blank'><img src='http://tcrm.askswg.co.za/images/twitter1.png' alt='twitter' /></a></p>";
                     MailText += "</div>";
-                    MailText += "<div style='width:100%; display:inline-block; margin-top:0;'><img style='max-width:100%; display:block;' src='foot.png' alt='foot' /></div>";
+                    MailText += "<div style='width:100%; display:inline-block; margin-top:0;'><img style='max-width:100%; display:block;' src='http://tcrm.askswg.co.za/images/foot.png' alt='foot' /></div>";
 
                     CommanClass.UpdateMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
