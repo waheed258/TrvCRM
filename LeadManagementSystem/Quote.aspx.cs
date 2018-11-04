@@ -922,8 +922,8 @@ public partial class Quote : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                int SmtpPort = 587;
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                //int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
