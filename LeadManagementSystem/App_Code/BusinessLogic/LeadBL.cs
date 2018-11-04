@@ -238,10 +238,11 @@ namespace BusinessLogic
             return ds;
         }
 
-        public DataSet GetTemplateNames(int LeadID)
+        public DataSet GetTemplateNames(int LeadID,string CName)
         {
             Hashtable hashtable = new Hashtable();
             hashtable.Add("@leadId", LeadID);
+            hashtable.Add("@CName", CName);
             DataSet ds = dataUtilities.ExecuteDataSet("usp_GetTemplateNames", hashtable);
             return ds;
         }

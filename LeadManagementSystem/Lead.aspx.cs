@@ -330,7 +330,7 @@ public partial class Lead : System.Web.UI.Page
             {
                 GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
                 int RowIndex = row.RowIndex;
-                ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
+                Session["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
                 GetSourceData("U");
                 if (e.CommandName == "EditLead")
                 {
@@ -481,7 +481,7 @@ public partial class Lead : System.Web.UI.Page
             leadEntity.AssignedTo = 0;
         }
         leadEntity.LeadStatus = 10;
-        leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+        leadEntity.LeadID = Convert.ToInt32(Session["lsID"].ToString());
         int result = leadBL.LeadAction(leadEntity);
         if (result == 1)
         {
@@ -742,7 +742,7 @@ public partial class Lead : System.Web.UI.Page
                     }
                     else
                     {
-                        leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+                        leadEntity.LeadID = Convert.ToInt32(Session["lsID"].ToString());
                         leadEntity.SourceID = Convert.ToInt32(ddlSource.SelectedValue);
                         leadEntity.SourceRef = ddlSource.SelectedItem.Text;
                         leadEntity.Others = txtOthers.Text;
@@ -839,7 +839,7 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+            leadEntity.LeadID = Convert.ToInt32(Session["lsID"].ToString());
             leadEntity.SourceID = 0;
             leadEntity.SourceRef = "";
             leadEntity.Others = txtOthers.Text;
@@ -900,7 +900,7 @@ public partial class Lead : System.Web.UI.Page
         if (ddlStatus.SelectedValue == "4")
         {
             DataSet ds = new DataSet();
-            ds = leadBL.GetFollowupCount(Convert.ToInt32(ViewState["lsID"].ToString()));
+            ds = leadBL.GetFollowupCount(Convert.ToInt32(Session["lsID"].ToString()));
             if (ds.Tables[0].Rows.Count == 3)
             {
                 message.Text = "Maximum follow ups reached for this lead!";
@@ -982,7 +982,7 @@ public partial class Lead : System.Web.UI.Page
             {
                 GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
                 int RowIndex = row.RowIndex;
-                ViewState["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
+                Session["lsID"] = ((Label)row.FindControl("lblID")).Text.ToString();
                 GetSourceDataEdit("U");
                 if (e.CommandName == "EditLead")
                 {
@@ -992,7 +992,7 @@ public partial class Lead : System.Web.UI.Page
                     source = encryptdecrypt.Encrypt((((Label)row.FindControl("lblOrigin")).Text.ToString()));
                     toCity = encryptdecrypt.Encrypt(((Label)row.FindControl("lblDestination")).Text.ToString());
                     Email = encryptdecrypt.Encrypt(((Label)row.FindControl("lblEmailID")).Text.ToString());
-                    encryptedparamleadid = encryptdecrypt.Encrypt(ViewState["lsID"].ToString());
+                    encryptedparamleadid = encryptdecrypt.Encrypt(Session["lsID"].ToString());
                     encryptedparamlblProductID = encryptdecrypt.Encrypt(((Label)row.FindControl("lblProductID")).Text.ToString());
                     Edit(ViewState["lsLeadActionsID"].ToString());
                 }
@@ -1028,10 +1028,10 @@ public partial class Lead : System.Web.UI.Page
         dvEdit.Visible = true;
         string strStatusId = ViewState["lsLeadActionsID"].ToString();
         Session["strStatusId"] = strStatusId;
-        DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+        DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
         DataTable dtLead = ds.Tables[0];
         DataTable dtLeadHistory = ds.Tables[1];
-        GetTemplateNames(ViewState["lsID"].ToString());
+        GetTemplateNames(Session["lsID"].ToString());
         if (dtLead.Rows.Count > 0)
         {
             txtEFirstName.Text = dtLead.Rows[0]["lsFirstName"].ToString();
@@ -1216,7 +1216,7 @@ public partial class Lead : System.Web.UI.Page
     {
         try
         {
-            leadEntity.LeadID = Convert.ToInt32(ViewState["lsID"].ToString());
+            leadEntity.LeadID = Convert.ToInt32(Session["lsID"].ToString());
             leadEntity.SourceID = Convert.ToInt32(ddlESource.SelectedValue);
             leadEntity.SourceRef = ddlESource.SelectedItem.Text;
             leadEntity.Others = txtEOthers.Text;
@@ -1392,8 +1392,8 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email sent successfully.";
                         MailMessage.ForeColor = System.Drawing.Color.Green;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Success", "", "");
-                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                        CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Success", "", "");
+                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
                         // Lead History
                         LeadHistory(dtLeadHistory);
@@ -1402,8 +1402,8 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email not sent.";
                         MailMessage.ForeColor = System.Drawing.Color.Red;
-                        CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", "", "");
-                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                        CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Fail", "", "");
+                        DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
                         // Lead History
                         LeadHistory(dtLeadHistory);
@@ -1414,9 +1414,9 @@ public partial class Lead : System.Web.UI.Page
                 {
                     MailMessage.Text = "Email not sent.";
                     MailMessage.ForeColor = System.Drawing.Color.Red;
-                    CommanClass.MailStatusLog(Convert.ToInt32(ViewState["lsID"].ToString()), "MI001", "Fail", ex.Message, "");
+                    CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Fail", ex.Message, "");
 
-                    DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+                    DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
                     DataTable dtLeadHistory = dsInfo.Tables[1];
                     // Lead Hostory
                     LeadHistory(dtLeadHistory);
@@ -1485,7 +1485,7 @@ public partial class Lead : System.Web.UI.Page
     {
         if (ddlQuoteDetails.SelectedValue == "2")
         {
-            GetTemplateNames(ViewState["lsID"].ToString());
+            GetTemplateNames(Session["lsID"].ToString());
             dvTemplates.Visible = true;
             imgQuoteSubmit.Style.Add("margin-top", "15px;");
         }
@@ -1500,7 +1500,7 @@ public partial class Lead : System.Web.UI.Page
         ddlTemplateNames.Items.Clear();
         try
         {
-            DataSet ds = leadBL.GetTemplateNames(Convert.ToInt32(strLeadId));
+            DataSet ds = leadBL.GetTemplateNames(Convert.ToInt32(strLeadId), Session["Name"].ToString());
             ddlTemplateNames.DataSource = ds;
             ddlTemplateNames.DataTextField = "TemplateName";
             ddlTemplateNames.DataValueField = "ID";
@@ -1719,7 +1719,7 @@ public partial class Lead : System.Web.UI.Page
         //    Console.WriteLine($"Response: {response}");
         //    Console.ReadKey();
         leadBL.SetSMSStatus(hdfSMS.Value);
-        DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(ViewState["lsID"].ToString()));
+        DataSet ds = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
         DataTable dtLeadHistory = ds.Tables[1];
         LeadHistory(dtLeadHistory);
     }
