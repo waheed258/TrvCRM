@@ -56,10 +56,11 @@ public partial class Quote : System.Web.UI.Page
                 GetProducts();
                 ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
                 emailsection.Style.Add("display", "none");
+                viewQuoteSection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
                 imgbtnBackQuote.Visible = false;
-
+                imgbtnVBackQuote.Visible = false;
                 if (flag == "1")
                 {
                     if (QuoteType == "2")
@@ -1198,6 +1199,7 @@ public partial class Quote : System.Web.UI.Page
         {
             backToLead.Visible = false;
             imgbtnBackQuote.Visible = true;
+            imgbtnVBackQuote.Visible = false;
             quotesection.Style.Add("display", "none");
             emailsection.Style.Add("display", "unset");
             lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
@@ -1409,12 +1411,47 @@ public partial class Quote : System.Web.UI.Page
     protected void imgbtnBackQuote_Click(object sender, ImageClickEventArgs e)
     {
         imgbtnBackQuote.Visible = false;
+        imgbtnVBackQuote.Visible = false;
         backToLead.Visible = true;
         quotesection.Style.Add("display", "unset");
         emailsection.Style.Add("display", "none");
     }
     protected void imgbtnViewQuote_Click(object sender, ImageClickEventArgs e)
     {
-
+        backToLead.Visible = false;
+        imgbtnVBackQuote.Visible = true;
+        imgbtnBackQuote.Visible = false;
+        viewQuoteSection.Style.Add("display", "unset");
+        quotesection.Style.Add("display", "none");
+        //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "ViewModal();", true);
+        txtVClientName.Text = lblClientName.Text;
+        txtVProduct.Text = ddlPackage.SelectedItem.Text;
+        txtVDeptFrom.Text = txtSource.Text;
+        txtVTravellingTo.Text = txtDestination.Text;
+        txtVQDate.Text = txtDate.Text;
+        txtVCostTypeAdult.Text = ddlAdultType.SelectedItem.Text;
+        txtVPriceAdult.Text = txtAdultPrice.Text;
+        txtVNoOfPersonsAdult.Text = ddlAdultPersons.SelectedItem.Text;
+        txtVTotalPriceAdult.Text = lblAdultTotPrice.Text;
+        txtVCostTypeChild.Text = ddlChildType.SelectedItem.Text;
+        txtVPriceChild.Text = txtChildPrice.Text;
+        txtVNoOfPersonsChild.Text = ddlChildPersons.SelectedItem.Text;
+        txtVTotalPriceChild.Text = lblChildTotPrice.Text;
+        txtVFlightDetails.Text = txtFlightDetails.Text;
+        txtVCarHire.Text = txtCarHireDetails.Text;
+        txtVHotelInfo.Text = txtHotelInfo.Text;
+        txtVItinerary.Text = txtItinerary.Text;
+        txtVIncludes.Text = txtIncludes.Text;
+        txtVExcludes.Text = txtExcludes.Text;
+        txtVTravelInsurance.Text = txtTravelInsur.Text;
+    }
+    protected void imgbtnVBackQuote_Click(object sender, ImageClickEventArgs e)
+    {
+        imgbtnBackQuote.Visible = false;
+        imgbtnVBackQuote.Visible = false;
+        backToLead.Visible = true;
+        quotesection.Style.Add("display", "unset");
+        emailsection.Style.Add("display", "none");
+        viewQuoteSection.Style.Add("display", "none");
     }
 }
