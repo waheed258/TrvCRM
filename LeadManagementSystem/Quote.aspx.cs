@@ -592,7 +592,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>FLIGHT INFO</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>FLIGHT Quotation</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["FlightDetails"].ToString() + "</td>");
@@ -606,7 +606,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>HOTEL INFO</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>HOTEL Quotation</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["HotelInfo"].ToString() + "</td>");
@@ -620,7 +620,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>CAR INFO</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>CAR Quotation</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["CarHireDetails"].ToString() + "</td>");
@@ -662,7 +662,7 @@ public partial class Quote : System.Web.UI.Page
                             }
                             else if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()) || !string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
                             {
-                                string strHeading = !string.IsNullOrEmpty(dtlRow["Includes"].ToString()) ? "Include" : "Exclude";
+                                string strHeading = !string.IsNullOrEmpty(dtlRow["Includes"].ToString()) ? "Includes" : "Excludes";
                                 string strData = !string.IsNullOrEmpty(dtlRow["Includes"].ToString()) ? dtlRow["Includes"].ToString() : dtlRow["Excludes"].ToString();
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
