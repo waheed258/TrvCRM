@@ -973,9 +973,15 @@ public partial class Quote : System.Web.UI.Page
                     if (mailSent)
                     {
                         MailSentSatatus(QuoteNumber);
+                        CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteNumber);
                         //emailsection.Style.Add("display", "none");
                         //quotesection.Style.Add("display", "unset");
                         Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
+
+                    }
+                    else
+                    {
+                        CommanClass.MailStatusLog(LeadID, "QT001", "Fail", "", QuoteNumber);
                     }
 
                 }
