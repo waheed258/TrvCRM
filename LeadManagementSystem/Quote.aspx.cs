@@ -581,7 +581,7 @@ public partial class Quote : System.Web.UI.Page
 
                         sbMainrow.Append("<table style='width:100%;margin-bottom:15px; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                         sbMainrow.Append("<tr>");
-                        sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>QUOTATION " + cnt + " </td>");
+                        sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>OPTION " + cnt + " </td>");
                         sbMainrow.Append("</tr>");
 
                         foreach (DataRow dtlRow in ds.Tables[0].Rows)
