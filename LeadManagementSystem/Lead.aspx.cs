@@ -1340,8 +1340,8 @@ public partial class Lead : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -1393,7 +1393,12 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email sent successfully.";
                         MailMessage.ForeColor = System.Drawing.Color.Green;
+                        if (Type == 1) {
+                            CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "FP001", "Success", "", "");
+                        }
+                        else { 
                         CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Success", "", "");
+                        }
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
                         // Lead History
@@ -1403,7 +1408,14 @@ public partial class Lead : System.Web.UI.Page
                     {
                         MailMessage.Text = "Email not sent.";
                         MailMessage.ForeColor = System.Drawing.Color.Red;
-                        CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Fail", "", "");
+                        if (Type == 1)
+                        {
+                            CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "FP001", "Fail", "", "");
+                        }
+                        else
+                        {
+                            CommanClass.MailStatusLog(Convert.ToInt32(Session["lsID"].ToString()), "MI001", "Fail", "", "");
+                        }
                         DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
                         DataTable dtLeadHistory = dsInfo.Tables[1];
                         // Lead History

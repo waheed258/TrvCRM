@@ -133,16 +133,25 @@ public partial class Quote : System.Web.UI.Page
             else
             {
                 int prodid = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["prodid"]));
-                var includesExcludes = (from products in dataset.Tables[0].AsEnumerable()
-                                        where products.Field<int>("package_id") == prodid
-                                        select new
-                                        {
-                                            Includes = products.Field<string>("package_includes"),
-                                            Excludse = products.Field<string>("package_excludes")
-                                        }).First();
+                bool exists = dataset.Tables[0].AsEnumerable().Where(c => c.Field<int>("package_id").Equals(prodid)).Count() > 0;
+                if (exists)
+                {
+                    var includesExcludes = (from products in dataset.Tables[0].AsEnumerable()
+                                            where products.Field<int>("package_id") == prodid
+                                            select new
+                                            {
+                                                Includes = products.Field<string>("package_includes"),
+                                                Excludse = products.Field<string>("package_excludes")
+                                            }).First();
 
-                txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
-                txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
+                    txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
+                    txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
+                }
+                else
+                {
+                    txtIncludes.Text = "";
+                    txtExcludes.Text = "";
+                }
             }
         }
         catch
@@ -583,7 +592,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>FLIGHT QUOTATION</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>FLIGHT INFO</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["FlightDetails"].ToString() + "</td>");
@@ -597,7 +606,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>HOTEL QUOTATION</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>HOTEL INFO</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["HotelInfo"].ToString() + "</td>");
@@ -611,7 +620,7 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>CAR QUOTATION</td>");
+                                sbMainrow.Append("<td colspan='4' width='100%' style='font-weight:700; width:100%; padding:5px 10px; font-size:3.56mm; text-transform:uppercase;'>CAR INFO</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9;'>" + dtlRow["CarHireDetails"].ToString() + "</td>");
@@ -641,8 +650,8 @@ public partial class Quote : System.Web.UI.Page
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                                 sbMainrow.Append("<tr>");
-                                sbMainrow.Append("<td width='55%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Include</td>");
-                                sbMainrow.Append("<td width='45%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Exclude</td>");
+                                sbMainrow.Append("<td width='55%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Includes</td>");
+                                sbMainrow.Append("<td width='45%' style='font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Excludes</td>");
                                 sbMainrow.Append("</tr>");
                                 sbMainrow.Append("<tr>");
                                 sbMainrow.Append(" <td width='55%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>" + dtlRow["Includes"].ToString() + "</td>");
@@ -923,8 +932,8 @@ public partial class Quote : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                int SmtpPort = 587;
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                //int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
