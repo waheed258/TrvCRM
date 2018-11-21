@@ -61,6 +61,12 @@
             document.getElementById("FileUploadContainer").removeChild(div.parentNode);
 
         }
+
+        function SetTarget() {
+
+            document.forms[0].target = "_blank";
+
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -238,7 +244,7 @@
                     <div class="clearfix"></div>
                     <div class="vali-form">
                         <div class="col-md-10" style="margin-bottom: 20px; margin-top: 10px;">
-                            <asp:ImageButton ID="imgbtnViewQuote" runat="server" ImageUrl="~/images/ViewQuote.png" OnClick="imgbtnViewQuote_Click" ValidationGroup="Quote" Height="35px" />
+                            <asp:ImageButton ID="imgbtnViewQuote" runat="server" ImageUrl="~/images/ViewQuote.png" OnClick="imgbtnViewQuote_Click" ValidationGroup="Quote" Height="35px" OnClientClick="SetTarget();" />
                             <asp:ImageButton ID="btnTemplageName" runat="server" ValidationGroup="Quote" ImageUrl="~/images/button_save-as-template.png" OnClick="btnTemplageName_Click" Height="35px" />
                             <asp:ImageButton ID="imgbtnSubmitAssign" runat="server" ImageUrl="~/images/Save.png" OnClick="imgbtnSubmitAssign_Click1" ValidationGroup="Quote" Height="35px" />
                             <asp:ImageButton ID="imgbtnAddMultipleOptions" runat="server" ImageUrl="~/images/add-multiple-options.png" OnClick="imgbtnAddMultipleOptions_Click" Height="35px" />
@@ -307,113 +313,7 @@
             </div>
         </div>
 
-        <div>
-            <asp:ImageButton ID="imgbtnVBackQuote" runat="server" OnClick="imgbtnVBackQuote_Click" ImageUrl="~/images/Back.png" Height="35px" />
-        </div>
-        <div class="forms-main" runat="server" id="viewQuoteSection">
-            <div class="graph-form">
-                <div class="validation-form">
-                    <div class="vali-form">
-                        <label class="control-label" style="color: #58a2e6; font-size: 20px;">View Quote</label>
-                        <div class="graph-form">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Client Name</label>
-                                        <asp:TextBox ID="txtVClientName" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Product</label>
-                                        <asp:TextBox ID="txtVProduct" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Dept From</label>
-                                        <asp:TextBox ID="txtVDeptFrom" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Travelling To</label>
-                                        <asp:TextBox ID="txtVTravellingTo" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Quotation Date</label>
-                                        <asp:TextBox ID="txtVQDate" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Cost Type For Adult</label>
-                                        <asp:TextBox ID="txtVCostTypeAdult" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Price</label>
-                                        <asp:TextBox ID="txtVPriceAdult" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">NoOfPersons</label>
-                                        <asp:TextBox ID="txtVNoOfPersonsAdult" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Total Price</label>
-                                        <asp:TextBox ID="txtVTotalPriceAdult" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Cost Type For Child</label>
-                                        <asp:TextBox ID="txtVCostTypeChild" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Price</label>
-                                        <asp:TextBox ID="txtVPriceChild" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">NoOfPersons</label>
-                                        <asp:TextBox ID="txtVNoOfPersonsChild" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="control-label">Total Price</label>
-                                        <asp:TextBox ID="txtVTotalPriceChild" class="form-control" runat="server" MaxLength="100" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Flight Details</label>
-                                    <asp:TextBox ID="txtVFlightDetails" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Car Hire</label>
-                                    <asp:TextBox ID="txtVCarHire" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Hotel Info</label>
-                                    <asp:TextBox ID="txtVHotelInfo" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Itinerary</label>
-                                    <asp:TextBox ID="txtVItinerary" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Include'S'</label>
-                                    <asp:TextBox ID="txtVIncludes" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Exclude'S'</label>
-                                    <asp:TextBox ID="txtVExcludes" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label" style="color: #58a2e6; font-size: 20px;">Travel Insurance</label>
-                                    <asp:TextBox ID="txtVTravelInsurance" TextMode="MultiLine" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
-                                </div>
-
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+       
 
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -523,13 +423,13 @@
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtExcludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
             CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtTravelInsur', { height: '100px', contentsCss: "p { margin:0px 0px 0px 0px; }" });
 
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVFlightDetails', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVCarHire', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVHotelInfo', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVItinerary', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVIncludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVExcludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
-            CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVTravelInsurance', { height: '100px', contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVFlightDetails', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVCarHire', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVHotelInfo', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVItinerary', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVIncludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVExcludes', { contentsCss: "p { margin:0px 0px 0px 0px; }" });
+            //CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtVTravelInsurance', { height: '100px', contentsCss: "p { margin:0px 0px 0px 0px; }" });
 
             CKEDITOR.on('instanceReady', function () {
                 $.each(CKEDITOR.instances, function (instance) {

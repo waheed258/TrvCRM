@@ -16,6 +16,7 @@ using MySql.Data.MySqlClient;
 using System.Collections;
 using System.Configuration;
 using System.Net.Mail;
+using System.Net;
 public partial class Quote : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -56,11 +57,9 @@ public partial class Quote : System.Web.UI.Page
                 GetProducts();
                 ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
                 emailsection.Style.Add("display", "none");
-                viewQuoteSection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
                 imgbtnBackQuote.Visible = false;
-                imgbtnVBackQuote.Visible = false;
                 if (flag == "1")
                 {
                     if (QuoteType == "2")
@@ -865,7 +864,7 @@ public partial class Quote : System.Web.UI.Page
         { }
 
     }
-    private bool GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    private bool    GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
     {
         try
         {
@@ -1214,7 +1213,6 @@ public partial class Quote : System.Web.UI.Page
         {
             backToLead.Visible = false;
             imgbtnBackQuote.Visible = true;
-            imgbtnVBackQuote.Visible = false;
             quotesection.Style.Add("display", "none");
             emailsection.Style.Add("display", "unset");
             lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
@@ -1351,6 +1349,7 @@ public partial class Quote : System.Web.UI.Page
     protected void backToLead_Click(object sender, ImageClickEventArgs e)
     {
         Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
+
     }
     protected void imgbtnAddMultipleOptions_Click(object sender, ImageClickEventArgs e)
     {
@@ -1426,47 +1425,178 @@ public partial class Quote : System.Web.UI.Page
     protected void imgbtnBackQuote_Click(object sender, ImageClickEventArgs e)
     {
         imgbtnBackQuote.Visible = false;
-        imgbtnVBackQuote.Visible = false;
         backToLead.Visible = true;
         quotesection.Style.Add("display", "unset");
         emailsection.Style.Add("display", "none");
     }
     protected void imgbtnViewQuote_Click(object sender, ImageClickEventArgs e)
     {
-        backToLead.Visible = false;
-        imgbtnVBackQuote.Visible = true;
-        imgbtnBackQuote.Visible = false;
-        viewQuoteSection.Style.Add("display", "unset");
-        quotesection.Style.Add("display", "none");
-        //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "ViewModal();", true);
-        txtVClientName.Text = lblClientName.Text;
-        txtVProduct.Text = ddlPackage.SelectedItem.Text;
-        txtVDeptFrom.Text = txtSource.Text;
-        txtVTravellingTo.Text = txtDestination.Text;
-        txtVQDate.Text = txtDate.Text;
-        txtVCostTypeAdult.Text = ddlAdultType.SelectedItem.Text;
-        txtVPriceAdult.Text = txtAdultPrice.Text;
-        txtVNoOfPersonsAdult.Text = ddlAdultPersons.SelectedItem.Text;
-        txtVTotalPriceAdult.Text = lblAdultTotPrice.Text;
-        txtVCostTypeChild.Text = ddlChildType.SelectedItem.Text;
-        txtVPriceChild.Text = txtChildPrice.Text;
-        txtVNoOfPersonsChild.Text = ddlChildPersons.SelectedItem.Text;
-        txtVTotalPriceChild.Text = lblChildTotPrice.Text;
-        txtVFlightDetails.Text = txtFlightDetails.Text;
-        txtVCarHire.Text = txtCarHireDetails.Text;
-        txtVHotelInfo.Text = txtHotelInfo.Text;
-        txtVItinerary.Text = txtItinerary.Text;
-        txtVIncludes.Text = txtIncludes.Text;
-        txtVExcludes.Text = txtExcludes.Text;
-        txtVTravelInsurance.Text = txtTravelInsur.Text;
+
+        StringBuilder sbMainrow = new StringBuilder();
+        StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
+        string readFile = reader.ReadToEnd();
+        reader.Close();
+
+        if (!string.IsNullOrEmpty(txtFlightDetails.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + txtFlightDetails.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtHotelInfo.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + txtHotelInfo.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtCarHireDetails.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + txtCarHireDetails.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtItinerary.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + txtItinerary.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtIncludes.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + txtIncludes.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtExcludes.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + txtExcludes.Text + "</div>");
+        }
+
+        readFile = readFile.Replace("{QuoteDate}", txtDate.Text);
+        readFile = readFile.Replace("{DestinationCity}", txtDestination.Text);
+        readFile = readFile.Replace("{TravelInsurance}", txtTravelInsur.Text);
+        readFile = readFile.Replace("{ConsultantName}", Session["Name"].ToString());
+        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
+        readFile = readFile.Replace("{ChildTotal}", lblChildTotPrice.Text);
+        readFile = readFile.Replace("{Includes}", txtIncludes.Text);
+        readFile = readFile.Replace("{Excludes}", txtExcludes.Text);
+        readFile = readFile.Replace("{FlightDetails}", txtFlightDetails.Text);
+        readFile = readFile.Replace("{HotelDetails}", txtHotelInfo.Text);
+        readFile = readFile.Replace("{CarDetails}", txtCarHireDetails.Text);
+        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
+        //readFile = readFile.Replace("{LeadStatus}", lStatus);
+
+
+
+        if (ddlAdultType.SelectedValue == "1")
+        {
+            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + txtAdultPrice.Text + " x " + ddlAdultPersons.SelectedValue + " adults");
+            readFile = readFile.Replace("{AdultTotal}", lblAdultTotPrice.Text);
+        }
+        else if (ddlAdultType.SelectedValue == "2")
+        {
+            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + txtAdultPrice.Text + " x 1 adult");
+            readFile = readFile.Replace("{AdultTotal}", txtAdultPrice.Text);
+        }
+
+        if (ddlChildType.SelectedValue == "3")
+        {
+            readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + txtChildPrice.Text + " x " + ddlChildPersons.SelectedValue + " child");
+        }
+        else
+        {
+            readFile = readFile.Replace("{ChildPrice}", "");
+        }
+
+        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
+
+        string StrContent = readFile;
+
+        string filepath = Server.MapPath("~/QuotePDF");
+
+
+        bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
+      
+    }
+
+    private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    {
+        try
+        {
+            string pdf_page_size = "A4";
+            SelectPdf.PdfPageSize pageSize = (SelectPdf.PdfPageSize)Enum.Parse(typeof(SelectPdf.PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            SelectPdf.PdfPageOrientation pdfOrientation =
+                (SelectPdf.PdfPageOrientation)Enum.Parse(typeof(SelectPdf.PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+
+            // instantiate a html to pdf converter object
+            SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HtmlString, "");
+
+            // save pdf document      
+
+            //if (!SaveFileDir)
+            //    doc.Save(Response, ResponseShow, Path);
+            //else
+            //    doc.Save(Path);
+
+            string FileName = Path + "/" + "QuoteNumber" + ".pdf";
+
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+            else
+            {
+                if (File.Exists(FileName))
+                {
+                    File.Delete(FileName);
+                }
+            }
+
+            doc.Save(FileName);
+
+            //doc.Close();
+
+            //doc.Save(FileName);
+
+
+            string FilePath = FileName;
+            WebClient User = new WebClient();
+            Byte[] FileBuffer = User.DownloadData(FilePath);
+            if (FileBuffer != null)
+            {
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-length", FileBuffer.Length.ToString());
+                Response.BinaryWrite(FileBuffer);
+            }
+
+
+            //if (FileName != "")
+            //    doc.Save(FileName);
+
+            doc.Close();
+
+            return true;
+
+        }
+        catch
+        { return false; }
     }
     protected void imgbtnVBackQuote_Click(object sender, ImageClickEventArgs e)
     {
         imgbtnBackQuote.Visible = false;
-        imgbtnVBackQuote.Visible = false;
         backToLead.Visible = true;
         quotesection.Style.Add("display", "unset");
         emailsection.Style.Add("display", "none");
-        viewQuoteSection.Style.Add("display", "none");
     }
 }
