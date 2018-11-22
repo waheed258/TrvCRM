@@ -54,8 +54,8 @@ public partial class Quote : System.Web.UI.Page
                 txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
-                GetProducts();
-                ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
+                //GetProducts();
+                //ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
                 emailsection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
@@ -117,6 +117,7 @@ public partial class Quote : System.Web.UI.Page
         try
         {
             dataset = productBL.GetProduct();
+
             ViewState["products"] = dataset;
             ddlPackage.DataSource = dataset;
             ddlPackage.DataTextField = "package_short_des";
@@ -131,6 +132,7 @@ public partial class Quote : System.Web.UI.Page
             }
             else
             {
+
                 int prodid = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["prodid"]));
                 bool exists = dataset.Tables[0].AsEnumerable().Where(c => c.Field<int>("package_id").Equals(prodid)).Count() > 0;
                 if (exists)
@@ -151,7 +153,9 @@ public partial class Quote : System.Web.UI.Page
                     txtIncludes.Text = "";
                     txtExcludes.Text = "";
                 }
+
             }
+
         }
         catch
         {
@@ -864,7 +868,7 @@ public partial class Quote : System.Web.UI.Page
         { }
 
     }
-    private bool    GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    private bool GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
     {
         try
         {
@@ -1511,7 +1515,7 @@ public partial class Quote : System.Web.UI.Page
 
 
         bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
-      
+
     }
 
     private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)

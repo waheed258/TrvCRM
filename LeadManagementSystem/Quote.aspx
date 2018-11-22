@@ -87,7 +87,13 @@
                                 </div>
                                 <div class="col-md-3" id="dvProdct" runat="server">
                                     <label class="control-label">Product</label>
-                                    <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlPackage_SelectedIndexChanged" AutoPostBack="true">
+                                    <asp:DropDownList ID="ddlPackage" runat="server" Style="padding: 0px" CssClass="form-control">
+                                        <asp:ListItem Value="-1" Text="--Select--"></asp:ListItem>
+                                        <asp:ListItem Value="1" Text="Golden Triangle"></asp:ListItem>
+                                        <asp:ListItem Value="2" Text="Mumbai Shopper"></asp:ListItem>
+                                        <asp:ListItem Value="3" Text="Wonders of Turkey"></asp:ListItem>
+                                        <asp:ListItem Value="4" Text="Golden Triangle Inc. Mumbai"></asp:ListItem>
+                                        <asp:ListItem Value="5" Text="Phuket Dubai Combo"></asp:ListItem>
                                     </asp:DropDownList>
                                     <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
                                         ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
