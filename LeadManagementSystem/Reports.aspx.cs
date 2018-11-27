@@ -10,6 +10,7 @@ using System.Data;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+
 public partial class Reports : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -19,7 +20,6 @@ public partial class Reports : System.Web.UI.Page
     ConsultantBL consultantBL = new ConsultantBL();
     FollowupEntity followupEntity = new FollowupEntity();
     EncryptDecrypt encryptdecrypt = new EncryptDecrypt();
-
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -27,8 +27,6 @@ public partial class Reports : System.Web.UI.Page
             if (!IsPostBack)
             {
                 _objComman.getRecordsPerPage(DropPage);
-
-                //GetLeadsList();
                 dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
                 bindGrid(dataset);
                 GetProducts();
@@ -38,7 +36,6 @@ public partial class Reports : System.Web.UI.Page
         }
         catch { }
     }
-
     protected void GetProducts()
     {
         try
@@ -52,9 +49,8 @@ public partial class Reports : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
 
@@ -71,9 +67,8 @@ public partial class Reports : System.Web.UI.Page
         }
         catch
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
 
@@ -86,13 +81,12 @@ public partial class Reports : System.Web.UI.Page
             ddlConsultants.DataTextField = "Name";
             ddlConsultants.DataValueField = "ConsultantID";
             ddlConsultants.DataBind();
-            ddlConsultants.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));           
+            ddlConsultants.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
         }
         catch
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
     protected void GetLeadsList()
@@ -101,27 +95,24 @@ public partial class Reports : System.Web.UI.Page
         {
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             dataset = leadBL.GetLeadsList(0);
-            
+
             gvLeadList.DataSource = dataset;
             gvLeadList.DataBind();
         }
         catch (Exception ex)
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
     protected void DropPage_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //GetLeadsList();
         dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindGrid(dataset);
     }
     protected void gvLeadList_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvLeadList.PageIndex = e.NewPageIndex;
-        //GetLeadsList();
         dataset = leadBL.GetLeadsReport(hdfSearchBy.Value, hdfSearchValue.Value, hdfDates.Value);
         bindGrid(dataset);
     }
@@ -143,7 +134,7 @@ public partial class Reports : System.Web.UI.Page
         try
         {
             PdfPTable pdfptable = new PdfPTable(gvLeadList.HeaderRow.Cells.Count);
-       
+
             foreach (TableCell headerCell in gvLeadList.HeaderRow.Cells)
             {
 
@@ -165,7 +156,7 @@ public partial class Reports : System.Web.UI.Page
                 }
 
             }
-            Document pdfDocument = new Document(PageSize.A4.Rotate(), 0, 0, 10, 0);          
+            Document pdfDocument = new Document(PageSize.A4.Rotate(), 0, 0, 10, 0);
             PdfWriter.GetInstance(pdfDocument, Response.OutputStream);
             pdfDocument.Open();
             pdfDocument.Add(pdfptable);
@@ -184,8 +175,6 @@ public partial class Reports : System.Web.UI.Page
         //required to avoid the runtime error "  
         //Control 'GridView1' of type 'GridView' must be placed inside a form tag with runat=server."  
     }
-
-
     private void ExportGridToExcel()
     {
         gvExcel.AllowPaging = false;
@@ -207,24 +196,25 @@ public partial class Reports : System.Web.UI.Page
         gvExcel.HeaderStyle.Font.Bold = true;
         gvExcel.RenderControl(htmltextwrtter);
         Response.Write(strwritter.ToString());
-        Response.End();      
-    }    
-   
+        Response.End();
+    }
+
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         try
         {
-            
             gvLeadList.PageSize = Convert.ToInt32(DropPage.SelectedValue);
 
             string strSearchBy = ddlSearch.SelectedValue;
             hdfSearchBy.Value = strSearchBy;
 
-            if (strSearchBy == "0") {
+            if (strSearchBy == "0")
+            {
                 dataset = leadBL.GetLeadsReport(strSearchBy, "", txtFrom.Text + "," + txtTo.Text);
                 hdfSearchValue.Value = "";
             }
-            else if (strSearchBy == "1") {
+            else if (strSearchBy == "1")
+            {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlProduct.SelectedValue, txtFrom.Text + "," + txtTo.Text);
                 hdfSearchValue.Value = ddlProduct.SelectedValue;
             }
@@ -236,35 +226,17 @@ public partial class Reports : System.Web.UI.Page
             else if (strSearchBy == "3")
             {
                 dataset = leadBL.GetLeadsReport(strSearchBy, ddlConsultants.SelectedValue, txtFrom.Text + "," + txtTo.Text);
-                //dataset = leadBL.GetLeadsReport(strSearchBy, ddlDayWise.SelectedValue);
                 hdfSearchValue.Value = ddlConsultants.SelectedValue;
             }
-            //else if (strSearchBy == "4")
-            //{
-            //    dataset = leadBL.GetLeadsReport(strSearchBy, ddlWeek.SelectedValue);
-            //    hdfSearchValue.Value = ddlWeek.SelectedValue;
-            //}
-            //else if (strSearchBy == "5")
-            //{
-            //    dataset = leadBL.GetLeadsReport(strSearchBy, ddlMonth.SelectedValue);
-            //    hdfSearchValue.Value = ddlMonth.SelectedValue;
-            //}
-            //else if (strSearchBy == "6")
-            //{
-            //    dataset = leadBL.GetLeadsReport(strSearchBy, txtFrom.Text + "," + txtTo.Text);
-            //    hdfSearchValue.Value = txtFrom.Text + "," + txtTo.Text;
-            //}
-
             hdfDates.Value = txtFrom.Text + "," + txtTo.Text;
 
             bindGrid(dataset);
-            
+
         }
         catch (Exception ex)
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
 
@@ -279,26 +251,23 @@ public partial class Reports : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-        }   
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
+        }
     }
 
     private void bindExcel(DataSet ds)
     {
         try
         {
-           // gvExcel.PageSize = Convert.ToInt32(DropPage.SelectedValue);
             DataSet dsData = ds;
             gvExcel.DataSource = dsData;
             gvExcel.DataBind();
         }
         catch (Exception ex)
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
 }

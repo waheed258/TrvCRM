@@ -19,6 +19,7 @@ namespace DataLogic
         {
             /* This code takes connection string from the web.config file.*/
 
+            //return "Data Source=DINH0031LP\\SQLEXPRESS;Database=trvcrm_dev;Integrated Security = true"; 
             return "Data Source=209.222.108.170;Database=trvcrm_dev;User Id=trvcrm_dev_user;Password=Dino@321;"; 
         }
 

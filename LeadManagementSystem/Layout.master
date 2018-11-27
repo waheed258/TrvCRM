@@ -4,160 +4,126 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-
-    <title>Lead Management</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel='stylesheet' type='text/css' />
-    <!-- Graph CSS -->
-    <link href="css/font-awesome.css" rel="stylesheet" />
-    <!-- jQuery -->
-    <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css' />
-    <!-- lined-icons -->
-    <link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
-    <!-- //lined-icons -->
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/amcharts.js"></script>
-    <script src="js/serial.js"></script>
-    <script src="js/light.js"></script>
-    <script src="js/radar.js"></script>
-    <link href="css/barChart.css" rel='stylesheet' type='text/css' />
-    <link href="css/fabochart.css" rel='stylesheet' type='text/css' />
-    <!--clock init-->
-    <script src="js/css3clock.js"></script>
-    <!--Easy Pie Chart-->
-    <!--skycons-icons-->
-    <script src="js/skycons.js"></script>
-    <link href="css/paging-style.css" rel="stylesheet" />
-    <script src="js/jquery.easydropdown.js"></script>
-
-    <!--//skycons-icons-->
+    <title>Serendipity Travel CRM</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/vendor/linearicons/style.css" />
+    <link rel="stylesheet" href="assets/vendor/chartist/css/chartist-custom.css" />
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+    <link rel="stylesheet" href="assets/css/demo.css" />
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" />
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server" enctype="multipart/form-data" method = "post">
-        <div class="page-container">
-            <!--/content-inner-->
-            <div class="left-content">
-                <div class="inner-content">
-                    <!-- header-starts -->
-                    <div class="header-section">
-                        <!--menu-right-->
-                        <div class="top_menu">
-                            <!--/profile_details-->
-                            <div class="profile_details_left" style="width: 19%; margin: auto; text-align: center;">
-                                <a>
-                                    <img src="images/admin.jpg" height="50" class="img-circle" /></a>
-
-                                <ul class="nofitications-dropdown">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" style="color: #021f4e;font-weight:bold;" data-toggle="dropdown" id="profile" runat="server" aria-expanded="false"><i class="arrow down"></i></a>
-                                        <ul class="dropdown-menu two" style="font-size: 12px;">
-                                            <li><a class="tooltips" href="ProfilePage.aspx" id="profileli" runat="server"><i class="lnr lnr-user"></i>Profile</a></li>
-                                            <li><a class="tooltips" href="Login.aspx"><i class="lnr lnr-power-switch"></i>Logout</a></li>
-
-                                        </ul>
-                                    </li>
+    <form id="form1" runat="server">
+        <!-- WRAPPER -->
+        <div id="wrapper">
+            <!-- NAVBAR -->
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="brand" style="padding: 0px;">
+                    <a href="index.html">
+                        <img src="assets/img/logo.png" style="height: 60px; margin-top: 10px;" alt="Klorofil Logo" class="img-responsive logo" /></a>
+                </div>
+                <div class="container-fluid">
+                    <div class="navbar-btn">
+                        <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+                    </div>
+                    <div id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="assets/img/user.png" class="img-circle" alt="Avatar" />
+                                    <span id="profile" runat="server" style="font-weight:bold"></span></a>
+                            </li>
+                            <li id="profileli" runat="server"><a href="UpdateConsultant.aspx"><i class="lnr lnr-user"></i><span>My Profile</span></a></li>
+                            <li><a href="Login.aspx"><i class="lnr lnr-exit"></i><span>Logout</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- END NAVBAR -->
+            <!-- LEFT SIDEBAR -->
+            <div id="sidebar-nav" class="sidebar">
+                <div class="sidebar-scroll">
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="Dashboard.aspx" class="active"><i class="lnr lnr-home"></i><span>Dashboard</span></a></li>
+                            <li>
+                                <a data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i><span>Leads</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                                <%--<div  class="collapse ">--%>
+                                <ul class="nav">
+                                    <li><a href="NewLead.aspx" class="">New Lead</a></li>
+                                    <li><a href="UnAssignedLeads.aspx" class="">Un-Assigned Leads</a></li>
+                                    <li><a href="AssignedLeads.aspx" class="">Assigned Leads</a></li>
+                                    <li><a href="Reminders.aspx" class="">Reminders</a></li>
                                 </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                            <!--//profile_details-->
-                        </div>
-                        <!--//menu-right-->
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- //header-ends -->
-                    <div class="outter-wp">
-                        <div>
-                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                            </asp:ContentPlaceHolder>
-                        </div>
-                        <!--//outer-wp-->
-                    </div>
-                    <!--footer section start-->
-                    <footer>
-                        <p>&copy 2018 SERENDIPITY . All Rights Reserved | Design by <a href="http://www.dinoosys.com/" target="_blank">Dinoosys Technologies.</a></p>
-                    </footer>
-                    <!--footer section end-->
+                                <%--</div>--%>
+                            </li>
+                            <li>
+                                <a data-toggle="collapse" class="collapsed"><i class="lnr lnr-users"></i><span>Consultants</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                                <%-- <div class="collapse ">--%>
+                                <ul class="nav">
+                                    <li><a href="NewConsultant.aspx" class="">New Consultant</a></li>
+                                    <li><a href="ConsultantsList.aspx" class="">Consultants List</a></li>
+                                </ul>
+                                <%-- </div>--%>
+                            </li>
+                            <li>
+                                <a data-toggle="collapse" class="collapsed"><i class="lnr lnr-users"></i><span>Customers</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                                <%--<div  class="collapse ">--%>
+                                <ul class="nav">
+                                    <li><a href="NewCustomer.aspx" class="">New Customer</a></li>
+                                    <li><a href="CustomersList.aspx" class="">Customers List</a></li>
+                                </ul>
+                                <%--  </div>--%>
+                            </li>
+                            <li><a href="Reports.aspx" class=""><i class="lnr lnr-dice"></i><span>Reports</span></a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
-            <!--//content-inner-->
-            <!--/sidebar-menu-->
-            <div class="sidebar-menu">
-                <header class="logo" style="height: 75px;">
-                    <a class="sidebar-icon"><span class="fa fa-bars"></span></a><a href="Dashboard.aspx"><%--<span id="logo">
-                        <h1>Augment</h1>
-                    </span>--%>
-                        <img id="logo" src="images/logo4.png" alt="Logo" style="height: 54px;" />
-                    </a>
-                </header>
-                <div style="border-top: 1px solid rgba(69, 74, 84, 0.7)"></div>
-                <!--/down-->
-
-                <!--//down-->
-                <div class="menu">
-                    <ul id="menu">
-                        <li><a href="Dashboard.aspx" title="Dashboard"><i class="fa fa-tachometer"></i><span>Dashboard</span></a></li>
-                        <li id="menu-academico" title="Consultants"><a href="ConsultantList.aspx"><i class="fa fa-user"></i><span>Consultants</span> </a>
-                            <%-- <ul id="menu-academico-sub">
-                                <li id="menu-academico-avaliacoes"><a href="tabs.html">New Consultant</a></li>
-                                <li id="menu-academico-boletim"><a href="widget.html">Consultants List</a></li>
-                            </ul>--%>
-                        </li>
-                        <li id="menu-academico" title="Leads"><a href="Lead.aspx"><i class="fa fa-file-text-o"></i><span>Leads</span> </a>
-                            <%-- <ul id="menu-academico-sub">
-                                <li id="menu-academico-avaliacoes"><a href="forms.html">New Lead</a></li>
-                                <li id="menu-academico-boletim"><a href="validation.html">Leads List</a></li>
-                            </ul>--%>
-                        </li>
-                        <li id="menu-academico" title="Customers"><a href="NewCustomer.aspx"><i class="lnr lnr-user"></i><span>Customers</span></a>
-                            <%--<ul id="menu-academico-sub">
-                                <li id="menu-academico-avaliacoes"><a href="login.html">New Customer</a></li>
-                                <li id="menu-academico-boletim"><a href="register.html">Customers List</a></li>
-                            </ul>--%>
-                        </li>
-                        <li id="menu-academico" title="Reports"><a href="Reports.aspx"><i class="lnr lnr-user"></i><span>Reports</span></a></li>
-                    </ul>
+            <!-- END LEFT SIDEBAR -->
+            <!-- MAIN -->
+            <div class="main">
+                <!-- MAIN CONTENT -->
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <!-- OVERVIEW -->
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                        <!-- END OVERVIEW -->
+                    </div>
                 </div>
+                <!-- END MAIN CONTENT -->
             </div>
+            <!-- END MAIN -->
             <div class="clearfix"></div>
+            <footer>
+                <div class="container-fluid">
+                    <p class="copyright">&copy; 2018 <a href="https://www.dinoosys.com" target="_blank">Dinoosys Technologies</a>. All Rights Reserved.</p>
+                </div>
+            </footer>
         </div>
-        <script>
-            var toggle = true;
-
-            $(".sidebar-icon").click(function () {
-                if (toggle) {
-                    $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
-                    $("#menu span").css({ "position": "absolute" });
-                }
-                else {
-                    $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
-                    setTimeout(function () {
-                        $("#menu span").css({ "position": "relative" });
-                    }, 400);
-                }
-
-                toggle = !toggle;
-            });
-        </script>
-        <!--js -->
-        <%--<link rel="stylesheet" href="css/vroom.css">--%>
-        <script type="text/javascript" src="js/vroom.js"></script>
-        <script type="text/javascript" src="js/TweenLite.min.js"></script>
-        <script type="text/javascript" src="js/CSSPlugin.min.js"></script>
-        <script src="js/jquery.nicescroll.js"></script>
-        <script src="js/scripts.js"></script>
-
-        <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        <!-- END WRAPPER -->
     </form>
+    <!-- Javascript -->
+    <%--<script src="assets/vendor/jquery/jquery.min.js"></script>--%>
+    <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+    <script src="assets/vendor/chartist/js/chartist.min.js"></script>
+    <script src="assets/scripts/klorofil-common.js"></script>
 </body>
 </html>

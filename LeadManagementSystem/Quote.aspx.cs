@@ -17,6 +17,7 @@ using System.Collections;
 using System.Configuration;
 using System.Net.Mail;
 using System.Net;
+
 public partial class Quote : System.Web.UI.Page
 {
     DataSet dataset = new DataSet();
@@ -31,31 +32,28 @@ public partial class Quote : System.Web.UI.Page
     string quoteno = string.Empty;
     string lStatus = string.Empty;
     LeadBL leadBL = new LeadBL();
-    ProductBL productBL = new ProductBL();
+    //ProductBL productBL = new ProductBL();
     List<QuoteEntity> lstQuoteEntity = new List<QuoteEntity>();
     StringBuilder QuoteBuilder = new StringBuilder();
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
-            city = encryptdecrypt.Decrypt(Request.QueryString["city"]);
-            LeadID = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["id"]));
+            city = Request.QueryString["city"];
+            LeadID = Convert.ToInt32(Request.QueryString["id"]);
             quoteno = Request.QueryString["QuoteID"];
             flag = Request.QueryString["flag"];
-            clEmail = encryptdecrypt.Decrypt(Request.QueryString["em"]);
+            clEmail = Request.QueryString["em"];
             QuoteType = Request.QueryString["qtype"];
             TempId = Request.QueryString["temp"];
             lStatus = Request.QueryString["status"];
             if (!IsPostBack)
             {
-                lblClientName.Text = encryptdecrypt.Decrypt(Request.QueryString["client"]);
-                //lblProduct.Text = encryptdecrypt.Decrypt(Request.QueryString["prod"]);
-                txtSource.Text = encryptdecrypt.Decrypt(Request.QueryString["source"]);
-                txtDestination.Text = encryptdecrypt.Decrypt(Request.QueryString["city"]);
+                lblClientName.Text = Request.QueryString["client"];
+                txtSource.Text = Request.QueryString["source"];
+                txtDestination.Text = Request.QueryString["city"];
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
-                //GetProducts();
-                //ddlPackage.SelectedValue = encryptdecrypt.Decrypt(Request.QueryString["prodid"]);
                 emailsection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
@@ -112,153 +110,26 @@ public partial class Quote : System.Web.UI.Page
         catch
         { }
     }
-    protected void GetProducts()
+
+    private void Clear()
     {
-        try
-        {
-            dataset = productBL.GetProduct();
-
-            ViewState["products"] = dataset;
-            ddlPackage.DataSource = dataset;
-            ddlPackage.DataTextField = "package_short_des";
-            ddlPackage.DataValueField = "package_id";
-            ddlPackage.DataBind();
-            ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
-
-            if (encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == "" || encryptdecrypt.Decrypt(Request.QueryString["prodid"]) == null)
-            {
-                txtIncludes.Text = "";
-                txtExcludes.Text = "";
-            }
-            else
-            {
-
-                int prodid = Convert.ToInt32(encryptdecrypt.Decrypt(Request.QueryString["prodid"]));
-                bool exists = dataset.Tables[0].AsEnumerable().Where(c => c.Field<int>("package_id").Equals(prodid)).Count() > 0;
-                if (exists)
-                {
-                    var includesExcludes = (from products in dataset.Tables[0].AsEnumerable()
-                                            where products.Field<int>("package_id") == prodid
-                                            select new
-                                            {
-                                                Includes = products.Field<string>("package_includes"),
-                                                Excludse = products.Field<string>("package_excludes")
-                                            }).First();
-
-                    txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
-                    txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
-                }
-                else
-                {
-                    txtIncludes.Text = "";
-                    txtExcludes.Text = "";
-                }
-
-            }
-
-        }
-        catch
-        {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-        }
-    }
-    public class ProductBL
-    {
-        DataManager dataManager = new DataManager();
-        public DataSet GetProduct()
-        {
-            Hashtable hashtable = new Hashtable();
-            hashtable.Add("inOperationName", "SELECT");
-            DataSet ds = dataManager.ExecuteDataSet("get_packages", hashtable);
-            return ds;
-        }
-    }
-    public class DataManager
-    {
-        #region SqlConnection
-
-        /// <summary>
-        /// This method gets the connection string.
-        /// </summary>
-        /// <returns>Connection String</returns>
-        public string GetConnectionString()
-        {
-            string str = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            /* This code takes connection string from the web.config file.*/
-
-            //return "Data Source=209.222.108.170;Database=trvcrm_dev;User Id=trvcrm_dev_user;Password=Dino@321;";
-            //return "server=67.225.171.204;user id=seren_web_padmin; password=Dino@123;database=seren_web_prod";
-            //return "Data Source=67.225.171.204;Database=seren_web_prod;User Id=seren_web_padmin;Password=Dino@123;Connect Timeout=12000";
-            return str;
-        }
-
-
-        /// <summary>
-        /// This method returns SqlConnection object.
-        /// </summary>
-        /// <returns>SqlConnection</returns>
-        public MySqlConnection GetSqlConnection()
-        {
-            string strConnection = GetConnectionString();
-            if (strConnection == null)
-                return null;
-            var objSqlConnection = new MySqlConnection(strConnection);
-            return objSqlConnection;
-        }
-
-        #endregion
-
-
-        #region EXECUTE DATASET
-
-        /// <summary>
-        /// This method returns the data in dataset form. 
-        /// </summary>
-        /// <param name="commandText">Command text</param>
-        /// <returns>Data in the form of Dataset.</returns>
-        public DataSet ExecuteDataSet(string commandText, Hashtable htParameters)
-        {
-
-            var dsData = new DataSet();
-            var objMyDataAdapter = new MySqlDataAdapter();
-            MySqlConnection objMySqlConn = GetSqlConnection();
-            try
-            {
-                if (objMySqlConn == null)
-                {
-                    return null;
-                }
-                var objMyCommand = new MySqlCommand
-                {
-                    Connection = objMySqlConn,
-                    CommandType = CommandType.StoredProcedure,
-                    CommandText = commandText
-                };
-                foreach (DictionaryEntry parameter in htParameters)
-                {
-                    objMyCommand.Parameters.AddWithValue(parameter.Key.ToString(), parameter.Value);
-                }
-                objMyDataAdapter.SelectCommand = objMyCommand;
-
-                objMyDataAdapter.Fill(dsData);
-                //objMySqlConn.Close();
-                //objMySqlConn.Dispose();
-
-                return dsData;
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                objMySqlConn.Close();
-            }
-        }
-
-        #endregion
+        txtDate.Text = "";
+        ddlAdultType.SelectedValue = "-1";
+        txtAdultPrice.Text = "";
+        ddlAdultPersons.SelectedValue = "0";
+        ddlChildType.SelectedValue = "-1";
+        txtChildPrice.Text = "";
+        ddlChildPersons.SelectedValue = "0";
+        lblChildTotPrice.Text = "";
+        lblAdultTotPrice.Text = "";
+        txtFlightDetails.Text = "";
+        txtCarHireDetails.Text = "";
+        txtHotelInfo.Text = "";
+        txtItinerary.Text = "";
+        dvAdultPersons.Visible = false;
+        dvChildPersons.Visible = false;
+        dvAdultTot.Visible = false;
+        dvChildTotalPrice.Visible = false;
     }
     protected void GetCostTypeDataAdult()
     {
@@ -273,9 +144,8 @@ public partial class Quote : System.Web.UI.Page
         }
         catch
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
     protected void GetCostTypeDataChild()
@@ -291,11 +161,11 @@ public partial class Quote : System.Web.UI.Page
         }
         catch
         {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
         }
     }
+
     protected string GetQuoteData()
     {
         string strResult = string.Empty;
@@ -460,23 +330,6 @@ public partial class Quote : System.Web.UI.Page
 
         return strResult;
     }
-    protected void GetIncludeExcludeData()
-    {
-        try
-        {
-            dataset = qtBL.GetIncudeExcludes();
-
-            txtIncludes.Text = dataset.Tables[0].Rows[0]["IncludesDescription"].ToString();
-            txtExcludes.Text = dataset.Tables[1].Rows[0]["ExcludesDescription"].ToString();
-
-        }
-        catch
-        {
-            message.Text = "Something went wrong. Please contact administrator!";
-            message.ForeColor = System.Drawing.Color.Red;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-        }
-    }
     protected void ddlAdultType_SelectedIndexChanged(object sender, EventArgs e)
     {
         txtAdultPrice.Text = "";
@@ -493,6 +346,14 @@ public partial class Quote : System.Web.UI.Page
             dvAdultTot.Visible = false;
             ddlAdultPersons.SelectedValue = "0";
             lblAdultTotPrice.Text = "";
+        }
+    }
+    protected void ddlAdultPersons_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (txtAdultPrice.Text != "" && ddlAdultPersons.SelectedValue != "0")
+        {
+            lblAdultTotPrice.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) * Convert.ToInt32(ddlAdultPersons.SelectedValue));
+            lblGrandTotal.Text = lblAdultTotPrice.Text;
         }
     }
     protected void ddlChildType_SelectedIndexChanged(object sender, EventArgs e)
@@ -525,41 +386,859 @@ public partial class Quote : System.Web.UI.Page
                 lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
         }
     }
-    protected void ddlAdultPersons_SelectedIndexChanged(object sender, EventArgs e)
+    protected void imgbtnViewQuote_Click(object sender, EventArgs e)
     {
-        if (txtAdultPrice.Text != "" && ddlAdultPersons.SelectedValue != "0")
+        StringBuilder sbMainrow = new StringBuilder();
+
+        StringBuilder sbFlight = new StringBuilder();
+        StringBuilder sbHotel = new StringBuilder();
+        StringBuilder sbCar = new StringBuilder();
+
+        if (!string.IsNullOrEmpty(txtFlightDetails.Text))
         {
-            lblAdultTotPrice.Text = Convert.ToString(Convert.ToInt32(txtAdultPrice.Text) * Convert.ToInt32(ddlAdultPersons.SelectedValue));
-            lblGrandTotal.Text = lblAdultTotPrice.Text;
+            sbFlight.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbFlight.Append("<tr>");
+            sbFlight.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbFlight.Append("</tr>");
+            sbFlight.Append("<tr>");
+            sbFlight.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbFlight.Append(txtFlightDetails.Text);
+            sbFlight.Append("</td>");
+            sbFlight.Append("</tr>");
+            sbFlight.Append("</table>");
+
+        }
+        if (!string.IsNullOrEmpty(txtHotelInfo.Text))
+        {
+            sbHotel.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbHotel.Append("<tr>");
+            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbHotel.Append("</tr>");
+            sbHotel.Append("<tr>");
+            sbHotel.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbHotel.Append(txtHotelInfo.Text);
+            sbHotel.Append("</td>");
+            sbHotel.Append("</tr>");
+            sbHotel.Append("</table>");
+        }
+
+        if (!string.IsNullOrEmpty(txtCarHireDetails.Text))
+        {
+            sbCar.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbCar.Append("<tr>");
+            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbCar.Append("</tr>");
+            sbCar.Append("<tr>");
+            sbCar.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbCar.Append(txtCarHireDetails.Text);
+            sbCar.Append("</td>");
+            sbCar.Append("</tr>");
+            sbCar.Append("</table>");
+        }
+
+        if (!string.IsNullOrEmpty(txtItinerary.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + txtItinerary.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtIncludes.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + txtIncludes.Text + "</div>");
+        }
+
+        if (!string.IsNullOrEmpty(txtExcludes.Text))
+        {
+            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + txtExcludes.Text + "</div>");
+        }
+
+
+        StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
+        string readFile = reader.ReadToEnd();
+        reader.Close();
+
+        readFile = readFile.Replace("{QuoteDate}", txtDate.Text);
+        readFile = readFile.Replace("{DestinationCity}", txtDestination.Text);
+        readFile = readFile.Replace("{TravelInsurance}", txtTravelInsur.Text);
+        readFile = readFile.Replace("{ConsultantName}", Session["Name"].ToString());
+        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
+        readFile = readFile.Replace("{ChildTotal}", lblChildTotPrice.Text);
+        readFile = readFile.Replace("{Includes}", txtIncludes.Text);
+        readFile = readFile.Replace("{Excludes}", txtExcludes.Text);
+        readFile = readFile.Replace("{FlightDetails}", sbFlight.ToString());
+        readFile = readFile.Replace("{HotelDetails}", sbHotel.ToString());
+        readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
+        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
+        //readFile = readFile.Replace("{LeadStatus}", lStatus);
+
+
+
+        if (ddlAdultType.SelectedValue == "1")
+        {
+            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + txtAdultPrice.Text + " x " + ddlAdultPersons.SelectedValue + " adults");
+            readFile = readFile.Replace("{AdultTotal}", lblAdultTotPrice.Text);
+        }
+        else if (ddlAdultType.SelectedValue == "2")
+        {
+            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + txtAdultPrice.Text + " x 1 adult");
+            readFile = readFile.Replace("{AdultTotal}", txtAdultPrice.Text);
+        }
+
+        if (ddlChildType.SelectedValue == "3")
+        {
+            readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + txtChildPrice.Text + " x " + ddlChildPersons.SelectedValue + " child");
+        }
+        else
+        {
+            readFile = readFile.Replace("{ChildPrice}", "");
+        }
+
+        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
+
+        string StrContent = readFile;
+
+        string filepath = Server.MapPath("~/QuotePDF");
+
+
+        bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
+
+    }
+    private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    {
+        try
+        {
+            string pdf_page_size = "A4";
+            SelectPdf.PdfPageSize pageSize = (SelectPdf.PdfPageSize)Enum.Parse(typeof(SelectPdf.PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            SelectPdf.PdfPageOrientation pdfOrientation =
+                (SelectPdf.PdfPageOrientation)Enum.Parse(typeof(SelectPdf.PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+
+            // instantiate a html to pdf converter object
+            SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HtmlString, "");
+
+            // save pdf document      
+
+            //if (!SaveFileDir)
+            //    doc.Save(Response, ResponseShow, Path);
+            //else
+            //    doc.Save(Path);
+
+            string FileName = Path + "/" + "QuoteNumber" + ".pdf";
+
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+            else
+            {
+                if (File.Exists(FileName))
+                {
+                    File.Delete(FileName);
+                }
+            }
+
+            doc.Save(FileName);
+
+            //doc.Close();
+
+            //doc.Save(FileName);
+
+
+            string FilePath = FileName;
+            WebClient User = new WebClient();
+            Byte[] FileBuffer = User.DownloadData(FilePath);
+            if (FileBuffer != null)
+            {
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-length", FileBuffer.Length.ToString());
+                Response.BinaryWrite(FileBuffer);
+            }
+
+
+            //if (FileName != "")
+            //    doc.Save(FileName);
+
+            doc.Close();
+
+            return true;
+
+        }
+        catch
+        { return false; }
+    }
+    protected void btnTemplageName_Click(object sender, EventArgs e)
+    {
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "TemplageModal();", true);
+    }
+    protected void imgbtnSubmitAssign_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            backToLead.Visible = false;
+            imgbtnBackQuote.Visible = true;
+            quotesection.Style.Add("display", "none");
+            emailsection.Style.Add("display", "unset");
+            lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
+            if (lstQuoteEntity == null)
+            {
+                QuoteEntity qtEntity = new QuoteEntity();
+                qtEntity.CarHireDetails = txtCarHireDetails.Text;
+                qtEntity.ConsultantName = Session["Name"].ToString();
+                qtEntity.CostForAdult = txtAdultPrice.Text;
+                qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+                qtEntity.CostForChild = txtChildPrice.Text;
+                qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+                qtEntity.Excludes = txtExcludes.Text;
+                qtEntity.FlightDetails = txtFlightDetails.Text;
+                qtEntity.HotelInfo = txtHotelInfo.Text;
+                qtEntity.Includes = txtIncludes.Text;
+                qtEntity.ItineraryDetails = txtItinerary.Text;
+                qtEntity.LeadID = LeadID;
+                qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+                qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+                qtEntity.QuoteDate = txtDate.Text;
+                qtEntity.ToCity = city;
+                qtEntity.TravelInsurance = txtTravelInsur.Text;
+                qtEntity.AdultTotal = lblAdultTotPrice.Text;
+                qtEntity.ChildTotal = lblChildTotPrice.Text;
+                qtEntity.IsMailSent = "N";
+                qtEntity.QuoteNumber = "";
+                qtEntity.Operation = "I";
+
+                if (QuoteType == "3")
+                {
+                    qtEntity.PackageId = txtProduct.Text;
+                }
+                else
+                {
+                    qtEntity.PackageId = ddlPackage.SelectedValue;
+                }
+                string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
+                ViewState["QuoteNumber"] = QuoteNumber;
+                if (QuoteNumber != "")
+                {
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                    txtToEmailNew.Text = clEmail;
+                    txtCLientNameNew.Text = lblClientName.Text;
+                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
+
+                    // Email Template                    
+                    StringBuilder sb = new StringBuilder();
+                    string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
+                    sb.Append(strHeading);
+                    sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
+                    sb.Append("<p><strong>Kind regards</strong></p>");
+                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+                    txtMailTempNew.Text = sb.ToString();
+
+                    Clear();
+                }
+                else
+                {
+                    lblMessage.Text = "Please try again!";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            else
+            {
+                QuoteEntity qtEntity = new QuoteEntity();
+                qtEntity.CarHireDetails = txtCarHireDetails.Text;
+                qtEntity.ConsultantName = Session["Name"].ToString();
+                qtEntity.CostForAdult = txtAdultPrice.Text;
+                qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+                qtEntity.CostForChild = txtChildPrice.Text;
+                qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+                qtEntity.Excludes = txtExcludes.Text;
+                qtEntity.FlightDetails = txtFlightDetails.Text;
+                qtEntity.HotelInfo = txtHotelInfo.Text;
+                qtEntity.Includes = txtIncludes.Text;
+                qtEntity.ItineraryDetails = txtItinerary.Text;
+                qtEntity.LeadID = LeadID;
+                qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+                qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+                qtEntity.QuoteDate = txtDate.Text;
+                qtEntity.ToCity = city;
+                qtEntity.TravelInsurance = txtTravelInsur.Text;
+                qtEntity.AdultTotal = lblAdultTotPrice.Text;
+                qtEntity.ChildTotal = lblChildTotPrice.Text;
+                qtEntity.IsMailSent = "N";
+                qtEntity.QuoteNumber = "";
+                qtEntity.Operation = "I";
+
+                if (QuoteType == "3")
+                {
+                    qtEntity.PackageId = txtProduct.Text;
+                }
+                else
+                {
+                    qtEntity.PackageId = ddlPackage.SelectedValue;
+                }
+                string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
+                qtEntity.QuoteNumber = QuoteNumber;
+                lstQuoteEntity.Add(qtEntity);
+                if (QuoteNumber != "")
+                {
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
+                    txtToEmailNew.Text = clEmail;
+                    txtCLientNameNew.Text = lblClientName.Text;
+                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
+
+                    // Email Template                    
+                    StringBuilder sb = new StringBuilder();
+                    string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
+                    sb.Append(strHeading);
+                    sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
+                    sb.Append("<p><strong>Kind regards</strong></p>");
+                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+                    txtMailTempNew.Text = sb.ToString();
+
+                    Clear();
+                }
+                else
+                {
+                    lblMessage.Text = "Please try again!";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
-    private void Clear()
+    protected void imgbtnAddMultipleOptions_Click(object sender, EventArgs e)
     {
-        txtDate.Text = "";
-        ddlAdultType.SelectedValue = "-1";
-        txtAdultPrice.Text = "";
-        ddlAdultPersons.SelectedValue = "0";
-        ddlChildType.SelectedValue = "-1";
-        txtChildPrice.Text = "";
-        ddlChildPersons.SelectedValue = "0";
-        lblChildTotPrice.Text = "";
-        lblAdultTotPrice.Text = "";
-        txtFlightDetails.Text = "";
-        txtCarHireDetails.Text = "";
-        txtHotelInfo.Text = "";
-        txtItinerary.Text = "";
-        //txtIncludes.Text = "";
-        //txtExcludes.Text = "";
-        //txtTravelInsur.Text = "";
+        QuoteEntity qtEntity = new QuoteEntity();
+        try
+        {
+            qtEntity.CarHireDetails = txtCarHireDetails.Text;
+            qtEntity.ConsultantName = Session["Name"].ToString();
+            qtEntity.CostForAdult = txtAdultPrice.Text;
+            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+            qtEntity.CostForChild = txtChildPrice.Text;
+            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+            qtEntity.Excludes = txtExcludes.Text;
+            qtEntity.FlightDetails = txtFlightDetails.Text;
+            qtEntity.HotelInfo = txtHotelInfo.Text;
+            qtEntity.Includes = txtIncludes.Text;
+            qtEntity.ItineraryDetails = txtItinerary.Text;
+            qtEntity.LeadID = LeadID;
+            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+            qtEntity.QuoteDate = txtDate.Text;
+            qtEntity.ToCity = city;
+            qtEntity.TravelInsurance = txtTravelInsur.Text;
+            qtEntity.AdultTotal = lblAdultTotPrice.Text;
+            qtEntity.ChildTotal = lblChildTotPrice.Text;
+            qtEntity.IsMailSent = "N";
+            qtEntity.QuoteNumber = "";
+            qtEntity.Operation = "I";
 
-        dvAdultPersons.Visible = false;
-        dvChildPersons.Visible = false;
-        dvAdultTot.Visible = false;
-        dvChildTotalPrice.Visible = false;
+            if (QuoteType == "3")
+            {
+                qtEntity.PackageId = txtProduct.Text;
+            }
+            else
+            {
+                qtEntity.PackageId = ddlPackage.SelectedValue;
+            }
+            string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
+            qtEntity.QuoteNumber = QuoteNumber;
+            if (Session["lstQuoteEntity"] == null)
+            {
+                lstQuoteEntity.Add(qtEntity);
+                Session["lstQuoteEntity"] = lstQuoteEntity;
+            }
+            else
+            {
+                lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
+                lstQuoteEntity.Add(qtEntity);
+                Session["lstQuoteEntity"] = lstQuoteEntity;
+            }
+            Clear();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
-    protected void imgbtnClear_Click(object sender, ImageClickEventArgs e)
+    protected void btnSaveTemplate_Click(object sender, EventArgs e)
     {
-        Clear();
+        try
+        {
+            QuoteEntity qtEntity = new QuoteEntity();
+
+            qtEntity.CarHireDetails = txtCarHireDetails.Text;
+            qtEntity.ConsultantName = Session["Name"].ToString();
+            qtEntity.CostForAdult = txtAdultPrice.Text;
+            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
+            qtEntity.CostForChild = txtChildPrice.Text;
+            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
+            qtEntity.Excludes = txtExcludes.Text;
+            qtEntity.FlightDetails = txtFlightDetails.Text;
+            qtEntity.HotelInfo = txtHotelInfo.Text;
+            qtEntity.Includes = txtIncludes.Text;
+            qtEntity.ItineraryDetails = txtItinerary.Text;
+            qtEntity.LeadID = LeadID;
+            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
+            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
+            qtEntity.QuoteDate = txtDate.Text;
+            qtEntity.ToCity = city;
+            qtEntity.TravelInsurance = txtTravelInsur.Text;
+            qtEntity.AdultTotal = lblAdultTotPrice.Text;
+            qtEntity.ChildTotal = lblChildTotPrice.Text;
+            qtEntity.IsMailSent = "N";
+            qtEntity.QuoteNumber = "";
+            qtEntity.Operation = "I";
+            if (QuoteType == "3")
+            {
+                qtEntity.PackageId = txtProduct.Text;
+                qtEntity.IsCustomTemplate = "Y";
+            }
+            else
+            {
+                qtEntity.PackageId = ddlPackage.SelectedValue;
+                qtEntity.IsCustomTemplate = "N";
+            }
+
+            qtEntity.TemplateName = txtTemplateName.Text;
+
+
+            int result = qtBL.CreateQuoteTemplate(qtEntity);
+
+            if (result == 1)
+            {
+                lblMessage.Text = "Template Details saved Successfully!";
+                lblMessage.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                lblMessage.Text = "Please try again!";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    protected void btnSendMail_Click(object sender, EventArgs e)
+    {
+        lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
+        if (lstQuoteEntity == null)
+        {
+            GetPdf(ViewState["QuoteNumber"].ToString());
+            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", ViewState["QuoteNumber"].ToString());
+        }
+        else
+        {
+            GetPdfMultipleOptions(lstQuoteEntity);
+            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteBuilder.ToString());
+        }
+    }
+    private bool GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    {
+        try
+        {
+            string pdf_page_size = "A4";
+            SelectPdf.PdfPageSize pageSize = (SelectPdf.PdfPageSize)Enum.Parse(typeof(SelectPdf.PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            SelectPdf.PdfPageOrientation pdfOrientation =
+                (SelectPdf.PdfPageOrientation)Enum.Parse(typeof(SelectPdf.PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+
+            // instantiate a html to pdf converter object
+            SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HtmlString, "");
+
+            // save pdf document      
+
+            //if (!SaveFileDir)
+            //    doc.Save(Response, ResponseShow, Path);
+            //else
+            //    doc.Save(Path);
+
+            string FileName = Path + "/" + QuoteNumber + ".pdf";
+
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+            else
+            {
+                if (File.Exists(FileName))
+                {
+                    File.Delete(FileName);
+                }
+            }
+
+            doc.Save(FileName);
+
+            doc.Close();
+
+            return true;
+
+        }
+        catch
+        { return false; }
+    }
+    private void GetPdf(string QuoteNumber)
+    {
+        try
+        {
+            DataSet ds = new DataSet();
+            ds = qtBL.GetQuotePDFData(QuoteNumber);
+            StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
+            string readFile = reader.ReadToEnd();
+            reader.Close();
+
+            StringBuilder sbFlight = new StringBuilder();
+            StringBuilder sbHotel = new StringBuilder();
+            StringBuilder sbCar = new StringBuilder();
+
+            StringBuilder sbMainrow = new StringBuilder();
+
+            if (ds.Tables.Count > 0)
+            {
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dtlRow in ds.Tables[0].Rows)
+                    {
+                        if (!string.IsNullOrEmpty(dtlRow["FlightDetails"].ToString()))
+                        {
+                            sbFlight.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                            sbFlight.Append("<tr>");
+                            sbFlight.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+                            sbFlight.Append("</tr>");
+                            sbFlight.Append("<tr>");
+                            sbFlight.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+                            sbFlight.Append(txtFlightDetails.Text);
+                            sbFlight.Append("</td>");
+                            sbFlight.Append("</tr>");
+                            sbFlight.Append("</table>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["HotelInfo"].ToString()))
+                        {
+                            sbHotel.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                            sbHotel.Append("<tr>");
+                            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+                            sbHotel.Append("</tr>");
+                            sbHotel.Append("<tr>");
+                            sbHotel.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+                            sbHotel.Append(txtHotelInfo.Text);
+                            sbHotel.Append("</td>");
+                            sbHotel.Append("</tr>");
+                            sbHotel.Append("</table>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["CarHireDetails"].ToString()))
+                        {
+                            sbCar.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                            sbCar.Append("<tr>");
+                            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+                            sbCar.Append("</tr>");
+                            sbCar.Append("<tr>");
+                            sbCar.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+                            sbCar.Append(txtCarHireDetails.Text);
+                            sbCar.Append("</td>");
+                            sbCar.Append("</tr>");
+                            sbCar.Append("</table>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + dtlRow["ItineraryDetails"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + dtlRow["Includes"].ToString() + "</div>");
+                        }
+
+                        if (!string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
+                        {
+                            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + dtlRow["Excludes"].ToString() + "</div>");
+                        }
+
+                        readFile = readFile.Replace("{Details}", sbMainrow.ToString());
+
+                        readFile = readFile.Replace("{QuoteNumber}", dtlRow["QuoteNumber"].ToString());
+                        readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
+                        readFile = readFile.Replace("{DestinationCity}", dtlRow["DestinationCity"].ToString());
+                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
+                        readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
+                        readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
+                        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
+                        readFile = readFile.Replace("{AdultTotal}", dtlRow["AdultTotal"].ToString());
+                        readFile = readFile.Replace("{ChildTotal}", dtlRow["ChildTotal"].ToString());
+                        readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
+                        readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
+                        readFile = readFile.Replace("{FlightDetails}", sbFlight.ToString());
+                        readFile = readFile.Replace("{HotelDetails}", sbHotel.ToString());
+                        readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
+                        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
+                        readFile = readFile.Replace("{LeadStatus}", lStatus);
+
+
+
+                        if (dtlRow["CostForAdultType"].ToString() == "1")
+                        {
+                            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + dtlRow["CostForAdult"].ToString() + " x " + dtlRow["NoOfAdults"].ToString() + " adults");
+                        }
+                        else if (dtlRow["CostForAdultType"].ToString() == "2")
+                        {
+                            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + dtlRow["CostForAdult"].ToString() + " x 1 adult");
+                        }
+
+                        if (dtlRow["CostForChildType"].ToString() == "3")
+                        {
+                            readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + dtlRow["CostForChild"].ToString() + " x " + dtlRow["NoOfChildren"].ToString() + " child");
+                        }
+                        else
+                        {
+                            readFile = readFile.Replace("{ChildPrice}", "");
+                        }
+
+                        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
+                    }
+                }
+
+                string StrContent = readFile;
+
+                string filepath = Server.MapPath("~/QuotePDF");
+
+
+                bool pdf = GenerateHTML_TO_PDF(StrContent, true, filepath, false, QuoteNumber);
+                if (pdf)
+                {
+                    string consultName = Session["Name"].ToString();
+                    SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumber);
+                    Session.Remove("lstQuoteEntity");
+                }
+
+            }
+        }
+        catch
+        { }
+
+    }
+    public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber)
+    {
+        try
+        {
+            DataSet ds = leadBL.GetMailInfo();
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
+                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                //int SmtpPort = 587;
+                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
+                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
+                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
+                string MailTo = clEmail;
+                //string MailTo = "karen@serendipitytours.co.za";
+                string DisplayNameTo = string.Empty;
+                string MailCc = string.Empty;
+                string DisplayNameCc = string.Empty;
+                string MailBcc = string.Empty;
+                string Subject = string.Empty;
+                string MailText = string.Empty;
+                string Attachment = string.Empty;
+                string cusAttachment = string.Empty;
+
+                string filepath = Server.MapPath("~/QuotePDF");
+                string FileName = filepath + "\\" + QuoteNumber + ".pdf";
+
+                if (File.Exists(FileName))
+                {
+                    Attachment = FileName;
+                }
+
+                try
+                {
+                    Subject = "Serendipity Tours quote to " + clDestinationCity;
+                    MailCc = "";
+
+                    MailText = "Dear " + clName + ", <br/><br/>";
+                    MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
+                    MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
+                    MailText += "Kind regards, <br/><br/>";
+                    //MailText += "(" + consultName + ")";
+
+                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
+                    bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
+
+                    if (mailSent)
+                    {
+                        MailSentSatatus(QuoteNumber);
+                        CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteNumber);
+                        emailsection.Style.Add("display", "none");
+                        quotesection.Style.Add("display", "unset");
+                        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID);
+
+                    }
+                    else
+                    {
+                        CommanClass.MailStatusLog(LeadID, "QT001", "Fail", "", QuoteNumber);
+                    }
+
+                }
+                catch
+                { }
+
+            }
+        }
+        catch
+        { }
+    }
+    public bool UpdateCustomMail(string SmtpHost, int SmtpPort, string MailFrom, string DisplayNameFrom, string FromPassword, string MailTo, string DisplayNameTo, string MailCc, string mailCc2, string mailCc3, string mailCc4, string DisplayNameCc, string MailBcc, string Subject, string MailText, string Attachment)
+    {
+        MailMessage myMessage = new MailMessage();
+        bool IsSucces = false;
+        try
+        {
+            myMessage.From = new MailAddress(MailFrom, DisplayNameFrom);
+            if (MailTo != "")
+                myMessage.To.Add(new MailAddress(MailTo, DisplayNameTo));
+            if (MailCc != "")
+                myMessage.CC.Add(new MailAddress(MailCc, DisplayNameCc));
+            if (mailCc2 != "")
+                myMessage.CC.Add(new MailAddress(mailCc2, DisplayNameCc));
+            if (mailCc3 != "")
+                myMessage.CC.Add(new MailAddress(mailCc3, DisplayNameCc));
+            if (mailCc4 != "")
+                myMessage.CC.Add(new MailAddress(mailCc4, DisplayNameCc));
+
+            if (MailBcc != "")
+                myMessage.Bcc.Add(MailBcc);
+
+            myMessage.Subject = Subject;
+            myMessage.IsBodyHtml = true;
+            myMessage.Body = MailText;
+
+            //create Alrternative HTML view
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(MailText, null, "text/html");
+
+
+
+            //Add view to the Email Message
+            myMessage.AlternateViews.Add(htmlView);
+
+
+            if (Attachment != "")
+            {
+                Attachment a = new Attachment(Attachment);
+                myMessage.Attachments.Add(a);
+            }
+
+            if (Request.Files.Count > 0)
+            {
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    HttpPostedFile PostedFile = Request.Files[i];
+                    if (PostedFile.ContentLength > 0)
+                    {
+                        myMessage.Attachments.Add(new Attachment(PostedFile.InputStream, PostedFile.FileName));
+                    }
+                }
+            }
+
+            if (chbkBookingForm.Checked)
+            {
+                string filepath = Server.MapPath("~/PreDefinedDocs");
+                string FileName = filepath + "\\BookingForm.pdf";
+                Attachment attch = new Attachment(FileName);
+                myMessage.Attachments.Add(attch);
+            }
+            if (chbkBankingDetails.Checked)
+            {
+                string filepath = Server.MapPath("~/PreDefinedDocs");
+                string FileName = filepath + "\\BANKINGDETAILS.pdf";
+                Attachment attch = new Attachment(FileName);
+                myMessage.Attachments.Add(attch);
+            }
+            SmtpClient mySmtpClient = new SmtpClient(SmtpHost, SmtpPort);
+            mySmtpClient.Credentials = new System.Net.NetworkCredential(MailFrom, FromPassword);
+            mySmtpClient.EnableSsl = true;
+            mySmtpClient.Send(myMessage);
+            IsSucces = true;
+        }
+        catch
+        {
+            IsSucces = false;
+        }
+        finally
+        {
+            myMessage = null;
+        }
+        return IsSucces;
+    }
+
+    public void MailSentSatatus(string QuoteNumber)
+    {
+        try
+        {
+            QuoteEntity qtEntity = new QuoteEntity();
+
+            qtEntity.CarHireDetails = "";
+            qtEntity.ConsultantName = "";
+            qtEntity.CostForAdult = "";
+            qtEntity.CostForAdultType = 0;
+            qtEntity.CostForChild = "";
+            qtEntity.CostForChildType = 0;
+            qtEntity.Excludes = "";
+            qtEntity.FlightDetails = "";
+            qtEntity.HotelInfo = "";
+            qtEntity.Includes = "";
+            qtEntity.ItineraryDetails = "";
+            qtEntity.LeadID = 0;
+            qtEntity.NoOfAdults = 0;
+            qtEntity.NoOfChildren = 0;
+            qtEntity.QuoteDate = "";
+            qtEntity.ToCity = "";
+            qtEntity.TravelInsurance = "";
+            qtEntity.AdultTotal = "";
+            qtEntity.ChildTotal = "";
+            qtEntity.IsMailSent = "Y";
+            qtEntity.QuoteNumber = QuoteNumber;
+            qtEntity.Operation = "U";
+
+            string strQuoteNumber = qtBL.CUOperationQuote(qtEntity);
+        }
+        catch
+        { }
     }
     private void GetPdfMultipleOptions(List<QuoteEntity> lstQuEnt)
     {
@@ -757,660 +1436,16 @@ public partial class Quote : System.Web.UI.Page
         { }
 
     }
-    private void GetPdf(string QuoteNumber)
+    protected void imgbtnBackQuote_Click1(object sender, EventArgs e)
     {
-        try
-        {
-            DataSet ds = new DataSet();
-            ds = qtBL.GetQuotePDFData(QuoteNumber);
-            StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
-            string readFile = reader.ReadToEnd();
-            reader.Close();
-
-            StringBuilder sbMainrow = new StringBuilder();
-
-            if (ds.Tables.Count > 0)
-            {
-
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    foreach (DataRow dtlRow in ds.Tables[0].Rows)
-                    {
-                        if (!string.IsNullOrEmpty(dtlRow["FlightDetails"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + dtlRow["FlightDetails"].ToString() + "</div>");
-                        }
-
-                        if (!string.IsNullOrEmpty(dtlRow["HotelInfo"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + dtlRow["HotelInfo"].ToString() + "</div>");
-                        }
-
-                        if (!string.IsNullOrEmpty(dtlRow["CarHireDetails"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + dtlRow["CarHireDetails"].ToString() + "</div>");
-                        }
-
-                        if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + dtlRow["ItineraryDetails"].ToString() + "</div>");
-                        }
-
-                        if (!string.IsNullOrEmpty(dtlRow["Includes"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + dtlRow["Includes"].ToString() + "</div>");
-                        }
-
-                        if (!string.IsNullOrEmpty(dtlRow["Excludes"].ToString()))
-                        {
-                            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + dtlRow["Excludes"].ToString() + "</div>");
-                        }
-
-                        readFile = readFile.Replace("{Details}", sbMainrow.ToString());
-
-                        readFile = readFile.Replace("{QuoteNumber}", dtlRow["QuoteNumber"].ToString());
-                        readFile = readFile.Replace("{QuoteDate}", dtlRow["QuoteDate"].ToString());
-                        readFile = readFile.Replace("{DestinationCity}", dtlRow["DestinationCity"].ToString());
-                        readFile = readFile.Replace("{TravelMonth}", dtlRow["QuoteDate"].ToString());
-                        readFile = readFile.Replace("{TravelInsurance}", dtlRow["TravelInsurance"].ToString());
-                        readFile = readFile.Replace("{ConsultantName}", dtlRow["ConsultantName"].ToString());
-                        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
-                        readFile = readFile.Replace("{AdultTotal}", dtlRow["AdultTotal"].ToString());
-                        readFile = readFile.Replace("{ChildTotal}", dtlRow["ChildTotal"].ToString());
-                        readFile = readFile.Replace("{Includes}", dtlRow["Includes"].ToString());
-                        readFile = readFile.Replace("{Excludes}", dtlRow["Excludes"].ToString());
-                        readFile = readFile.Replace("{FlightDetails}", dtlRow["FlightDetails"].ToString());
-                        readFile = readFile.Replace("{HotelDetails}", dtlRow["HotelInfo"].ToString());
-                        readFile = readFile.Replace("{CarDetails}", dtlRow["CarHireDetails"].ToString());
-                        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
-                        readFile = readFile.Replace("{LeadStatus}", lStatus);
-
-
-
-                        if (dtlRow["CostForAdultType"].ToString() == "1")
-                        {
-                            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + dtlRow["CostForAdult"].ToString() + " x " + dtlRow["NoOfAdults"].ToString() + " adults");
-                        }
-                        else if (dtlRow["CostForAdultType"].ToString() == "2")
-                        {
-                            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + dtlRow["CostForAdult"].ToString() + " x 1 adult");
-                        }
-
-                        if (dtlRow["CostForChildType"].ToString() == "3")
-                        {
-                            readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + dtlRow["CostForChild"].ToString() + " x " + dtlRow["NoOfChildren"].ToString() + " child");
-                        }
-                        else
-                        {
-                            readFile = readFile.Replace("{ChildPrice}", "");
-                        }
-
-                        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
-                    }
-                }
-
-                string StrContent = readFile;
-
-                string filepath = Server.MapPath("~/QuotePDF");
-
-
-                bool pdf = GenerateHTML_TO_PDF(StrContent, true, filepath, false, QuoteNumber);
-                if (pdf)
-                {
-                    string consultName = Session["Name"].ToString();
-                    SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumber);
-                    Session.Remove("lstQuoteEntity");
-                }
-
-            }
-        }
-        catch
-        { }
-
+        imgbtnBackQuote.Visible = false;
+        backToLead.Visible = true;
+        quotesection.Style.Add("display", "unset");
+        emailsection.Style.Add("display", "none");
     }
-    private bool GenerateHTML_TO_PDF(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
+    protected void backToLead_Click1(object sender, EventArgs e)
     {
-        try
-        {
-            string pdf_page_size = "A4";
-            SelectPdf.PdfPageSize pageSize = (SelectPdf.PdfPageSize)Enum.Parse(typeof(SelectPdf.PdfPageSize),
-                pdf_page_size, true);
-
-            string pdf_orientation = "Portrait";
-            SelectPdf.PdfPageOrientation pdfOrientation =
-                (SelectPdf.PdfPageOrientation)Enum.Parse(typeof(SelectPdf.PdfPageOrientation),
-                pdf_orientation, true);
-
-            int webPageWidth = 1024;
-            int webPageHeight = 0;
-
-            // instantiate a html to pdf converter object
-            SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
-
-            // set converter options
-            converter.Options.PdfPageSize = pageSize;
-            converter.Options.PdfPageOrientation = pdfOrientation;
-            converter.Options.WebPageWidth = webPageWidth;
-            converter.Options.WebPageHeight = webPageHeight;
-
-            // create a new pdf document converting an url
-            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HtmlString, "");
-
-            // save pdf document      
-
-            //if (!SaveFileDir)
-            //    doc.Save(Response, ResponseShow, Path);
-            //else
-            //    doc.Save(Path);
-
-            string FileName = Path + "/" + QuoteNumber + ".pdf";
-
-            if (!Directory.Exists(Path))
-            {
-                Directory.CreateDirectory(Path);
-            }
-            else
-            {
-                if (File.Exists(FileName))
-                {
-                    File.Delete(FileName);
-                }
-            }
-
-            doc.Save(FileName);
-
-            doc.Close();
-
-            return true;
-
-        }
-        catch
-        { return false; }
-    }
-    public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber)
-    {
-        try
-        {
-            DataSet ds = leadBL.GetMailInfo();
-            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-            {
-                string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
-                string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
-                string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
-                string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
-                string MailTo = clEmail;
-                //string MailTo = "karen@serendipitytours.co.za";
-                string DisplayNameTo = string.Empty;
-                string MailCc = string.Empty;
-                string DisplayNameCc = string.Empty;
-                string MailBcc = string.Empty;
-                string Subject = string.Empty;
-                string MailText = string.Empty;
-                string Attachment = string.Empty;
-                string cusAttachment = string.Empty;
-
-                string filepath = Server.MapPath("~/QuotePDF");
-                string FileName = filepath + "\\" + QuoteNumber + ".pdf";
-
-                if (File.Exists(FileName))
-                {
-                    Attachment = FileName;
-                }
-
-                try
-                {
-                    Subject = "Serendipity Tours quote to " + clDestinationCity;
-                    MailCc = "";
-
-                    MailText = "Dear " + clName + ", <br/><br/>";
-                    MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
-                    MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
-                    MailText += "Kind regards, <br/><br/>";
-                    //MailText += "(" + consultName + ")";
-
-                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
-                    bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
-
-                    if (mailSent)
-                    {
-                        MailSentSatatus(QuoteNumber);
-                        CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteNumber);
-                        //emailsection.Style.Add("display", "none");
-                        //quotesection.Style.Add("display", "unset");
-                        Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
-
-                    }
-                    else
-                    {
-                        CommanClass.MailStatusLog(LeadID, "QT001", "Fail", "", QuoteNumber);
-                    }
-
-                }
-                catch
-                { }
-
-            }
-        }
-        catch
-        { }
-    }
-    public bool UpdateCustomMail(string SmtpHost, int SmtpPort, string MailFrom, string DisplayNameFrom, string FromPassword, string MailTo, string DisplayNameTo, string MailCc, string mailCc2, string mailCc3, string mailCc4, string DisplayNameCc, string MailBcc, string Subject, string MailText, string Attachment)
-    {
-        MailMessage myMessage = new MailMessage();
-        bool IsSucces = false;
-        try
-        {
-            myMessage.From = new MailAddress(MailFrom, DisplayNameFrom);
-            if (MailTo != "")
-                myMessage.To.Add(new MailAddress(MailTo, DisplayNameTo));
-            if (MailCc != "")
-                myMessage.CC.Add(new MailAddress(MailCc, DisplayNameCc));
-            if (mailCc2 != "")
-                myMessage.CC.Add(new MailAddress(mailCc2, DisplayNameCc));
-            if (mailCc3 != "")
-                myMessage.CC.Add(new MailAddress(mailCc3, DisplayNameCc));
-            if (mailCc4 != "")
-                myMessage.CC.Add(new MailAddress(mailCc4, DisplayNameCc));
-
-            if (MailBcc != "")
-                myMessage.Bcc.Add(MailBcc);
-
-            myMessage.Subject = Subject;
-            myMessage.IsBodyHtml = true;
-            myMessage.Body = MailText;
-
-            //create Alrternative HTML view
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(MailText, null, "text/html");
-
-
-
-            //Add view to the Email Message
-            myMessage.AlternateViews.Add(htmlView);
-
-
-            if (Attachment != "")
-            {
-                Attachment a = new Attachment(Attachment);
-                myMessage.Attachments.Add(a);
-            }
-
-            if (Request.Files.Count > 0)
-            {
-                for (int i = 0; i < Request.Files.Count; i++)
-                {
-                    HttpPostedFile PostedFile = Request.Files[i];
-                    if (PostedFile.ContentLength > 0)
-                    {
-                        myMessage.Attachments.Add(new Attachment(PostedFile.InputStream, PostedFile.FileName));
-                    }
-                }
-            }
-
-            if (chbkBookingForm.Checked)
-            {
-                string filepath = Server.MapPath("~/PreDefinedDocs");
-                string FileName = filepath + "\\BookingForm.pdf";
-                Attachment attch = new Attachment(FileName);
-                myMessage.Attachments.Add(attch);
-            }
-            if (chbkBankingDetails.Checked)
-            {
-                string filepath = Server.MapPath("~/PreDefinedDocs");
-                string FileName = filepath + "\\BANKINGDETAILS.pdf";
-                Attachment attch = new Attachment(FileName);
-                myMessage.Attachments.Add(attch);
-            }
-            SmtpClient mySmtpClient = new SmtpClient(SmtpHost, SmtpPort);
-            mySmtpClient.Credentials = new System.Net.NetworkCredential(MailFrom, FromPassword);
-            mySmtpClient.EnableSsl = true;
-            mySmtpClient.Send(myMessage);
-            IsSucces = true;
-        }
-        catch
-        {
-            IsSucces = false;
-        }
-        finally
-        {
-            myMessage = null;
-        }
-        return IsSucces;
-    }
-
-    public void MailSentSatatus(string QuoteNumber)
-    {
-        try
-        {
-            QuoteEntity qtEntity = new QuoteEntity();
-
-            qtEntity.CarHireDetails = "";
-            qtEntity.ConsultantName = "";
-            qtEntity.CostForAdult = "";
-            qtEntity.CostForAdultType = 0;
-            qtEntity.CostForChild = "";
-            qtEntity.CostForChildType = 0;
-            qtEntity.Excludes = "";
-            qtEntity.FlightDetails = "";
-            qtEntity.HotelInfo = "";
-            qtEntity.Includes = "";
-            qtEntity.ItineraryDetails = "";
-            qtEntity.LeadID = 0;
-            qtEntity.NoOfAdults = 0;
-            qtEntity.NoOfChildren = 0;
-            qtEntity.QuoteDate = "";
-            qtEntity.ToCity = "";
-            qtEntity.TravelInsurance = "";
-            qtEntity.AdultTotal = "";
-            qtEntity.ChildTotal = "";
-            qtEntity.IsMailSent = "Y";
-            qtEntity.QuoteNumber = QuoteNumber;
-            qtEntity.Operation = "U";
-
-            string strQuoteNumber = qtBL.CUOperationQuote(qtEntity);
-        }
-        catch
-        { }
-    }
-    protected void btnTemplageName_Click(object sender, ImageClickEventArgs e)
-    {
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "TemplageModal();", true);
-    }
-    protected void btnSaveTemplate_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            QuoteEntity qtEntity = new QuoteEntity();
-
-            qtEntity.CarHireDetails = txtCarHireDetails.Text;
-            qtEntity.ConsultantName = Session["Name"].ToString();
-            qtEntity.CostForAdult = txtAdultPrice.Text;
-            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
-            qtEntity.CostForChild = txtChildPrice.Text;
-            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
-            qtEntity.Excludes = txtExcludes.Text;
-            qtEntity.FlightDetails = txtFlightDetails.Text;
-            qtEntity.HotelInfo = txtHotelInfo.Text;
-            qtEntity.Includes = txtIncludes.Text;
-            qtEntity.ItineraryDetails = txtItinerary.Text;
-            qtEntity.LeadID = LeadID;
-            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
-            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
-            qtEntity.QuoteDate = txtDate.Text;
-            qtEntity.ToCity = city;
-            qtEntity.TravelInsurance = txtTravelInsur.Text;
-            qtEntity.AdultTotal = lblAdultTotPrice.Text;
-            qtEntity.ChildTotal = lblChildTotPrice.Text;
-            qtEntity.IsMailSent = "N";
-            qtEntity.QuoteNumber = "";
-            qtEntity.Operation = "I";
-            if (QuoteType == "3")
-            {
-                qtEntity.PackageId = txtProduct.Text;
-                qtEntity.IsCustomTemplate = "Y";
-            }
-            else
-            {
-                qtEntity.PackageId = ddlPackage.SelectedValue;
-                qtEntity.IsCustomTemplate = "N";
-            }
-
-            qtEntity.TemplateName = txtTemplateName.Text;
-
-
-            int result = qtBL.CreateQuoteTemplate(qtEntity);
-
-            if (result == 1)
-            {
-                message.Text = "Template Details saved Successfully!";
-                message.ForeColor = System.Drawing.Color.Green;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                //GetPdf(QuoteNumber);
-                //Clear();
-            }
-            else
-            {
-                message.Text = "Please try again!";
-                message.ForeColor = System.Drawing.Color.Red;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-            }
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-    protected void btnSendMail_Click(object sender, EventArgs e)
-    {
-        lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
-        if (lstQuoteEntity == null)
-        {
-            GetPdf(ViewState["QuoteNumber"].ToString());
-            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", ViewState["QuoteNumber"].ToString());
-        }
-        else
-        {
-            GetPdfMultipleOptions(lstQuoteEntity);
-            CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteBuilder.ToString());
-        }
-    }
-    protected void ddlPackage_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        DataSet ds = (DataSet)ViewState["products"];
-        int prodid = Convert.ToInt32(ddlPackage.SelectedValue);
-        var includesExcludes = (from products in ds.Tables[0].AsEnumerable()
-                                where products.Field<int>("package_id") == prodid
-                                select new
-                                {
-                                    Includes = products.Field<string>("package_includes"),
-                                    Excludse = products.Field<string>("package_excludes")
-                                }).First();
-
-        txtIncludes.Text = includesExcludes.Includes.Replace("\n", "<br/>");
-        txtExcludes.Text = includesExcludes.Excludse.Replace("\n", "<br/>");
-    }
-    protected void imgbtnSubmitAssign_Click1(object sender, ImageClickEventArgs e)
-    {
-        try
-        {
-            backToLead.Visible = false;
-            imgbtnBackQuote.Visible = true;
-            quotesection.Style.Add("display", "none");
-            emailsection.Style.Add("display", "unset");
-            lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
-            if (lstQuoteEntity == null)
-            {
-                QuoteEntity qtEntity = new QuoteEntity();
-                qtEntity.CarHireDetails = txtCarHireDetails.Text;
-                qtEntity.ConsultantName = Session["Name"].ToString();
-                qtEntity.CostForAdult = txtAdultPrice.Text;
-                qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
-                qtEntity.CostForChild = txtChildPrice.Text;
-                qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
-                qtEntity.Excludes = txtExcludes.Text;
-                qtEntity.FlightDetails = txtFlightDetails.Text;
-                qtEntity.HotelInfo = txtHotelInfo.Text;
-                qtEntity.Includes = txtIncludes.Text;
-                qtEntity.ItineraryDetails = txtItinerary.Text;
-                qtEntity.LeadID = LeadID;
-                qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
-                qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
-                qtEntity.QuoteDate = txtDate.Text;
-                qtEntity.ToCity = city;
-                qtEntity.TravelInsurance = txtTravelInsur.Text;
-                qtEntity.AdultTotal = lblAdultTotPrice.Text;
-                qtEntity.ChildTotal = lblChildTotPrice.Text;
-                qtEntity.IsMailSent = "N";
-                qtEntity.QuoteNumber = "";
-                qtEntity.Operation = "I";
-
-                if (QuoteType == "3")
-                {
-                    qtEntity.PackageId = txtProduct.Text;
-                }
-                else
-                {
-                    qtEntity.PackageId = ddlPackage.SelectedValue;
-                }
-                string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
-                ViewState["QuoteNumber"] = QuoteNumber;
-                if (QuoteNumber != "")
-                {
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
-                    txtToEmailNew.Text = clEmail;
-                    txtCLientNameNew.Text = lblClientName.Text;
-                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
-
-                    // Email Template                    
-                    StringBuilder sb = new StringBuilder();
-                    string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
-                    sb.Append(strHeading);
-                    sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
-                    sb.Append("<p><strong>Kind regards</strong></p>");
-                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-                    txtMailTempNew.Text = sb.ToString();
-
-                    Clear();
-                }
-                else
-                {
-                    message.Text = "Please try again!";
-                    message.ForeColor = System.Drawing.Color.Red;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                }
-            }
-            else
-            {
-                QuoteEntity qtEntity = new QuoteEntity();
-                qtEntity.CarHireDetails = txtCarHireDetails.Text;
-                qtEntity.ConsultantName = Session["Name"].ToString();
-                qtEntity.CostForAdult = txtAdultPrice.Text;
-                qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
-                qtEntity.CostForChild = txtChildPrice.Text;
-                qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
-                qtEntity.Excludes = txtExcludes.Text;
-                qtEntity.FlightDetails = txtFlightDetails.Text;
-                qtEntity.HotelInfo = txtHotelInfo.Text;
-                qtEntity.Includes = txtIncludes.Text;
-                qtEntity.ItineraryDetails = txtItinerary.Text;
-                qtEntity.LeadID = LeadID;
-                qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
-                qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
-                qtEntity.QuoteDate = txtDate.Text;
-                qtEntity.ToCity = city;
-                qtEntity.TravelInsurance = txtTravelInsur.Text;
-                qtEntity.AdultTotal = lblAdultTotPrice.Text;
-                qtEntity.ChildTotal = lblChildTotPrice.Text;
-                qtEntity.IsMailSent = "N";
-                qtEntity.QuoteNumber = "";
-                qtEntity.Operation = "I";
-
-                if (QuoteType == "3")
-                {
-                    qtEntity.PackageId = txtProduct.Text;
-                }
-                else
-                {
-                    qtEntity.PackageId = ddlPackage.SelectedValue;
-                }
-                string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
-                qtEntity.QuoteNumber = QuoteNumber;
-                lstQuoteEntity.Add(qtEntity);
-                if (QuoteNumber != "")
-                {
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "EmailModal();", true);
-                    txtToEmailNew.Text = clEmail;
-                    txtCLientNameNew.Text = lblClientName.Text;
-                    txtEmailSubjectNew.Text = "Serendipity Tours quote";
-
-                    // Email Template                    
-                    StringBuilder sb = new StringBuilder();
-                    string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
-                    sb.Append(strHeading);
-                    sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
-                    sb.Append("<p><strong>Kind regards</strong></p>");
-                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
-                    txtMailTempNew.Text = sb.ToString();
-
-                    Clear();
-                }
-                else
-                {
-                    message.Text = "Please try again!";
-                    message.ForeColor = System.Drawing.Color.Red;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-                }
-            }
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-    protected void backToLead_Click(object sender, ImageClickEventArgs e)
-    {
-        Response.Redirect("Lead.aspx?t=quote&idq=" + LeadID);
-
-    }
-    protected void imgbtnAddMultipleOptions_Click(object sender, ImageClickEventArgs e)
-    {
-        QuoteEntity qtEntity = new QuoteEntity();
-        try
-        {
-            qtEntity.CarHireDetails = txtCarHireDetails.Text;
-            qtEntity.ConsultantName = Session["Name"].ToString();
-            qtEntity.CostForAdult = txtAdultPrice.Text;
-            qtEntity.CostForAdultType = Convert.ToInt32(ddlAdultType.SelectedValue);
-            qtEntity.CostForChild = txtChildPrice.Text;
-            qtEntity.CostForChildType = Convert.ToInt32(ddlChildType.SelectedValue);
-            qtEntity.Excludes = txtExcludes.Text;
-            qtEntity.FlightDetails = txtFlightDetails.Text;
-            qtEntity.HotelInfo = txtHotelInfo.Text;
-            qtEntity.Includes = txtIncludes.Text;
-            qtEntity.ItineraryDetails = txtItinerary.Text;
-            qtEntity.LeadID = LeadID;
-            qtEntity.NoOfAdults = Convert.ToInt32(ddlAdultPersons.SelectedValue);
-            qtEntity.NoOfChildren = Convert.ToInt32(ddlChildPersons.SelectedValue);
-            qtEntity.QuoteDate = txtDate.Text;
-            qtEntity.ToCity = city;
-            qtEntity.TravelInsurance = txtTravelInsur.Text;
-            qtEntity.AdultTotal = lblAdultTotPrice.Text;
-            qtEntity.ChildTotal = lblChildTotPrice.Text;
-            qtEntity.IsMailSent = "N";
-            qtEntity.QuoteNumber = "";
-            qtEntity.Operation = "I";
-
-            if (QuoteType == "3")
-            {
-                qtEntity.PackageId = txtProduct.Text;
-            }
-            else
-            {
-                qtEntity.PackageId = ddlPackage.SelectedValue;
-            }
-            string QuoteNumber = qtBL.CUOperationQuote(qtEntity);
-            qtEntity.QuoteNumber = QuoteNumber;
-            if (Session["lstQuoteEntity"] == null)
-            {
-                lstQuoteEntity.Add(qtEntity);
-                Session["lstQuoteEntity"] = lstQuoteEntity;
-            }
-            else
-            {
-                lstQuoteEntity = (List<QuoteEntity>)Session["lstQuoteEntity"];
-                lstQuoteEntity.Add(qtEntity);
-                Session["lstQuoteEntity"] = lstQuoteEntity;
-            }
-            Clear();
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
+        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID);
     }
     protected void btnSendMailNew_Click(object sender, EventArgs e)
     {
@@ -1425,182 +1460,5 @@ public partial class Quote : System.Web.UI.Page
             GetPdfMultipleOptions(lstQuoteEntity);
             CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteBuilder.ToString());
         }
-    }
-    protected void imgbtnBackQuote_Click(object sender, ImageClickEventArgs e)
-    {
-        imgbtnBackQuote.Visible = false;
-        backToLead.Visible = true;
-        quotesection.Style.Add("display", "unset");
-        emailsection.Style.Add("display", "none");
-    }
-    protected void imgbtnViewQuote_Click(object sender, ImageClickEventArgs e)
-    {
-
-        StringBuilder sbMainrow = new StringBuilder();
-        StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
-        string readFile = reader.ReadToEnd();
-        reader.Close();
-
-        if (!string.IsNullOrEmpty(txtFlightDetails.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + txtFlightDetails.Text + "</div>");
-        }
-
-        if (!string.IsNullOrEmpty(txtHotelInfo.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + txtHotelInfo.Text + "</div>");
-        }
-
-        if (!string.IsNullOrEmpty(txtCarHireDetails.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + txtCarHireDetails.Text + "</div>");
-        }
-
-        if (!string.IsNullOrEmpty(txtItinerary.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + txtItinerary.Text + "</div>");
-        }
-
-        if (!string.IsNullOrEmpty(txtIncludes.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + txtIncludes.Text + "</div>");
-        }
-
-        if (!string.IsNullOrEmpty(txtExcludes.Text))
-        {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + txtExcludes.Text + "</div>");
-        }
-
-        readFile = readFile.Replace("{QuoteDate}", txtDate.Text);
-        readFile = readFile.Replace("{DestinationCity}", txtDestination.Text);
-        readFile = readFile.Replace("{TravelInsurance}", txtTravelInsur.Text);
-        readFile = readFile.Replace("{ConsultantName}", Session["Name"].ToString());
-        readFile = readFile.Replace("{ClientName}", lblClientName.Text.ToString());
-        readFile = readFile.Replace("{ChildTotal}", lblChildTotPrice.Text);
-        readFile = readFile.Replace("{Includes}", txtIncludes.Text);
-        readFile = readFile.Replace("{Excludes}", txtExcludes.Text);
-        readFile = readFile.Replace("{FlightDetails}", txtFlightDetails.Text);
-        readFile = readFile.Replace("{HotelDetails}", txtHotelInfo.Text);
-        readFile = readFile.Replace("{CarDetails}", txtCarHireDetails.Text);
-        readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
-        //readFile = readFile.Replace("{LeadStatus}", lStatus);
-
-
-
-        if (ddlAdultType.SelectedValue == "1")
-        {
-            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON SHARING R " + txtAdultPrice.Text + " x " + ddlAdultPersons.SelectedValue + " adults");
-            readFile = readFile.Replace("{AdultTotal}", lblAdultTotPrice.Text);
-        }
-        else if (ddlAdultType.SelectedValue == "2")
-        {
-            readFile = readFile.Replace("{AdultPrice}", "COST PER PERSON INDIVIDUAL R " + txtAdultPrice.Text + " x 1 adult");
-            readFile = readFile.Replace("{AdultTotal}", txtAdultPrice.Text);
-        }
-
-        if (ddlChildType.SelectedValue == "3")
-        {
-            readFile = readFile.Replace("{ChildPrice}", "COST PER CHILD SHARING R " + txtChildPrice.Text + " x " + ddlChildPersons.SelectedValue + " child");
-        }
-        else
-        {
-            readFile = readFile.Replace("{ChildPrice}", "");
-        }
-
-        readFile = readFile.Replace("{ConsultantEmail}", Session["ConsultantEmail"].ToString());
-
-        string StrContent = readFile;
-
-        string filepath = Server.MapPath("~/QuotePDF");
-
-
-        bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
-
-    }
-
-    private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
-    {
-        try
-        {
-            string pdf_page_size = "A4";
-            SelectPdf.PdfPageSize pageSize = (SelectPdf.PdfPageSize)Enum.Parse(typeof(SelectPdf.PdfPageSize),
-                pdf_page_size, true);
-
-            string pdf_orientation = "Portrait";
-            SelectPdf.PdfPageOrientation pdfOrientation =
-                (SelectPdf.PdfPageOrientation)Enum.Parse(typeof(SelectPdf.PdfPageOrientation),
-                pdf_orientation, true);
-
-            int webPageWidth = 1024;
-            int webPageHeight = 0;
-
-            // instantiate a html to pdf converter object
-            SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
-
-            // set converter options
-            converter.Options.PdfPageSize = pageSize;
-            converter.Options.PdfPageOrientation = pdfOrientation;
-            converter.Options.WebPageWidth = webPageWidth;
-            converter.Options.WebPageHeight = webPageHeight;
-
-            // create a new pdf document converting an url
-            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HtmlString, "");
-
-            // save pdf document      
-
-            //if (!SaveFileDir)
-            //    doc.Save(Response, ResponseShow, Path);
-            //else
-            //    doc.Save(Path);
-
-            string FileName = Path + "/" + "QuoteNumber" + ".pdf";
-
-            if (!Directory.Exists(Path))
-            {
-                Directory.CreateDirectory(Path);
-            }
-            else
-            {
-                if (File.Exists(FileName))
-                {
-                    File.Delete(FileName);
-                }
-            }
-
-            doc.Save(FileName);
-
-            //doc.Close();
-
-            //doc.Save(FileName);
-
-
-            string FilePath = FileName;
-            WebClient User = new WebClient();
-            Byte[] FileBuffer = User.DownloadData(FilePath);
-            if (FileBuffer != null)
-            {
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-length", FileBuffer.Length.ToString());
-                Response.BinaryWrite(FileBuffer);
-            }
-
-
-            //if (FileName != "")
-            //    doc.Save(FileName);
-
-            doc.Close();
-
-            return true;
-
-        }
-        catch
-        { return false; }
-    }
-    protected void imgbtnVBackQuote_Click(object sender, ImageClickEventArgs e)
-    {
-        imgbtnBackQuote.Visible = false;
-        backToLead.Visible = true;
-        quotesection.Style.Add("display", "unset");
-        emailsection.Style.Add("display", "none");
     }
 }

@@ -47,7 +47,7 @@ public partial class Login : System.Web.UI.Page
                     Session["LoginID"] = ds.Tables[0].Rows[0]["LoginID"].ToString();
                     Session["ConsultantID"] = ds.Tables[0].Rows[0]["ConsultantID"].ToString();
                     Session["ConsultantEmail"] = ds.Tables[0].Rows[0]["Email"].ToString();
-                    Response.Redirect("Lead.aspx", false);
+                    Response.Redirect("AssignedLeads.aspx", false);
                 }
                 else
                 {

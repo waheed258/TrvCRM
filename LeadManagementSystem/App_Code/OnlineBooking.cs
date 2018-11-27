@@ -8,18 +8,17 @@ using System.Web.Script.Serialization;
 using BusinessLogic;
 using System.Data;
 using System.Globalization;
+
 /// <summary>
 /// Summary description for OnlineBooking
 /// </summary>
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-[System.Web.Script.Services.ScriptService]
-public class OnlineBooking : System.Web.Services.WebService
-{
+// [System.Web.Script.Services.ScriptService]
+public class OnlineBooking : System.Web.Services.WebService {
     LeadBL leadBL = new LeadBL();
-    public OnlineBooking()
-    {
+    public OnlineBooking () {
 
         //Uncomment the following line if using designed components 
         //InitializeComponent(); 
@@ -200,5 +199,5 @@ public class OnlineBooking : System.Web.Services.WebService
         catch
         { }
     }
-
+    
 }
