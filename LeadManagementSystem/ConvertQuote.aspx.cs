@@ -70,7 +70,7 @@ public partial class ConvertQuote : System.Web.UI.Page
             //else
             //    doc.Save(Path);
 
-            string FileName = Path + "/" + "QuoteNumber" + ".pdf";
+            string FileName = Path + "/" + QuoteNumber + ".pdf";
 
             if (!Directory.Exists(Path))
             {
@@ -194,11 +194,11 @@ public partial class ConvertQuote : System.Web.UI.Page
         string filepath = Server.MapPath("~/ConvertToBookPDF");
 
 
-        bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
+        bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, strQuoteNumber);
         if (pdf)
         {
             string consultName = Session["Name"].ToString();
-            SendMail(lblClientName.Text, EmailID, txtDestination.Text, consultName, strQuoteNumber);
+            SendMail(lblClientName.Text, ViewState["EmailID"].ToString(), txtDestination.Text, consultName, strQuoteNumber);
         }
 
     }
@@ -257,7 +257,9 @@ public partial class ConvertQuote : System.Web.UI.Page
                     }
                     else
                     {
-                        CommanClass.MailStatusLog(LeadID, "QT001", "Fail", "", QuoteNumber);
+                        CommanClass.MailStatusLog(LeadID, "BT001", "Fail", "", QuoteNumber);
+                        lblMessage.Text = "Something went wrong. Please contact administrator!";
+                        lblMessage.ForeColor = System.Drawing.Color.Red;
                     }
 
                 }
@@ -401,7 +403,7 @@ public partial class ConvertQuote : System.Web.UI.Page
                 txtExcludes.Text = ds.Tables[0].Rows[0]["Excludes"].ToString();
                 txtTravelInsur.Text = ds.Tables[0].Rows[0]["TravelInsurance"].ToString();
                 lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
-                EmailID = ds.Tables[0].Rows[0]["lsEmailId"].ToString();
+                ViewState["EmailID"] = ds.Tables[0].Rows[0]["lsEmailId"].ToString();
                 if (ddlAdultType.SelectedValue == "1")
                 {
                     dvAdultPersons.Visible = true;

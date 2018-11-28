@@ -198,12 +198,11 @@ public partial class EditLead : System.Web.UI.Page
         BindFollowupEmailTemplate();
 
         // Generate Quote URL
-        if (Session["QuoteUrl"] == null)
-        {
-            string url = "Quote.aspx?id=" + encryptedparamleadid + "&city=" + toCity + "&client=" + ClientName + "&source=" + source + "&prod=" + product + "&em=" + Email + "&prodid=" + encryptedparamlblProductID;
-            hdfQuoteUrl.Value = url;
-            Session["QuoteUrl"] = hdfQuoteUrl.Value;
-        }
+
+        string url = "Quote.aspx?id=" + encryptedparamleadid + "&city=" + toCity + "&client=" + ClientName + "&source=" + source + "&prod=" + product + "&em=" + Email + "&prodid=" + encryptedparamlblProductID;
+        hdfQuoteUrl.Value = url;
+        Session["QuoteUrl"] = hdfQuoteUrl.Value;
+
     }
 
     private void BindEMailTemplate()

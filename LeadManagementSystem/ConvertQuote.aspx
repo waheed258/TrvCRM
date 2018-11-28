@@ -42,11 +42,7 @@
             font-style: normal;
         }
     </style>
-    <script>
-        function SetTarget() {
-            document.forms[0].target = "_blank";
-        }
-    </script>
+   
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div runat="server" id="quotesection">
@@ -224,7 +220,7 @@
                         <%-- <asp:Button ID="imgbtnViewQuote" runat="server" Text="View Quote" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="imgbtnViewQuote_Click" OnClientClick="SetTarget();" />
                         <asp:Button ID="btnTemplageName" runat="server" Text="Save as Template" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="btnTemplageName_Click" OnClientClick="SetTarget1();" />
                         <asp:Button ID="imgbtnSubmitAssign" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="imgbtnSubmitAssign_Click" OnClientClick="SetTarget1();" />--%>
-                        <asp:Button ID="btnConvertToBook" runat="server" Text="Convert to Booking" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="btnConvertToBook_Click"  OnClientClick="SetTarget();"/>
+                        <asp:Button ID="btnConvertToBook" runat="server" Text="Convert to Booking" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="btnConvertToBook_Click" />
                         <%--<asp:Button ID="imgbtnClear" runat="server" Text="Clear" CssClass="btn btn-primary" ValidationGroup="Quote" OnClick="imgbtnClear_Click" OnClientClick="SetTarget1();"  />--%>
                     </div>
                 </div>
