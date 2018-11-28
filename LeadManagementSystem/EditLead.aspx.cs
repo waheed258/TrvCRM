@@ -390,6 +390,9 @@ public partial class EditLead : System.Web.UI.Page
             {
                 lblMessage.Text = "Lead Details updated Successfully!";
                 lblMessage.ForeColor = System.Drawing.Color.Green;
+                DataSet dsInfo = leadBL.GetLeadInfo(Convert.ToInt32(Session["lsID"].ToString()));
+                DataTable dtLeadHistory = dsInfo.Tables[1];
+                LeadHistory(dtLeadHistory);
             }
             else
             {
