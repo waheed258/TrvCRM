@@ -1,0 +1,170 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Quotation</title>
+    <style>
+        @font-face {
+            font-family: 'MarkOT-Light';
+            src: url('fonts/MarkOT-Light.eot?#iefix') format('embedded-opentype'), url('fonts/MarkOT-Light.otf') format('opentype'), url('fonts/MarkOT-Light.woff') format('woff'), url('fonts/MarkOT-Light.ttf') format('truetype'), url('fonts/MarkOT-Light.svg#MarkOT-Light') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'MarkOT-Medium';
+            src: url('fonts/MarkOT-Medium.eot?#iefix') format('embedded-opentype'), url('fonts/MarkOT-Medium.otf') format('opentype'), url('fonts/MarkOT-Medium.woff') format('woff'), url('fonts/MarkOT-Medium.ttf') format('truetype'), url('fonts/MarkOT-Medium.svg#MarkOT-Medium') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'MarkOT-Heavy';
+            src: url('fonts/MarkOT-Heavy.eot?#iefix') format('embedded-opentype'), url('fonts/MarkOT-Heavy.otf') format('opentype'), url('fonts/MarkOT-Heavy.woff') format('woff'), url('fonts/MarkOT-Heavy.ttf') format('truetype'), url('fonts/MarkOT-Heavy.svg#MarkOT-Heavy') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'MarkOT-Bold';
+            src: url('fonts/MarkOT-Bold.eot?#iefix') format('embedded-opentype'), url('fonts/MarkOT-Bold.otf') format('opentype'), url('fonts/MarkOT-Bold.woff') format('woff'), url('fonts/MarkOT-Bold.ttf') format('truetype'), url('fonts/MarkOT-Bold.svg#MarkOT-Bold') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+
+</head>
+
+<body style="font-family:Arial, Helvetica, sans-serif; font-size:2.54mm; color:#000;">
+    <div class="wrapper" style="width:210mm; height:275mm; background-color:#fff; margin:0 auto;">
+        <div style="width:100%; display:inline-block; margin-bottom:2mm; clear:both;"><img style="max-width:100%; display:block;" src="http://tcrm.askswg.co.za/Images/ticket_head.jpg" alt="ticket-head" /></div>
+        <div class="body_cnt" style="width:185mm; margin:auto;">
+            <table style="width:100%; text-align:center; margin:0 0 2mm;">
+                <tr>
+                    <td><h3 style="font-size:5mm; color:#25377b; margin:0 0 1mm; font-weight:800; text-transform:uppercase;">INVOICE / BOOKING CONFIRMATION</h3></td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%; text-transform:uppercase;">From</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{ClientName}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;color:#00aeef;  width:100%; text-transform:uppercase;">Date</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{QuoteDate}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:5px 10px 5px; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0; color:#00aeef; width:100%; text-transform:uppercase;">Booking Reference Number</h5></td>
+                    <td width="70%" style="padding:5px 10px 5px;  "><p style=" font-size:2.5mm; margin:0; width:50%;">{lsClientFileId}</p></td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td colspan="4" width="100%" style="font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Flight Quotation </td>
+                </tr>
+                <tr>
+                    <td width="100%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {FlightDetails}
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td colspan="4" width="100%" style="font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Hotel Quotation </td>
+                </tr>
+                <tr>
+                    <td width="100%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {HotelDetails}
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td colspan="4" width="100%" style="font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Car Quotation </td>
+                </tr>
+                <tr>
+                    <td width="100%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {CarDetails}
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+                <tr>
+                    <td width="55%" style="font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Includes</td>
+                    <td width="45%" style="font-weight:700;background-color:#00aeef;  padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;">Excludes</td>
+                </tr>
+                <tr>
+                    <td width="55%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {Includes}
+                        <!--<ul style="padding-left:10px;">
+                            <li style=" font-size:2.5mm; margin:0;  padding:2px 0px;"> Return flights on Emirates and Bangkok Airways and related taxes</li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px;">7 Nights  Phuket Novotel Phuket deluxe family room  with breakfast </li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px;">5 Nights Dubai Gloria Hotel 1 x grand suite city view room only basis  </li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px; "> Return  airport/hotel/airport transfers</li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px;">Dubai Visa </li>
+                        </ul>-->
+                    </td>
+                    <td width="55%" style="padding:0px 10px 0px;  border-right:1px solid #b9b9b9; ">
+                        {Excludes}
+                        <!--<ul style="padding-left:10px;">
+                            <li style=" font-size:2.5mm; margin:0;padding:2px 0px; "> Meals & beverages not specified</li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px; ">Early check in, late check-out. </li>
+                            <li style=" font-size:2.5mm; margin:0;padding:2px 0px; ">Anything not mentioned under the inclusions </li>
+                            <li style=" font-size:2.5mm; margin:0; padding:2px 0px;">Items of a personal nature</li>
+                            <li style=" font-size:2.5mm; margin:0;padding:2px 0px; ">Travel & Medical Insurance </li>
+                        </ul>-->
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;">
+
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">COST PER Adult</h5></td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{AdultPrice}</p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{AdultTotal}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;">
+                        <h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">
+                            COST PER Child
+                        </h5>
+                    </td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:50%;">{ChildPrice}</p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{ChildTotal}</p></td>
+                </tr>
+                <tr>
+                    <td width="30%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; border-right:1px solid #b9b9b9;"><h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">Total</h5></td>
+                    <td width="55%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9;border-right:1px solid #b9b9b9; "><p style=" font-size:3.05mm; margin:0; width:50%;"></p></td>
+                    <td width="15%" style="padding:10px 10px 5px; border-bottom:1px solid #b9b9b9; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">{GrandTotal}</p></td>
+                </tr>
+                <!--<tr>
+                    <td width="30%" style="padding:10px 10px 5px;  border-right:1px solid #b9b9b9;">
+                        <h5 style=" font-size:3.05mm; margin:0;  color:#00aeef; width:100%;">
+                            BALANCE DUE
+                        </h5>
+                    </td>
+                    <td width="55%" style="padding:10px 10px 5px; border-right:1px solid #b9b9b9; "><p style=" font-size:3.05mm; margin:0; width:50%;"></p></td>
+                    <td width="15%" style="padding:10px 10px 5px; "><p style=" font-size:2.5mm; margin:0; width:100%; font-weight:bold;">R 40000.00</p></td>
+                </tr>-->
+            </table>
+          
+            <p style=" font-size:2.8mm; margin-bottom:1mm; width:100%;"> Should full payment not be received within 24 hours of receiving this invoice, the cost will be subject to a recalculation due to the volatile rate of exchange. Airtickets have to be issued either same day or within 24 hours of receiving the invoice.</p>
+
+            <p style=" font-size:2.8mm; color:#ff0000; margin-bottom:1mm; width:100%; font-weight:bold;">Due to the volatility of the Rand (ZAR), please call us prior to making full payment on any bookings.</p>
+
+            <p style="font-size:2.8mm; margin-bottom:1mm; width:100%;">Cancellation fees apply should booking be cancelled or for no show. </p>
+
+            <h6 style="font-size:3mm; color:#00aeef;  text-align:center; width:100%; font-weight:bold; margin:5mm 0 6mm;">THANK YOU FOR BOOKING WITH SERENDIPITY TOURS</h6>
+
+            <h6 style=" font-size:3mm; color:#00aeef; margin-bottom:1mm; width:100%; font-weight:bold;"> BANKING DETAILS</h6>
+            <p><b> NEDBANK</b> Serendipity Tours, Branch code; 13 05 26 00Smith Street (Durban), Account: 1305 716 582; Swift code: NEDSZAJJ</p>
+            <p><b>FNB</b> Serendipity Tours cc, Branch code: 221 426– Durban; Account:  6209 525 1329</p>
+            <p><b>STANDARD BANK</b> Serendipity Tours cc; Branc Code: 042626– Musgrave Road (Durban); Account: 05 122 708 8</p>
+            <p>PLEASE USE YOUR BOOKING REF AND FIRST NAME AS REFERENCE</p>
+        </div>
+        <div style="width:100%; display:inline-block; margin-top:3mm;"><img style="max-width:100%; display:block;" src="http://tcrm.askswg.co.za/Images/foot.png" alt="ticket-head" /></div>
+    </div>
+</body>
+</html>
+

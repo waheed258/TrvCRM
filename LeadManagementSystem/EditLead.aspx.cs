@@ -140,9 +140,9 @@ public partial class EditLead : System.Web.UI.Page
 
             txtEOthers.Text = dtLead.Rows[0]["lsOthersInfo"].ToString();
 
-            ddlStatus.SelectedValue = strStatusId;
+            ddlStatus.SelectedValue = dtLead.Rows[0]["lsLeadStatus"].ToString();
 
-            if (strStatusId == "6")
+            if (dtLead.Rows[0]["lsLeadStatus"].ToString() == "6")
             {
                 // Client File Id TextBox Show
                 dvClientFileId.Visible = true;
@@ -482,9 +482,9 @@ public partial class EditLead : System.Web.UI.Page
                 else if (e.CommandName == "Convert")
                 {
                     string strQuoteNumber = ((Label)row.FindControl("lblHistoryQuote")).Text.ToString();
-                    string url = Session["QuoteUrl"].ToString() + "&qtype=&temp=&QuoteID=" + strQuoteNumber + "&flag=2";
-                    string s = "window.open('" + url + "', '_blank');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
+                    string clientFieldID = txtClientFileId.Text;
+                    string leadid = Session["lsID"].ToString();
+                    Response.Redirect("ConvertQuote.aspx?id=" + leadid + "&Quotenum=" + strQuoteNumber + "&clientFieldID=" + clientFieldID, false);
                 }
 
             }

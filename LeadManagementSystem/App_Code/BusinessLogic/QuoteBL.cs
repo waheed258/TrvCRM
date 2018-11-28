@@ -186,5 +186,11 @@ public class QuoteBL
         int result = dataUtilities.ExecuteNonQuery("usp_CreateQuoteTemplate", hashtable);
         return result;
     }
-
+    public DataSet GetConvertQuoteDetails(string QuoteNumber)
+    {
+        Hashtable hashtable = new Hashtable();
+        hashtable.Add("@QuoteNumber", QuoteNumber);
+        DataSet ds = dataUtilities.ExecuteDataSet("GetConvertQuoteDetails", hashtable);
+        return ds;
+    }
 }
