@@ -412,7 +412,7 @@ public partial class Quote : System.Web.UI.Page
         {
             sbHotel.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
             sbHotel.Append("<tr>");
-            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Hotel Quotation </td>");
             sbHotel.Append("</tr>");
             sbHotel.Append("<tr>");
             sbHotel.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
@@ -426,7 +426,7 @@ public partial class Quote : System.Web.UI.Page
         {
             sbCar.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
             sbCar.Append("<tr>");
-            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Car Quotation </td>");
             sbCar.Append("</tr>");
             sbCar.Append("<tr>");
             sbCar.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
@@ -642,7 +642,7 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append(strHeading);
                     sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
-                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+                    sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'>{logo}</div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;float:left; '>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'>{fblogo}</a>&nbsp; <a href='#'>{twlogo}</a>&nbsp; <a href='#'>{lklogo}</a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
                     txtMailTempNew.Text = sb.ToString();
 
                     Clear();
@@ -703,7 +703,7 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append(strHeading);
                     sb.Append("<p>Thank you for the opportunity to quote for your holiday to" + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
-                    sb.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
+                    sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'>{logo}</div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'>{fblogo}</a>&nbsp; <a href='#'>{twlogo}</a>&nbsp; <a href='#'>{lklogo}</a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
                     txtMailTempNew.Text = sb.ToString();
 
                     Clear();
@@ -720,6 +720,18 @@ public partial class Quote : System.Web.UI.Page
 
             throw;
         }
+    }
+    private void BindEMailTemplate()
+    {
+        StringBuilder sb = new StringBuilder();
+        string strHeading = string.Format("<p><strong>Dear {0},</strong></p>", lblClientName.Text);
+        sb.Append(strHeading);
+        sb.Append("Thank you for the opportunity to quote for your holiday to <b>" + txtDestination.Text + "</b> <br/><br/>");
+        sb.Append("Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>");
+        sb.Append("Kind regards, <br/><br/>");
+        sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
+
+        txtMailTemp.Text = sb.ToString();
     }
     protected void imgbtnAddMultipleOptions_Click(object sender, EventArgs e)
     {
@@ -943,7 +955,7 @@ public partial class Quote : System.Web.UI.Page
                             sbFlight.Append("</tr>");
                             sbFlight.Append("<tr>");
                             sbFlight.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
-                            sbFlight.Append(txtFlightDetails.Text);
+                            sbFlight.Append(dtlRow["FlightDetails"].ToString());
                             sbFlight.Append("</td>");
                             sbFlight.Append("</tr>");
                             sbFlight.Append("</table>");
@@ -953,11 +965,11 @@ public partial class Quote : System.Web.UI.Page
                         {
                             sbHotel.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                             sbHotel.Append("<tr>");
-                            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+                            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Hotel Quotation </td>");
                             sbHotel.Append("</tr>");
                             sbHotel.Append("<tr>");
                             sbHotel.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
-                            sbHotel.Append(txtHotelInfo.Text);
+                            sbHotel.Append(dtlRow["HotelInfo"].ToString());
                             sbHotel.Append("</td>");
                             sbHotel.Append("</tr>");
                             sbHotel.Append("</table>");
@@ -967,11 +979,11 @@ public partial class Quote : System.Web.UI.Page
                         {
                             sbCar.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
                             sbCar.Append("<tr>");
-                            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+                            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Car Quotation </td>");
                             sbCar.Append("</tr>");
                             sbCar.Append("<tr>");
                             sbCar.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
-                            sbCar.Append(txtCarHireDetails.Text);
+                            sbCar.Append(dtlRow["CarHireDetails"].ToString());
                             sbCar.Append("</td>");
                             sbCar.Append("</tr>");
                             sbCar.Append("</table>");
@@ -1054,6 +1066,8 @@ public partial class Quote : System.Web.UI.Page
         { }
 
     }
+
+
     public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber)
     {
         try
@@ -1091,13 +1105,19 @@ public partial class Quote : System.Web.UI.Page
                     Subject = "Serendipity Tours quote to " + clDestinationCity;
                     MailCc = "";
 
-                    MailText = "Dear " + clName + ", <br/><br/>";
-                    MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
-                    MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
-                    MailText += "Kind regards, <br/><br/>";
-                    //MailText += "(" + consultName + ")";
+                    //MailText = "Dear " + clName + ", <br/><br/>";
+                    //MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
+                    //MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
+                    //MailText += "Kind regards, <br/><br/>";
+                    ////MailText += "(" + consultName + ")";
 
-                    MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
+                    //MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
+
+                    MailText = txtMailTempNew.Text;
+                    MailText = MailText.Replace("{logo}", "<img style='width:8%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png'/>");
+                    MailText = MailText.Replace("{fblogo}", "<img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' />");
+                    MailText = MailText.Replace("{twlogo}", "<img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' />");
+                    MailText = MailText.Replace("{lklogo}", "<img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' />");
                     bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
 
                     if (mailSent)
