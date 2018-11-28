@@ -235,15 +235,19 @@ public partial class ConvertQuote : System.Web.UI.Page
                 }
 
                 try
-                {
-                    Subject = "Serendipity Tours quote to " + clDestinationCity;
+                {    
+                    Subject = "Serendipity Travel >> Booking confirmation for " + clName + " to " +  clDestinationCity;
                     MailCc = "";
 
                     MailText = "Dear " + clName + ", <br/><br/>";
-                    MailText += "Thank you for the opportunity to quote for your holiday to <b>" + clDestinationCity + "</b> <br/><br/>";
-                    MailText += "Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote. <br/><br/>";
+                    MailText += "Please find attached your confirmation for your holiday to <b>" + clDestinationCity + "</b>. <br/><br/>";
+                    MailText += "Should full payment not be received within 24 hours of receiving this confirmation, the cost will be subject to a recalculation due to the volatile rate of exchange. Air tickets have to be issued either same day or within 24 hours of receiving the confirmation.<br/><br/>";
+                    MailText += "Due to the volatility of the Rand (ZAR), please call us prior to making full payment on any bookings.<br/>";
+                    MailText += "Cancellation fees apply should booking be cancelled or for no show.<br/>";
+                    MailText += "Once full payment has been received, I will advise you, when you can expect your travel vouchers.<br/>";
+                    MailText += "Thank you for booking with Serendipity Travel.<br/>";
                     MailText += "Kind regards, <br/><br/>";
-                    //MailText += "(" + consultName + ")";
+                    MailText += "(" + consultName + ")";
 
                     MailText += "<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'><img style='width:100%; display:block;' src='http://tcrm.askswg.co.za/images/logoEmail.png' /></div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;'>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'><img src='http://tcrm.askswg.co.za/images/facebook.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/twitter.png' style='width:3%' /></a>&nbsp; <a href='#'><img src='http://tcrm.askswg.co.za/images/linkedin.png' style='width:3%' /></a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>";
                     bool mailSent = UpdateCustomMail(SmtpServer, SmtpPort, MailFrom, DisplayNameFrom, FromPassword, MailTo, DisplayNameTo, MailCc, "", "", "", DisplayNameCc, MailBcc, Subject, MailText, Attachment);
