@@ -1106,8 +1106,7 @@ public partial class Quote : System.Web.UI.Page
                         CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteNumber);
                         emailsection.Style.Add("display", "none");
                         quotesection.Style.Add("display", "unset");
-                        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID);
-
+                        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID + "&encryptedparamleadid=" + Request.QueryString["id"] + "&ClientName=" + Request.QueryString["client"] + "&product=" + Request.QueryString["prod"] + "&source=" + Request.QueryString["source"] + "&toCity=" + Request.QueryString["city"] + "&Email=" + Request.QueryString["em"] + "&encryptedparamlblProductID=" + Request.QueryString["prodid"]);
                     }
                     else
                     {
@@ -1445,7 +1444,7 @@ public partial class Quote : System.Web.UI.Page
     }
     protected void backToLead_Click1(object sender, EventArgs e)
     {
-        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID);
+        Response.Redirect("EditLead.aspx?t=quote&idq=" + LeadID + "&encryptedparamleadid=" + Request.QueryString["id"] + "&ClientName=" + Request.QueryString["client"] + "&product=" + Request.QueryString["prod"] + "&source=" + Request.QueryString["source"] + "&toCity=" + Request.QueryString["city"] + "&Email=" + Request.QueryString["em"] + "&encryptedparamlblProductID=" + Request.QueryString["prodid"]);
     }
     protected void btnSendMailNew_Click(object sender, EventArgs e)
     {
