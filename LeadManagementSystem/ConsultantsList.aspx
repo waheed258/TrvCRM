@@ -101,7 +101,7 @@
     <div id="editConsultant" runat="server">
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title" style="font-weight: bold; color: #00AAFF">Create New Consultant</h3>
+                <h3 class="panel-title" style="font-weight: bold; color: #00AAFF">Update Consultant</h3>
             </div>
             <div class="panel-body">
                 <div style="text-align: center">

@@ -92,7 +92,7 @@
             <div class="row" style="margin-left:1px;">
                 <asp:Button ID="ImageButton1" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="Consultant" OnClick="ImageButton1_Click" />
                 <%--<asp:Button ID="btnUpdate" runat="server" Text="Update" CssClass="btn btn-primary" ValidationGroup="Consultant" OnClick="btnUpdate_Click" />--%>
-                <asp:Button ID="btnReset" runat="server" Text="Back" CssClass="btn btn-primary" ValidationGroup="Consultant" OnClick="btnReset_Click" />
+                <asp:Button ID="btnReset" runat="server" Text="Back" CssClass="btn btn-primary"  OnClick="btnReset_Click" />
             </div>
         </div>
     </div>
