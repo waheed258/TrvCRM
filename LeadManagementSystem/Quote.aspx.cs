@@ -452,7 +452,7 @@ public partial class Quote : System.Web.UI.Page
         }
 
 
-        StreamReader reader = new StreamReader(Server.MapPath("~/QuotePDF.html"));
+        StreamReader reader = new StreamReader(Server.MapPath("~/ViewQuotePDF.html"));
         string readFile = reader.ReadToEnd();
         reader.Close();
 
@@ -468,8 +468,6 @@ public partial class Quote : System.Web.UI.Page
         readFile = readFile.Replace("{HotelDetails}", sbHotel.ToString());
         readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
-        //readFile = readFile.Replace("{LeadStatus}", lStatus);
-
 
 
         if (ddlAdultType.SelectedValue == "1")
@@ -496,10 +494,21 @@ public partial class Quote : System.Web.UI.Page
 
         string StrContent = readFile;
 
-        string filepath = Server.MapPath("~/QuotePDF");
+        string filepath = Server.MapPath("~/ViewQuotePDF");
 
 
         bool pdf = GenerateHTML_TO_PDF1(StrContent, true, filepath, false, "");
+        if (pdf)
+        {
+            string url = string.Format("ViewQuotePDF.aspx?FN={0}.pdf", (sender as Button).CommandArgument);
+            string script = "<script type='text/javascript'>window.open('" + url + "')</script>";
+            this.ClientScript.RegisterStartupScript(this.GetType(), "script", script);
+        }
+        else
+        {
+            lblMessage.Text = "Something went wrong. Please contact administrator!";
+            lblMessage.ForeColor = System.Drawing.Color.Red;
+        }
 
     }
     private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
@@ -537,7 +546,7 @@ public partial class Quote : System.Web.UI.Page
             //else
             //    doc.Save(Path);
 
-            string FileName = Path + "/" + "QuoteNumber" + ".pdf";
+            string FileName = Path + "/" + "ViewQuotePDF" + ".pdf";
 
             if (!Directory.Exists(Path))
             {
@@ -558,15 +567,15 @@ public partial class Quote : System.Web.UI.Page
             //doc.Save(FileName);
 
 
-            string FilePath = FileName;
-            WebClient User = new WebClient();
-            Byte[] FileBuffer = User.DownloadData(FilePath);
-            if (FileBuffer != null)
-            {
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-length", FileBuffer.Length.ToString());
-                Response.BinaryWrite(FileBuffer);
-            }
+            //string FilePath = FileName;
+            //WebClient User = new WebClient();
+            //Byte[] FileBuffer = User.DownloadData(FilePath);
+            //if (FileBuffer != null)
+            //{
+            //    Response.ContentType = "application/pdf";
+            //    Response.AddHeader("content-length", FileBuffer.Length.ToString());
+            //    Response.BinaryWrite(FileBuffer);
+            //}
 
 
             //if (FileName != "")
