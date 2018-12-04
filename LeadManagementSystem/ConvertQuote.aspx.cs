@@ -116,23 +116,51 @@ public partial class ConvertQuote : System.Web.UI.Page
     protected void btnConvertToBook_Click(object sender, EventArgs e)
     {
         StringBuilder sbMainrow = new StringBuilder();
-        StreamReader reader = new StreamReader(Server.MapPath("~/ConvertQuotePDF.html"));
-        string readFile = reader.ReadToEnd();
-        reader.Close();
+        StringBuilder sbFlight = new StringBuilder();
+        StringBuilder sbHotel = new StringBuilder();
+        StringBuilder sbCar = new StringBuilder();
+   
 
         if (!string.IsNullOrEmpty(txtFlightDetails.Text))
         {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + txtFlightDetails.Text + "</div>");
-        }
+            sbFlight.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbFlight.Append("<tr>");
+            sbFlight.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Flight Quotation </td>");
+            sbFlight.Append("</tr>");
+            sbFlight.Append("<tr>");
+            sbFlight.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbFlight.Append(txtFlightDetails.Text);
+            sbFlight.Append("</td>");
+            sbFlight.Append("</tr>");
+            sbFlight.Append("</table>");
 
+        }
         if (!string.IsNullOrEmpty(txtHotelInfo.Text))
         {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + txtHotelInfo.Text + "</div>");
+            sbHotel.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbHotel.Append("<tr>");
+            sbHotel.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Hotel Quotation </td>");
+            sbHotel.Append("</tr>");
+            sbHotel.Append("<tr>");
+            sbHotel.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbHotel.Append(txtHotelInfo.Text);
+            sbHotel.Append("</td>");
+            sbHotel.Append("</tr>");
+            sbHotel.Append("</table>");
         }
 
         if (!string.IsNullOrEmpty(txtCarHireDetails.Text))
         {
-            sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + txtCarHireDetails.Text + "</div>");
+            sbCar.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbCar.Append("<tr>");
+            sbCar.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Car Quotation </td>");
+            sbCar.Append("</tr>");
+            sbCar.Append("<tr>");
+            sbCar.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbCar.Append(txtCarHireDetails.Text);
+            sbCar.Append("</td>");
+            sbCar.Append("</tr>");
+            sbCar.Append("</table>");
         }
 
         if (!string.IsNullOrEmpty(txtItinerary.Text))
@@ -149,6 +177,39 @@ public partial class ConvertQuote : System.Web.UI.Page
         {
             sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + txtExcludes.Text + "</div>");
         }
+        StreamReader reader = new StreamReader(Server.MapPath("~/ConvertQuotePDF.html"));
+        string readFile = reader.ReadToEnd();
+        reader.Close();
+
+        //if (!string.IsNullOrEmpty(txtFlightDetails.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Flight Details:</h4>" + txtFlightDetails.Text + "</div>");
+        //}
+
+        //if (!string.IsNullOrEmpty(txtHotelInfo.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Hotel Details:</h4>" + txtHotelInfo.Text + "</div>");
+        //}
+
+        //if (!string.IsNullOrEmpty(txtCarHireDetails.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Car Hire:</h4>" + txtCarHireDetails.Text + "</div>");
+        //}
+
+        //if (!string.IsNullOrEmpty(txtItinerary.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + txtItinerary.Text + "</div>");
+        //}
+
+        //if (!string.IsNullOrEmpty(txtIncludes.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Includes:</h4>" + txtIncludes.Text + "</div>");
+        //}
+
+        //if (!string.IsNullOrEmpty(txtExcludes.Text))
+        //{
+        //    sbMainrow.Append(" <div class='col-md-12'> <h4>Excluded:</h4>" + txtExcludes.Text + "</div>");
+        //}
 
         readFile = readFile.Replace("{QuoteDate}", txtDate.Text);
         readFile = readFile.Replace("{lsClientFileId}", ClientFieldId);
@@ -159,9 +220,9 @@ public partial class ConvertQuote : System.Web.UI.Page
         readFile = readFile.Replace("{ChildTotal}", lblChildTotPrice.Text);
         readFile = readFile.Replace("{Includes}", txtIncludes.Text);
         readFile = readFile.Replace("{Excludes}", txtExcludes.Text);
-        readFile = readFile.Replace("{FlightDetails}", txtFlightDetails.Text);
-        readFile = readFile.Replace("{HotelDetails}", txtHotelInfo.Text);
-        readFile = readFile.Replace("{CarDetails}", txtCarHireDetails.Text);
+        readFile = readFile.Replace("{FlightDetails}", sbFlight.ToString());
+        readFile = readFile.Replace("{HotelDetails}", sbHotel.ToString());
+        readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
         //readFile = readFile.Replace("{LeadStatus}", lStatus);
 
@@ -406,6 +467,10 @@ public partial class ConvertQuote : System.Web.UI.Page
                 txtIncludes.Text = ds.Tables[0].Rows[0]["Includes"].ToString();
                 txtExcludes.Text = ds.Tables[0].Rows[0]["Excludes"].ToString();
                 txtTravelInsur.Text = ds.Tables[0].Rows[0]["TravelInsurance"].ToString();
+                if(lblChildTotPrice.Text == "")
+                {
+                    lblChildTotPrice.Text = "0";
+                }
                 lblGrandTotal.Text = Convert.ToString(Convert.ToInt32(lblAdultTotPrice.Text) + Convert.ToInt32(lblChildTotPrice.Text));
                 ViewState["EmailID"] = ds.Tables[0].Rows[0]["lsEmailId"].ToString();
                 if (ddlAdultType.SelectedValue == "1")
