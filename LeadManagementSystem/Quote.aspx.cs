@@ -651,18 +651,12 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append(strHeading);
                     sb.Append("<p>Thank you for the opportunity to quote for your holiday to " + ddlPackage.SelectedItem.Text + ". Please find attached the options as discussed. Should you require any changes or amendments, please do not hesitate to contact me. I will be contacting you shortly to discuss the quote.</p>");
                     sb.Append("<p>Please Note:</p>");
-                    sb.Append("<p>*This is a quotation only. Rates are subject to seasonal adjustments, currency</p>");
-                    sb.Append("<p>fluctuations, air fare increases, flight and accommodation availability at the time of</p>");
-                    sb.Append("<p>booking.</p>");
+                    sb.Append("<p>*This is a quotation only. Rates are subject to seasonal adjustments, currency fluctuations, air fare increases, flight and accommodation availability at the time of booking.</p>");
                     sb.Append("<p>*Quotations/bookings are subject to our terms and conditions.</p>");
-                    sb.Append("<p>*The rate of exchange is subject to change until full payment is received.</p><br/>");
-                    sb.Append("<p>I have included as much detail as possible; however I will be thrilled to enhance this</p>");
-                    sb.Append("<p>quotation to suit any specific needs. Kindly speak to me about medical and</p>");
-                    sb.Append("<p>visa requirements of the country you are visiting, to ensure that you are well prepared.</p><br/>");
-                    sb.Append("<p>Once again I thank you for the enquiry and please do not hesitate to contact me if you</p>");
-                    sb.Append("<p>require any further assistance.</p><br/>");
+                    sb.Append("<p>*The rate of exchange is subject to change until full payment is received.</p>");
+                    sb.Append("<p>I have included as much detail as possible; however I will be thrilled to enhance this quotation to suit any specific needs. Kindly speak to me about medical and visa requirements of the country you are visiting, to ensure that you are well prepared.</p>");
+                    sb.Append("<p>Once again I thank you for the enquiry and please do not hesitate to contact me if you require any further assistance.</p>");                    
                     sb.Append("<p>I look forward to being of further service to you.</p><br/>");
-
                     sb.Append("<p><strong>Kind regards</strong></p>");
                     sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'>{logo}</div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;float:left; '>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'>{fblogo}</a>&nbsp; <a href='#'>{twlogo}</a>&nbsp; <a href='#'>{lklogo}</a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
                     txtMailTempNew.Text = sb.ToString();
