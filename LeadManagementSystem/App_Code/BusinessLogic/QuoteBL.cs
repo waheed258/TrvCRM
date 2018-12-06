@@ -115,7 +115,8 @@ public class QuoteBL
                     cmd.Parameters.AddWithValue("@ChildTotal", quoteEntity.ChildTotal);
                     cmd.Parameters.AddWithValue("@IsMailSent", quoteEntity.IsMailSent);
                     cmd.Parameters.AddWithValue("@LeadID", quoteEntity.LeadID);
-                    cmd.Parameters.AddWithValue("@PackageId", quoteEntity.PackageId);                    
+                    cmd.Parameters.AddWithValue("@PackageId", quoteEntity.PackageId);
+                    cmd.Parameters.AddWithValue("@QType", quoteEntity.QType);  
 
                     if (quoteEntity.QuoteDate != "")
                     {

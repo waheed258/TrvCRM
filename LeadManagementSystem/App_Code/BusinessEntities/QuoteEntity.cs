@@ -36,5 +36,6 @@ public class QuoteEntity
 
     public string TemplateName { get; set; }
     public string IsCustomTemplate { get; set; }
+    public int QType { get; set; }
 
 }

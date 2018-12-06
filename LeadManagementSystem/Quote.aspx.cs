@@ -54,6 +54,8 @@ public partial class Quote : System.Web.UI.Page
                 txtDestination.Text = Request.QueryString["city"];
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
+               // GetProducts();
+               // ddlPackage.SelectedValue = Request.QueryString["prodid"];
                 emailsection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
@@ -110,7 +112,66 @@ public partial class Quote : System.Web.UI.Page
         catch
         { }
     }
+    private void GetProducts()
+    {
+        try
+        {
+            string constr = "server=localhost;user id=root; password=Dino@123;database=wordpressdb;";
+            string query = "select id,CAST(post_title as char(1500)) as post_title from wpjc_posts where post_status = 'publish' and post_type = 'holiday_packages'";
 
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (var cmd = new MySqlCommand(query))
+                {
+                    using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                    {
+                        cmd.Connection = con;
+                        sda.SelectCommand = cmd;
+                        using (DataSet ds = new DataSet())
+                        {
+                            sda.Fill(ds);
+                            ViewState["products"] = ds;
+                            ddlPackage.DataSource = ds;
+                            ddlPackage.DataTextField = "post_title";
+                            ddlPackage.DataValueField = "id";
+                            ddlPackage.DataBind();
+                            ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
+                        }
+                    }
+                }
+
+                if (Request.QueryString["prodid"] == "" || Request.QueryString["prodid"] == null)
+                {
+                    txtIncludes.Text = "";
+                    txtExcludes.Text = "";
+                }
+                else
+                {
+                    int Productid = Convert.ToInt32(Request.QueryString["prodid"]);
+                    ViewState["includesexcludes"] = "select CAST(meta_value as char(15000)) as meta_value from wpjc_postmeta where post_id = " + Productid + " and meta_key = 'hot_include';select CAST(meta_value as char(15000)) as meta_value from wpjc_postmeta where post_id = " + Productid + " and meta_key='hot_exclude'";
+                    using (var cmd = new MySqlCommand(ViewState["includesexcludes"].ToString()))
+                    {
+                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                        {
+                            cmd.Connection = con;
+                            sda.SelectCommand = cmd;
+                            using (DataSet ds = new DataSet())
+                            {
+                                sda.Fill(ds);
+                                ViewState["dsincludesexcludes"] = ds;
+                                txtIncludes.Text = ds.Tables[0].Rows[0]["meta_value"].ToString();
+                                txtExcludes.Text = ds.Tables[1].Rows[0]["meta_value"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+
+        }
+    }
     private void Clear()
     {
         txtDate.Text = "";
@@ -393,6 +454,7 @@ public partial class Quote : System.Web.UI.Page
         StringBuilder sbFlight = new StringBuilder();
         StringBuilder sbHotel = new StringBuilder();
         StringBuilder sbCar = new StringBuilder();
+        StringBuilder sbItinerary = new StringBuilder();
 
         if (!string.IsNullOrEmpty(txtFlightDetails.Text))
         {
@@ -435,6 +497,19 @@ public partial class Quote : System.Web.UI.Page
             sbCar.Append("</tr>");
             sbCar.Append("</table>");
         }
+        if (!string.IsNullOrEmpty(txtItinerary.Text))
+        {
+            sbItinerary.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+            sbItinerary.Append("<tr>");
+            sbItinerary.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Itinerary </td>");
+            sbItinerary.Append("</tr>");
+            sbItinerary.Append("<tr>");
+            sbItinerary.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+            sbItinerary.Append(txtItinerary.Text);
+            sbItinerary.Append("</td>");
+            sbItinerary.Append("</tr>");
+            sbItinerary.Append("</table>");
+        }
 
         if (!string.IsNullOrEmpty(txtItinerary.Text))
         {
@@ -468,7 +543,7 @@ public partial class Quote : System.Web.UI.Page
         readFile = readFile.Replace("{HotelDetails}", sbHotel.ToString());
         readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
-
+        readFile = readFile.Replace("{ItineraryDetails}", sbItinerary.ToString());
 
         if (ddlAdultType.SelectedValue == "1")
         {
@@ -655,7 +730,7 @@ public partial class Quote : System.Web.UI.Page
                     sb.Append("<p>*Quotations/bookings are subject to our terms and conditions.</p>");
                     sb.Append("<p>*The rate of exchange is subject to change until full payment is received.</p>");
                     sb.Append("<p>I have included as much detail as possible; however I will be thrilled to enhance this quotation to suit any specific needs. Kindly speak to me about medical and visa requirements of the country you are visiting, to ensure that you are well prepared.</p>");
-                    sb.Append("<p>Once again I thank you for the enquiry and please do not hesitate to contact me if you require any further assistance.</p>");                    
+                    sb.Append("<p>Once again I thank you for the enquiry and please do not hesitate to contact me if you require any further assistance.</p>");
                     sb.Append("<p>I look forward to being of further service to you.</p><br/>");
                     sb.Append("<p><strong>Kind regards</strong></p>");
                     sb.Append("<div style='float:left; width:10%; border-right:3px solid #03F; padding:0 20px; margin-right:50px;'>{logo}</div><div><h1 style='color:#3fa9df; margin:0 0 5px; font-size:12px;float:left; '>" + Session["Name"].ToString() + "</h1><h3 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>Travel Consultant</h3><h5 style='color:#25377b; margin:0 0 5px; font-size:12px; font-weight:400;'>+27 31 2010 630 <span style='color:#3fa9df;'>|</span>" + Session["ConsultantEmail"].ToString() + "</h5><p style='color:#25377b; margin:0 0 0px; font-size:12px; font-weight:400;margin-left:165px;'><a href='#'>{fblogo}</a>&nbsp; <a href='#'>{twlogo}</a>&nbsp; <a href='#'>{lklogo}</a>&nbsp; &nbsp; &nbsp;Suite 3, 2nd floor Silver Oaks, 36 Silverton Road, Musgruve, Durban</p></div>");
@@ -966,6 +1041,7 @@ public partial class Quote : System.Web.UI.Page
             StringBuilder sbFlight = new StringBuilder();
             StringBuilder sbHotel = new StringBuilder();
             StringBuilder sbCar = new StringBuilder();
+            StringBuilder sbItinerary = new StringBuilder();
 
             StringBuilder sbMainrow = new StringBuilder();
 
@@ -1017,7 +1093,19 @@ public partial class Quote : System.Web.UI.Page
                             sbCar.Append("</tr>");
                             sbCar.Append("</table>");
                         }
-
+                        if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
+                        {
+                            sbItinerary.Append("<table style='width:100%; border:1px solid #b9b9b9; border-spacing:0; margin:0 0 3mm;'>");
+                            sbItinerary.Append("<tr>");
+                            sbItinerary.Append("<td colspan='4' width='100%' style='font-weight:700;background-color:#00aeef; width:100%; padding:5px 10px;  color:#fff; font-size:3.56mm; text-transform:uppercase;'>Itinerary </td>");
+                            sbItinerary.Append("</tr>");
+                            sbItinerary.Append("<tr>");
+                            sbItinerary.Append("<td width='100%' style='padding:0px 10px 0px;  border-right:1px solid #b9b9b9; '>");
+                            sbItinerary.Append(dtlRow["ItineraryDetails"].ToString());
+                            sbItinerary.Append("</td>");
+                            sbItinerary.Append("</tr>");
+                            sbItinerary.Append("</table>");
+                        }
                         if (!string.IsNullOrEmpty(dtlRow["ItineraryDetails"].ToString()))
                         {
                             sbMainrow.Append(" <div class='col-md-12'> <h4>Itinerary:</h4>" + dtlRow["ItineraryDetails"].ToString() + "</div>");
@@ -1051,6 +1139,7 @@ public partial class Quote : System.Web.UI.Page
                         readFile = readFile.Replace("{CarDetails}", sbCar.ToString());
                         readFile = readFile.Replace("{GrandTotal}", lblGrandTotal.Text.ToString());
                         readFile = readFile.Replace("{LeadStatus}", lStatus);
+                        readFile = readFile.Replace("{ItineraryDetails}", sbItinerary.ToString());
 
 
 
@@ -1085,7 +1174,7 @@ public partial class Quote : System.Web.UI.Page
                 if (pdf)
                 {
                     string consultName = Session["Name"].ToString();
-                    SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumber);
+                    SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumber,1);
                     Session.Remove("lstQuoteEntity");
                 }
 
@@ -1097,7 +1186,7 @@ public partial class Quote : System.Web.UI.Page
     }
 
 
-    public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber)
+    public void SendMail(string clName, string clEmail, string clDestinationCity, string consultName, string QuoteNumber,int QType)
     {
         try
         {
@@ -1105,8 +1194,8 @@ public partial class Quote : System.Web.UI.Page
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 string SmtpServer = ds.Tables[0].Rows[0]["con_smtp_host"].ToString();
-                int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
-                //int SmtpPort = 587;
+                //int SmtpPort = Convert.ToInt32(ds.Tables[0].Rows[0]["con_smtp_port"].ToString());
+                int SmtpPort = 587;
                 string MailFrom = ds.Tables[0].Rows[0]["con_mail_from"].ToString();
                 string DisplayNameFrom = ds.Tables[0].Rows[0]["con_from_name"].ToString();
                 string FromPassword = ds.Tables[0].Rows[0]["con_from_pwd"].ToString();
@@ -1151,7 +1240,7 @@ public partial class Quote : System.Web.UI.Page
 
                     if (mailSent)
                     {
-                        MailSentSatatus(QuoteNumber);
+                        MailSentSatatus(QuoteNumber,QType);
                         CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteNumber);
                         emailsection.Style.Add("display", "none");
                         quotesection.Style.Add("display", "unset");
@@ -1254,7 +1343,7 @@ public partial class Quote : System.Web.UI.Page
         return IsSucces;
     }
 
-    public void MailSentSatatus(string QuoteNumber)
+    public void MailSentSatatus(string QuoteNumber,int QType)
     {
         try
         {
@@ -1282,6 +1371,7 @@ public partial class Quote : System.Web.UI.Page
             qtEntity.IsMailSent = "Y";
             qtEntity.QuoteNumber = QuoteNumber;
             qtEntity.Operation = "U";
+            qtEntity.QType = QType;
 
             string strQuoteNumber = qtBL.CUOperationQuote(qtEntity);
         }
@@ -1473,7 +1563,7 @@ public partial class Quote : System.Web.UI.Page
             if (pdf)
             {
                 string consultName = Session["Name"].ToString();
-                SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumbers);
+                SendMail(lblClientName.Text, txtToEmailNew.Text, txtDestination.Text, consultName, QuoteNumbers,2);
                 Session.Remove("lstQuoteEntity");
             }
 
@@ -1508,5 +1598,35 @@ public partial class Quote : System.Web.UI.Page
             GetPdfMultipleOptions(lstQuoteEntity);
             CommanClass.MailStatusLog(LeadID, "QT001", "Success", "", QuoteBuilder.ToString());
         }
+    }
+    protected void ddlPackage_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //try
+        //{
+        //    string constr = "server=localhost;user id=root; password=Dino@123;database=wordpressdb;";
+        //    int Productid = Convert.ToInt32(ddlPackage.SelectedValue);
+        //    ViewState["includesexcludes"] = "select CAST(meta_value as char(15000)) as meta_value from wpjc_postmeta where post_id = " + Productid + " and meta_key = 'hot_include';select CAST(meta_value as char(15000)) as meta_value from wpjc_postmeta where post_id = " + Productid + " and meta_key='hot_exclude'";
+        //    using (MySqlConnection con = new MySqlConnection(constr))
+        //    {
+        //        using (var cmd = new MySqlCommand(ViewState["includesexcludes"].ToString()))
+        //        {
+        //            using (MySqlDataAdapter sda = new MySqlDataAdapter())
+        //            {
+        //                cmd.Connection = con;
+        //                sda.SelectCommand = cmd;
+        //                using (DataSet ds = new DataSet())
+        //                {
+        //                    sda.Fill(ds);
+        //                    txtIncludes.Text = ds.Tables[0].Rows[0]["meta_value"].ToString();
+        //                    txtExcludes.Text = ds.Tables[1].Rows[0]["meta_value"].ToString();
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        //catch
+        //{
+
+        //}
     }
 }

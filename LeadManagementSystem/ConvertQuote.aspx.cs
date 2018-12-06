@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using MySql.Data.MySqlClient;
 
 public partial class ConvertQuote : System.Web.UI.Page
 {
@@ -30,9 +31,44 @@ public partial class ConvertQuote : System.Web.UI.Page
 
         if (!IsPostBack)
         {
+            //GetProducts();            
             GetCostTypeDataAdult();
             GetCostTypeDataChild();
             GetGridData();
+        }
+    }
+    private void GetProducts()
+    {
+        try
+        {
+            string constr = "server=localhost;user id=root; password=Dino@123;database=wordpressdb;";
+            string query = "select id,CAST(post_title as char(1500)) as post_title from wpjc_posts where post_status = 'publish' and post_type = 'holiday_packages'";
+
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (var cmd = new MySqlCommand(query))
+                {
+                    using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                    {
+                        cmd.Connection = con;
+                        sda.SelectCommand = cmd;
+                        using (DataSet ds = new DataSet())
+                        {
+                            sda.Fill(ds);
+                            ViewState["products"] = ds;
+                            ddlPackage.DataSource = ds;
+                            ddlPackage.DataTextField = "post_title";
+                            ddlPackage.DataValueField = "id";
+                            ddlPackage.DataBind();
+                            ddlPackage.Items.Insert(0, new ListItem("--Select Product --", "-1"));
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+
         }
     }
     private bool GenerateHTML_TO_PDF1(string HtmlString, bool ResponseShow, string Path, bool SaveFileDir, string QuoteNumber)
@@ -446,6 +482,7 @@ public partial class ConvertQuote : System.Web.UI.Page
             {
                 lblClientName.Text = ds.Tables[0].Rows[0]["ClientName"].ToString();
                 ddlPackage.SelectedItem.Text = ds.Tables[0].Rows[0]["lsProductId"].ToString();
+                //ddlPackage.SelectedValue = ds.Tables[0].Rows[0]["PackageId"].ToString();
                 txtSource.Text = ds.Tables[0].Rows[0]["lsOriginName"].ToString();
                 txtDestination.Text = ds.Tables[0].Rows[0]["lsDestinationName"].ToString();
                 txtDate.Text = ds.Tables[0].Rows[0]["QuoteDate1"].ToString();

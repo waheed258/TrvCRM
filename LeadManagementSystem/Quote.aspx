@@ -89,6 +89,8 @@
                             <asp:ListItem Value="4" Text="Golden Triangle Inc. Mumbai"></asp:ListItem>
                             <asp:ListItem Value="5" Text="Phuket Dubai Combo"></asp:ListItem>
                         </asp:DropDownList>
+                        <%-- <asp:DropDownList ID="DropDownList1" runat="server" Style="padding: 0px" CssClass="form-control" OnSelectedIndexChanged="ddlPackage_SelectedIndexChanged" AutoPostBack="true">
+                        </asp:DropDownList>--%>
                         <asp:RequiredFieldValidator ID="rfvddlPackage" runat="server" ControlToValidate="ddlPackage" ForeColor="#d0582e"
                             ErrorMessage="Please select Product" ValidationGroup="Quote" Display="Dynamic" InitialValue="-1"></asp:RequiredFieldValidator>
                     </div>
