@@ -228,11 +228,11 @@ public partial class EditLead : System.Web.UI.Page
     private void BindFollowupEmailTemplate()
     {
         StringBuilder sbFU = new StringBuilder();
-        string strHeadingFU = string.Format("<p><strong>Dear Valued Client,</strong></p>");
+        string strHeadingFU = string.Format("<p><strong>Dear " + lblLName.Text + "</strong></p>");
         sbFU.Append(strHeadingFU);
-        sbFU.Append("<p>Thanks for submitting a travel request through to Serendipity Travel.</p>");
-        sbFU.Append("<p>I trust that our consultant has reverted to you with a suitable quotation specifict to your travel needs. Should you not have received a response, please do let us know.</p>");
-        sbFU.Append("<p>Please advise if we can assist you further by tailor making a suitable package for you should the package sent through not be suitable enough.</p>");
+        sbFU.Append("<p>Thank you for coming through to me at Serendipity Travel, re. your travel request.</p>");
+        sbFU.Append("<p>This is a courtesy email to follow up on the quote I have sent.  </p>");
+        sbFU.Append("<p>Please advise if I can assist you further by changing anything on the quote sent or quoting you on alternative options.</p>");
 
         sbFU.Append("<p><strong>Kind regards</strong></p>");
         sbFU.Append("<p><strong>" + Session["Name"].ToString() + "</strong></p>");
