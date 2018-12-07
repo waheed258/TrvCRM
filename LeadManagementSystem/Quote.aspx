@@ -258,17 +258,21 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="control-label">To</label>
                             <asp:TextBox ID="txtToEmailNew" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtToEmailNew" ForeColor="#d0582e"
-                                ErrorMessage="Please Email Id" ValidationGroup="EmailNew" Display="Dynamic"></asp:RequiredFieldValidator>
+                                ErrorMessage="Please enter Email Id" ValidationGroup="EmailNew" Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label class="control-label">CC</label>
+                            <asp:TextBox ID="txtCC" class="form-control" runat="server" MaxLength="1000"></asp:TextBox>                            
+                        </div>
+                        <div class="col-md-3">
                             <label class="control-label">Client Name</label>
                             <asp:TextBox ID="txtCLientNameNew" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="control-label">Subject</label>
                             <asp:TextBox ID="txtEmailSubjectNew" class="form-control" runat="server" MaxLength="100"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtEmailSubjectNew" ForeColor="#d0582e"
