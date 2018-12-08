@@ -54,8 +54,8 @@ public partial class Quote : System.Web.UI.Page
                 txtDestination.Text = Request.QueryString["city"];
                 GetCostTypeDataAdult();
                 GetCostTypeDataChild();
-               // GetProducts();
-               // ddlPackage.SelectedValue = Request.QueryString["prodid"];
+                GetProducts();
+                ddlPackage.SelectedValue = Request.QueryString["prodid"];
                 emailsection.Style.Add("display", "none");
                 quotesection.Style.Add("display", "unset");
                 backToLead.Visible = true;
@@ -116,7 +116,7 @@ public partial class Quote : System.Web.UI.Page
     {
         try
         {
-            string constr = "server=localhost;user id=root; password=Dino@123;database=wordpressdb;";
+            string constr = "server=172.93.97.58;user id=seren171; password=(uC152LL@Pf2ya;database=seren171_wp221;";
             string query = "select id,CAST(post_title as char(1500)) as post_title from wpjc_posts where post_status = 'publish' and post_type = 'holiday_packages'";
 
             using (MySqlConnection con = new MySqlConnection(constr))
