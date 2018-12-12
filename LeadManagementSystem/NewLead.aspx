@@ -131,6 +131,8 @@
                 <div class="col-md-3">
                     <label class="control-label">Estimated Budget</label>
                     <asp:TextBox ID="txtBudget" runat="server" class="form-control" placeholder="Price" Text="0"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="rgvBudget" runat="server" ErrorMessage="Please enter only numbers" ValidationExpression="^[0-9]+$" Display="Dynamic"
+                                            ControlToValidate="txtBudget" ForeColor="#d0582e" ValidationGroup="Consultant"></asp:RegularExpressionValidator>
                 </div>
             </div>
             <div class="row">
