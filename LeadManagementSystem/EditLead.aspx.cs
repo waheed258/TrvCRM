@@ -101,8 +101,8 @@ public partial class EditLead : System.Web.UI.Page
             }
             else
             {
-                lnkUrl.Text = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
-                lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/tour-detail.aspx?pid=" + dtLead.Rows[0]["lsProductId"].ToString();
+                lnkUrl.Text = "http://serendipitytravel.co.za/holiday_packages/" + dtLead.Rows[0]["lsPackageId"].ToString().Replace(" ","-");
+                lnkUrl.NavigateUrl = "http://serendipitytravel.co.za/holiday_packages/" + dtLead.Rows[0]["lsPackageId"].ToString().Replace(" ", "-");
             }
             lblLNotes.Text = dtLead.Rows[0]["lsNotes"].ToString();
             if (dtLead.Rows[0]["lsPackageId"].ToString() == "" || dtLead.Rows[0]["lsPackageId"].ToString() == null)
