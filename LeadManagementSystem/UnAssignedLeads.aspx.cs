@@ -26,8 +26,11 @@ public partial class UnAssignedLeads : System.Web.UI.Page
         if (!IsPostBack)
         {
             GetLeadsList();
-            gvLeadList.UseAccessibleHeader = true;
-            gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                gvLeadList.UseAccessibleHeader = true;
+                gvLeadList.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
         }
     }
     protected void GetLeadsList()
@@ -41,8 +44,12 @@ public partial class UnAssignedLeads : System.Web.UI.Page
                 gvLeadList.DataBind();
                 gvLeadList.UseAccessibleHeader = true;
             }
-
-
+            else
+            {
+                DataTable dt = new DataTable();
+                gvLeadList.DataSource = dt;
+                gvLeadList.DataBind();
+            }  
         }
         catch
         {
